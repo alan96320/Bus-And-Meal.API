@@ -4,15 +4,13 @@ namespace BusMeal.API.Persistance
 {
   public class DataContext : DbContext
   {
-
-
-    public DataContext(DbContextOptions<DataContext> options) : base(options)
-    {
-
-    }
+    public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
     public DbSet<Department> Departments { get; set; }
     public DbSet<Employee> Employee { get; set; }
+    public DbSet<Configuration> Configuration { get; set; }
+
+    public DbSet<Counter> Counter { get; set; }
 
   }
 }
