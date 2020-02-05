@@ -1,6 +1,7 @@
 using BusMeal.API.Core.Models;
 using Microsoft.EntityFrameworkCore;
-namespace BusMeal.API.Persistance
+
+namespace BusMeal.API.Persistence
 {
     public class DataContext : DbContext
     {
@@ -12,6 +13,15 @@ namespace BusMeal.API.Persistance
        }
 
        public DbSet<Department> Departments {get; set;}
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
+
+
+        }      
 
     }
 }
