@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using BusMeal.API.Core;
-using BusMeal.API.Persistance;
 
 namespace BusMeal.API.Persistence
 {
