@@ -24,7 +24,5 @@ namespace BusMeal.API.Core.Models
     public int UpdatedBy { get; set; }
 
     public DateTime UpdatedDate { get; set; }
-
-
   }
 }
