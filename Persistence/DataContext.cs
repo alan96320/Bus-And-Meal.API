@@ -22,6 +22,6 @@ namespace BusMeal.API.Persistence
 
         }      
 
-    }
+    
   }
 }
