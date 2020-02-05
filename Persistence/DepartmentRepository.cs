@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using BusMeal.API.Core;
 using BusMeal.API.Core.Models;
-using BusMeal.API.Persistance;
 using BusMeal.API.Helpers;
 
 namespace BusMeal.API.Persistence
@@ -72,19 +71,19 @@ namespace BusMeal.API.Persistence
             case "code" :
                 if ((string.IsNullOrEmpty(departmentParams.OrderDir) || (Char.ToLower(departmentParams.OrderDir[0])=='a'))) {
                   departments.OrderBy( d => d.Code); 
+                }
                 else {
                   departments.OrderByDescending( d => d.Code); 
                 }
-              }
+              
                 break;
             case "name" :
                 if ((string.IsNullOrEmpty(departmentParams.OrderDir) || (Char.ToLower(departmentParams.OrderDir[0])=='a'))) {
-                  departments.OrderBy( d => d.Name) 
+                  departments.OrderBy( d => d.Name) ;
                 } 
                 else {
                   departments.OrderByDescending( d => d.Name); 
                 }
-              }
                 break;
 
             default: //default sort
