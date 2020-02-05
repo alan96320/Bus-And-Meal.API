@@ -20,6 +20,18 @@ namespace BusMeal.API.Migrations
                 {
                     table.PrimaryKey("PK_Department", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Department_Code",
+                table: "Department",
+                column: "Code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Department_Name",
+                table: "Department",
+                column: "Name",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
