@@ -3,6 +3,8 @@
 # Edit at https://www.gitignore.io/?templates=dotenv,csharp,angular,windows,dotnetcore,visualstudiocode
 
 appsettings.json
+appsettings.Development.json
+launchSettings.json
 
 ### Angular ###
 ## Angular ##
