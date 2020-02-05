@@ -3,18 +3,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BusMeal.API.Persistence
 {
-    public class DataContext : DbContext
-    {
+  public class DataContext : DbContext
+  {
+    public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
+    public DbSet<Department> Departments { get; set; }
+    public DbSet<Employee> Employee { get; set; }
+    public DbSet<Configuration> Configuration { get; set; }
+    public DbSet<Counter> Counter { get; set; }
+    public DbSet<Audit> Audit { get; set; }
 
-       public DataContext(DbContextOptions<DataContext> options) : base (options)
-       {
-           
-       }
-
-       public DbSet<Department> Departments {get; set;}
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+     protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             
@@ -24,4 +23,5 @@ namespace BusMeal.API.Persistence
         }      
 
     }
+  }
 }
