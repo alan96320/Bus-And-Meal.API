@@ -62,7 +62,6 @@ namespace BusMeal.API.Controllers
 
       if (await unitOfWork.CompleteAsync() == false)
       {
-        
         throw new Exception(message: $"Updating department {id} failed on save");
       }
 
