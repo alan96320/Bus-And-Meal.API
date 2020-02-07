@@ -58,7 +58,13 @@ namespace BusMeal.API.Controllers
       if (department == null)
         return NotFound();
 
-      department = mapper.Map(departmentResource, department);
+
+      // department = mapper.Map(departmentResource, department);
+      department = mapper.Map<SaveDepartmentResource, Department>(departmentResource);
+      department.Id = id;
+      // return Ok(department);
+
+      departmentRepository.Update(department); 
 
       if (await unitOfWork.CompleteAsync() == false)
       {
@@ -114,7 +120,7 @@ namespace BusMeal.API.Controllers
 
 
     [HttpGet("paged")]
-    public async Task<IActionResult> GetPagedDepartments(DepartmentParams departmentParams)
+    public async Task<IActionResult> GetPagedDepartments([FromQuery]DepartmentParams departmentParams)
     {
 
       /*

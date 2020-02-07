@@ -29,11 +29,12 @@ namespace BusMeal.API.Persistence
       context.Departments.Add(department);
     }
 
-    // public void Update(Department department)
-    // {
-    //   context.Departments.Add(department);
-    //   this.context.Entry(department).State = EntityState.Modified;
-    // }
+    public void Update(Department department)
+    {
+      // context.Departments.Add(department);
+      context.Departments.Entry(department).State = EntityState.Modified;
+      // this.context.Entry(department).State = EntityState.Modified;
+    }
 
     public void Remove(Department department)
     {
@@ -49,13 +50,13 @@ namespace BusMeal.API.Persistence
 
     public async Task<PagedList<Department>> GetPagedDepartments(DepartmentParams departmentParams)
     {
+
       var departments = context.Departments.AsQueryable();
 
       // perlu user id untuk membatasi 
 
       if (!string.IsNullOrEmpty(departmentParams.Name))
       {
-
         departments = departments.Where(d =>
           d.Name.Contains(departmentParams.Name, StringComparison.OrdinalIgnoreCase));
       }
@@ -69,43 +70,38 @@ namespace BusMeal.API.Persistence
       //name,sort
       if (!string.IsNullOrEmpty(departmentParams.OrderBy))
       {
-        var direction = string.IsNullOrEmpty(departmentParams.OrderDir) == true ? "asc" : departmentParams.OrderDir;
-        switch (departmentParams.OrderBy.ToLower())
+        switch (departmentParams.OrderBy)
         {
-          case "code":
-            if ((string.IsNullOrEmpty(departmentParams.OrderDir) || (Char.ToLower(departmentParams.OrderDir[0]) == 'a')))
-            {
-              departments.OrderBy(d => d.Code);
-            }
-            else
-            {
-              departments.OrderByDescending(d => d.Code);
-            }
-
-            break;
           case "name":
-            if ((string.IsNullOrEmpty(departmentParams.OrderDir) || (Char.ToLower(departmentParams.OrderDir[0]) == 'a')))
+            switch (departmentParams.OrderDir)
             {
-              departments.OrderBy(d => d.Name);
-            }
-            else
-            {
-              departments.OrderByDescending(d => d.Name);
-            }
-            break;
+              case "desc":
+                departments.OrderByDescending(d => d.Name);
+                break;
 
-          default: //default sort
-            departments.OrderBy(d => d.Code);
+              default:
+                departments.OrderBy(d => d.Name);
+                break;
+            }
+
+            break;
+          default:
+            switch (departmentParams.OrderDir)
+            {
+              case "desc":
+                departments.OrderByDescending(d => d.Code);
+                break;
+
+              default:
+                departments.OrderBy(d => d.Code);
+                break;
+            }
             break;
         }
       }
 
-
       return await PagedList<Department>
         .CreateAsync(departments, departmentParams.PageNumber, departmentParams.PageSize);
     }
-
-
-
   }
 }
