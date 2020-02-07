@@ -70,24 +70,24 @@ namespace BusMeal.API.Persistence
           switch (departmentParams.OrderBy.ToLower()) {
             case "code" :
                 if ((string.IsNullOrEmpty(departmentParams.OrderDir) || (Char.ToLower(departmentParams.OrderDir[0])=='a'))) {
-                  departments.OrderBy( d => d.Code); 
+                  departments = departments.OrderBy( d => d.Code); 
                 }
                 else {
-                  departments.OrderByDescending( d => d.Code); 
+                  departments = departments.OrderByDescending( d => d.Code); 
                 }
               
                 break;
             case "name" :
                 if ((string.IsNullOrEmpty(departmentParams.OrderDir) || (Char.ToLower(departmentParams.OrderDir[0])=='a'))) {
-                  departments.OrderBy( d => d.Name) ;
+                  departments = departments.OrderBy( d => d.Name) ;
                 } 
                 else {
-                  departments.OrderByDescending( d => d.Name); 
+                  departments = departments.OrderByDescending( d => d.Name); 
                 }
                 break;
 
             default: //default sort
-                departments.OrderBy( d => d.Code); 
+                departments = departments.OrderBy( d => d.Code); 
                 break;
           }
         }

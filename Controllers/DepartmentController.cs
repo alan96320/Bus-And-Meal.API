@@ -116,7 +116,7 @@ namespace BusMeal.API.Controllers
 
 
     [HttpGet("paged")]
-    public async Task<IActionResult> GetPagedDepartments(DepartmentParams departmentParams)
+    public async Task<IActionResult> GetPagedDepartments([FromQuery] DepartmentParams departmentParams)
     {
 
       /*
