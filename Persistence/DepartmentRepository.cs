@@ -55,7 +55,6 @@ namespace BusMeal.API.Persistence
 
       if (!string.IsNullOrEmpty(departmentParams.Name))
       {
-
         departments = departments.Where(d =>
           d.Name.Contains(departmentParams.Name, StringComparison.OrdinalIgnoreCase));
       }

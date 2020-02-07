@@ -54,10 +54,12 @@ namespace BusMeal.API.Controllers
 
       var department = await departmentRepository.GetOne(id);
 
+
       if (department == null)
         return NotFound();
 
       mapper.Map<SaveDepartmentResource, Department>(departmentResource, department);
+      // departmentRepository.Update(department);
 
       if (await unitOfWork.CompleteAsync() == false)
       {
