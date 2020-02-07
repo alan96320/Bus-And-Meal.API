@@ -10,20 +10,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BusMeal.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-      public class DepartmentController : Controller
+  [Route("api/[controller]")]
+  [ApiController]
+  public class DepartmentController : Controller
   {
     private readonly IMapper mapper;
     private readonly IDepartmentRepository departmentRepository;
-    private readonly IUnitOfWork unitOfWork; 
-    
+    private readonly IUnitOfWork unitOfWork;
+
     public DepartmentController(IMapper mapper, IDepartmentRepository departmenRepository, IUnitOfWork unitOfWork)
     {
       this.unitOfWork = unitOfWork;
       this.departmentRepository = departmenRepository;
       this.mapper = mapper;
-    }    
+    }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] SaveDepartmentResource departmentResource)
@@ -34,10 +34,10 @@ namespace BusMeal.API.Controllers
       var department = mapper.Map<SaveDepartmentResource, Department>(departmentResource);
 
       departmentRepository.Add(department);
-      if ( await unitOfWork.CompleteAsync() == false)
-        { 
-          throw new Exception(message: $"Create new department failed on save");
-        }
+      if (await unitOfWork.CompleteAsync() == false)
+      {
+        throw new Exception(message: $"Create new department failed on save");
+      }
 
       department = await departmentRepository.GetOne(department.Id);
       var result = mapper.Map<Department, ViewDepartmentResource>(department);
@@ -46,8 +46,8 @@ namespace BusMeal.API.Controllers
 
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Update(int id, [FromBody] SaveDepartmentResource departmentResource)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody]SaveDepartmentResource departmentResource)
     {
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
@@ -57,15 +57,12 @@ namespace BusMeal.API.Controllers
       if (department == null)
         return NotFound();
 
-      department = mapper.Map<SaveDepartmentResource, Department>(departmentResource);
+      mapper.Map<SaveDepartmentResource, Department>(departmentResource, department);
 
-
-          
-      departmentRepository.Add(department);
-      if ( await unitOfWork.CompleteAsync() == false)
-        { 
-          throw new Exception(message: $"Updating department {id} failed on save");
-        }
+      if (await unitOfWork.CompleteAsync() == false)
+      {
+        throw new Exception(message: $"Updating department {id} failed on save");
+      }
 
       department = await departmentRepository.GetOne(department.Id);
       var result = mapper.Map<Department, ViewDepartmentResource>(department);
@@ -96,10 +93,10 @@ namespace BusMeal.API.Controllers
         return NotFound();
 
       departmentRepository.Remove(department);
-      if ( await unitOfWork.CompleteAsync() == false)
-        { 
-          throw new Exception(message: $"Deleting department {id} failed");
-        }
+      if (await unitOfWork.CompleteAsync() == false)
+      {
+        throw new Exception(message: $"Deleting department {id} failed");
+      }
 
       return Ok(id);
     }
@@ -131,9 +128,9 @@ namespace BusMeal.API.Controllers
       var departments = await departmentRepository.GetPagedDepartments(departmentParams);
 
       var result = mapper.Map<IEnumerable<ViewDepartmentResource>>(departments);
-      
+
       Response.AddPagination(departments.CurrentPage, departments.PageSize
-                            ,departments.TotalCount, departments.TotalPages);
+                            , departments.TotalCount, departments.TotalPages);
 
 
       return Ok(result);
