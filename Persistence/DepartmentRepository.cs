@@ -16,24 +16,24 @@ namespace BusMeal.API.Persistence
 
     public DepartmentRepository(DataContext context)
     {
-        this.context = context;
+      this.context = context;
     }
 
     public async Task<Department> GetOne(int id)
     {
-        return await context.Departments.FindAsync(id);
+      return await context.Departments.FindAsync(id);
     }
 
-    public void Add(Department department) 
+    public void Add(Department department)
     {
       context.Departments.Add(department);
     }
 
-    public void Update(Department department) 
-    {
-      context.Departments.Add(department);
-      this.context.Entry(department).State = EntityState.Modified;
-    }
+    // public void Update(Department department)
+    // {
+    //   context.Departments.Add(department);
+    //   this.context.Entry(department).State = EntityState.Modified;
+    // }
 
     public void Remove(Department department)
     {
@@ -42,62 +42,59 @@ namespace BusMeal.API.Persistence
 
     public async Task<IEnumerable<Department>> GetAll()
     {
-        var departments = await context.Departments.ToListAsync();
+      var departments = await context.Departments.ToListAsync();
 
-        return departments;
+      return departments;
     }
 
     public async Task<PagedList<Department>> GetPagedDepartments(DepartmentParams departmentParams)
     {
-        var departments = context.Departments.AsQueryable();
+      var departments = context.Departments.AsQueryable();
 
-        // perlu user id untuk membatasi 
+      // perlu user id untuk membatasi 
 
-        if (!string.IsNullOrEmpty(departmentParams.Name)) {
+      if (!string.IsNullOrEmpty(departmentParams.Name)) {
 
-          departments = departments.Where(d => 
-            d.Name.Contains(departmentParams.Name,StringComparison.OrdinalIgnoreCase));
-        }
+        departments = departments.Where(d =>
+          d.Name.Contains(departmentParams.Name, StringComparison.OrdinalIgnoreCase));
+      }
 
-        if (!string.IsNullOrEmpty(departmentParams.Code)) {
-          departments = departments.Where(d => 
-            d.Code.Contains(departmentParams.Code,StringComparison.OrdinalIgnoreCase));
-        }
+      if (!string.IsNullOrEmpty(departmentParams.Code)) {
+        departments = departments.Where(d => 
+          d.Code.Contains(departmentParams.Code,StringComparison.OrdinalIgnoreCase));
+      }
 
         //name,sort
-        if (!string.IsNullOrEmpty(departmentParams.OrderBy)) {
-          var direction = string.IsNullOrEmpty(departmentParams.OrderDir) == true ? "asc" : departmentParams.OrderDir;
-          switch (departmentParams.OrderBy.ToLower()) {
-            case "code" :
-                if ((string.IsNullOrEmpty(departmentParams.OrderDir) || (Char.ToLower(departmentParams.OrderDir[0])=='a'))) {
-                  departments = departments.OrderBy( d => d.Code); 
-                }
-                else {
-                  departments = departments.OrderByDescending( d => d.Code); 
-                }
-              
-                break;
-            case "name" :
-                if ((string.IsNullOrEmpty(departmentParams.OrderDir) || (Char.ToLower(departmentParams.OrderDir[0])=='a'))) {
-                  departments = departments.OrderBy( d => d.Name) ;
-                } 
-                else {
-                  departments = departments.OrderByDescending( d => d.Name); 
-                }
-                break;
-
-            default: //default sort
+      if (!string.IsNullOrEmpty(departmentParams.OrderBy)) {
+        var direction = string.IsNullOrEmpty(departmentParams.OrderDir) == true ? "asc" : departmentParams.OrderDir;
+        switch (departmentParams.OrderBy.ToLower()) {
+          case "code" :
+              if ((string.IsNullOrEmpty(departmentParams.OrderDir) || (Char.ToLower(departmentParams.OrderDir[0])=='a'))) {
                 departments = departments.OrderBy( d => d.Code); 
-                break;
-          }
+              }
+              else {
+                departments = departments.OrderByDescending( d => d.Code); 
+              }
+            
+              break;
+          case "name" :
+              if ((string.IsNullOrEmpty(departmentParams.OrderDir) || (Char.ToLower(departmentParams.OrderDir[0])=='a'))) {
+                departments = departments.OrderBy( d => d.Name) ;
+              } 
+              else {
+                departments = departments.OrderByDescending( d => d.Name); 
+              }
+              break;
+
+          default: //default sort
+              departments = departments.OrderBy( d => d.Code); 
+              break;
         }
+      }
 
-
-        return await PagedList<Department>
-          .CreateAsync(departments, departmentParams.PageNumber, departmentParams.PageSize);
-    } 
-
-
-
+      return await PagedList<Department>
+        .CreateAsync(departments, departmentParams.PageNumber, departmentParams.PageSize);
     }
+
+  }
 }
