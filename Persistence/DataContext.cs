@@ -20,6 +20,7 @@ namespace BusMeal.API.Persistence
       modelBuilder.ApplyConfiguration(new CounterConfiguration());
       modelBuilder.ApplyConfiguration(new AuditConfiguration());
       modelBuilder.ApplyConfiguration(new UserConfiguration());
+      modelBuilder.ApplyConfiguration(new ModuleRightsConfiguration());
 
     }
 
