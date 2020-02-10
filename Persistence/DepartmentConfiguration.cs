@@ -17,11 +17,6 @@ namespace BusMeal.API.Persistence
       .IsRequired()
       .HasMaxLength(50)
       .IsUnicode();
-
-      // modelBuilder.HasIndex(d => d.Code).IsUnique();
-      // modelBuilder
-      // .HasIndex(d => d.Name).IsUnique()
-
     }
   }
 }

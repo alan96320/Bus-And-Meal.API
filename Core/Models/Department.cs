@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusMeal.API.Core.Models
 {
-  [Table("Department")]
   public class Department
   {
     [Key]
