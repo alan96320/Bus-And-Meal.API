@@ -11,16 +11,11 @@ namespace BusMeal.API.Core.Models
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
-    [Column(TypeName = "VARCHAR(8)")]
     public string HrCoreNo { get; set; }
 
-    [Column(TypeName = "VARCHAR(100)")]
     public string Firstname { get; set; }
-
-    [Column(TypeName = "VARCHAR(100)")]
     public string Lastname { get; set; }
 
-    [Column(TypeName = "VARCHAR(100)")]
     public string Fullname { get; set; }
 
     public Department Department { get; set; }
