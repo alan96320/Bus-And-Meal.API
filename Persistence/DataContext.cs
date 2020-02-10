@@ -16,6 +16,8 @@ namespace BusMeal.API.Persistence
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
+      modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
+      modelBuilder.ApplyConfiguration(new CounterConfiguration());
     }
 
 
