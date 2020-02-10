@@ -12,6 +12,10 @@ namespace BusMeal.API.Persistence
     public DbSet<Configuration> Configuration { get; set; }
     public DbSet<Counter> Counter { get; set; }
     public DbSet<Audit> Audit { get; set; }
+    public DbSet<ModuleRights> ModuleRights { get; set; }
+    public DbSet<User> User { get; set; }
+    public DbSet<UserDepartment> UserDepartment { get; set; }
+    public DbSet<UserModuleRights> UserModuleRights { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,7 +25,8 @@ namespace BusMeal.API.Persistence
       modelBuilder.ApplyConfiguration(new AuditConfiguration());
       modelBuilder.ApplyConfiguration(new UserConfiguration());
       modelBuilder.ApplyConfiguration(new ModuleRightsConfiguration());
-
+      modelBuilder.ApplyConfiguration(new MealVendorConfiguration());
+      modelBuilder.ApplyConfiguration(new MealTypeConfiguration());
     }
 
 
