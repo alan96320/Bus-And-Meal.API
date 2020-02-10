@@ -18,6 +18,8 @@ namespace BusMeal.API.Persistence
       modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
       modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
       modelBuilder.ApplyConfiguration(new CounterConfiguration());
+      modelBuilder.ApplyConfiguration(new AuditConfiguration());
+
     }
 
 
