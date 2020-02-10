@@ -13,15 +13,11 @@ namespace BusMeal.API.Persistence
     public DbSet<Counter> Counter { get; set; }
     public DbSet<Audit> Audit { get; set; }
 
-     protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            
-            modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+      modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
+    }
 
 
-        }      
-
-    
   }
 }
