@@ -12,6 +12,7 @@ namespace BusMeal.API.Core.Models
     public DateTime OrderEntryDate { get; set; }
     public Department Department { get; set; }
     public int? DepartmentId { get; set; }
-    public int MealOrderVerificationHeaderId { get; set; }
+    public MealOrderVerificationHeader MealOrderVerificationHeader { get; set; }
+    public int? MealOrderVerificationHeaderId { get; set; }
   }
 }
