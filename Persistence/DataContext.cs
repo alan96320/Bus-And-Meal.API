@@ -22,6 +22,7 @@ namespace BusMeal.API.Persistence
     public DbSet<MealOrderVerificationHeader> MealOrderVerificationHeader { get; set; }
     public DbSet<MealOrderDetail> MealOrderDetail { get; set; }
     public DbSet<MealOrderVerificationHeaderTotal> MealOrderVerificationHeaderTotal { get; set; }
+    public DbSet<BusOrderVerificationHeader> BusOrderVerificationHeader { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,6 +37,7 @@ namespace BusMeal.API.Persistence
       modelBuilder.ApplyConfiguration(new DormitoryBlockConfiguration());
       modelBuilder.ApplyConfiguration(new BusTimeConfiguration());
       modelBuilder.ApplyConfiguration(new MealOrderVerificationHeaderConfiguration());
+      modelBuilder.ApplyConfiguration(new BusOrderVerificationHeaderConfiguration());
     }
   }
 }
