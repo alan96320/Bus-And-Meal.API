@@ -18,6 +18,7 @@ namespace BusMeal.API.Persistence
     public DbSet<UserModuleRights> UserModuleRights { get; set; }
     public DbSet<DormitoryBlock> DormitoryBlock { get; set; }
     public DbSet<BusTime> BusTime { get; set; }
+    public DbSet<MealOrderEntryHeader> MealOrderEntryHeader { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
