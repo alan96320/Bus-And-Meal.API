@@ -16,6 +16,7 @@ namespace BusMeal.API.Persistence
     public DbSet<User> User { get; set; }
     public DbSet<UserDepartment> UserDepartment { get; set; }
     public DbSet<UserModuleRights> UserModuleRights { get; set; }
+    public DbSet<DormitoryBlock> DormitoryBlock { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,8 +28,7 @@ namespace BusMeal.API.Persistence
       modelBuilder.ApplyConfiguration(new ModuleRightsConfiguration());
       modelBuilder.ApplyConfiguration(new MealVendorConfiguration());
       modelBuilder.ApplyConfiguration(new MealTypeConfiguration());
+      modelBuilder.ApplyConfiguration(new DormitoryBlockConfiguration());
     }
-
-
   }
 }
