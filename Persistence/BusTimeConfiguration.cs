@@ -10,8 +10,8 @@ namespace BusMeal.API.Persistence
     {
       builder.Property(b => b.Code)
       .HasColumnType("varchar")
-      .HasMaxLength(5)
-        }
+      .HasMaxLength(5);
+    }
 
   }
 }
