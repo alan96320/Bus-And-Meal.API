@@ -17,8 +17,8 @@ namespace BusMeal.API.Persistence
       .HasMaxLength(100);
 
       builder.Property(u => u.FullName)
-            .HasColumnType("varchar")
-            .HasMaxLength(100);
+      .HasColumnType("varchar")
+      .HasMaxLength(100);
 
       builder.Property(u => u.GddbId)
       .HasColumnType("varchar")

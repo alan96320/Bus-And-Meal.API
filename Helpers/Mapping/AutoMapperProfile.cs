@@ -9,9 +9,12 @@ namespace BusMeal.API.Helpers.Mapping
     public AutoMapperProfile()
     {
       CreateMap<Department, ViewDepartmentResource>();
-      CreateMap<SaveDepartmentResource, Department>();
       CreateMap<Employee, ViewEmployeeResource>();
+      CreateMap<User, ViewUserResource>();
+
+      CreateMap<SaveDepartmentResource, Department>();
       CreateMap<SaveEmployeeResource, Employee>();
+      CreateMap<SaveUserResource, User>();
     }
   }
 }
