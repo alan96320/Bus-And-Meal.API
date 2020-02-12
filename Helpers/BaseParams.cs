@@ -11,7 +11,6 @@ namespace BusMeal.API.Helpers
       set { pageSize = (value > MaxPageSize) ? MaxPageSize : value; }
     }
     public string OrderBy { get; set; }
-
-    public string OrderDir { get; set; }
+    public bool isDescending { get; set; }
   }
 }
