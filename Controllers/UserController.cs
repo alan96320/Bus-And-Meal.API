@@ -43,7 +43,7 @@ namespace BusMeal.API.Controllers
       if (user == null)
         return NotFound();
 
-      var result = mapper.Map<User, ViewUserResource>(user);
+      var result = mapper.Map<Core.Models.User, ViewUserResource>(user);
 
       return Ok(result);
     }
@@ -66,7 +66,7 @@ namespace BusMeal.API.Controllers
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      var user = mapper.Map<SaveUserResource, User>(userResource);
+      var user = mapper.Map<SaveUserResource, Core.Models.User>(userResource);
 
       userRepository.Add(user);
       if (await unitOfWork.CompleteAsync() == false)
@@ -76,10 +76,52 @@ namespace BusMeal.API.Controllers
 
       user = await userRepository.GetOne(user.Id);
 
-      var result = mapper.Map<User, ViewUserResource>(user);
+      var result = mapper.Map<Core.Models.User, ViewUserResource>(user);
 
       return Ok(result);
     }
 
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody]SaveUserResource userResource)
+    {
+      if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
+      var user = await userRepository.GetOne(id);
+
+      if (user == null)
+        return NotFound();
+
+      user = mapper.Map(userResource, user);
+
+      if (await unitOfWork.CompleteAsync() == false)
+      {
+        throw new Exception(message: $"Updating user with id: {id} failed on save");
+      }
+
+      user = await userRepository.GetOne(user.Id);
+
+      var result = mapper.Map<Core.Models.User, ViewUserResource>(user);
+
+      return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveUser(int id)
+    {
+      var user = await userRepository.GetOne(id);
+
+      if (user == null)
+        return NotFound();
+
+      userRepository.Remove(user);
+
+      if (await unitOfWork.CompleteAsync() == false)
+      {
+        throw new Exception(message: $"Deleting user with id: {id} failed");
+      }
+
+      return Ok($"{id}");
+    }
   }
 }

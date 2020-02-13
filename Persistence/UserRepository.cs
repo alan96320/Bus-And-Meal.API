@@ -19,7 +19,7 @@ namespace BusMeal.API.Persistence
     }
     public async Task<User> GetOne(int id)
     {
-      return await context.User.FindAsync();
+      return await context.User.FindAsync(id);
     }
 
     public void Add(User user)
