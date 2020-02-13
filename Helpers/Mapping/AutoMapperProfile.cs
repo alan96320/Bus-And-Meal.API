@@ -11,10 +11,12 @@ namespace BusMeal.API.Helpers.Mapping
       CreateMap<Department, ViewDepartmentResource>();
       CreateMap<Employee, ViewEmployeeResource>();
       CreateMap<User, ViewUserResource>();
+      CreateMap<UserDepartment, ViewUserDepartmentResource>();
 
       CreateMap<SaveDepartmentResource, Department>();
       CreateMap<SaveEmployeeResource, Employee>();
       CreateMap<SaveUserResource, User>();
+      CreateMap<SaveUserDepartmentResource, UserDepartment>();
     }
   }
 }
