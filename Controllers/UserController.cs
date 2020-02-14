@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusMeal.API.Controllers.Resources;
-using BusMeal.API.Core;
 using BusMeal.API.Core.Models;
 using BusMeal.API.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using BusMeal.API.Core.IRepository;
+using BusMeal.API.Helpers.Params;
 
 namespace BusMeal.API.Controllers
 {

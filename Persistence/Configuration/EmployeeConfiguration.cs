@@ -2,7 +2,7 @@ using BusMeal.API.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BusMeal.API.Persistence
+namespace BusMeal.API.Persistence.Configuration
 {
   public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
   {

@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BusMeal.API.Core;
+using BusMeal.API.Core.IRepository;
 using BusMeal.API.Core.Models;
 using BusMeal.API.Helpers;
+using BusMeal.API.Helpers.Params;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusMeal.API.Persistence
+namespace BusMeal.API.Persistence.Repository
 {
   public class UserRepository : IUserRepository
   {
