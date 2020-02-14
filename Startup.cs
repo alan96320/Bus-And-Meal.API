@@ -18,13 +18,10 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using BusMeal.API.Helpers;
 using AutoMapper;
-<<<<<<< HEAD
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-=======
 using Microsoft.OpenApi.Models;
->>>>>>> Dev-Branch-8
 
 namespace BusMeal.API
 {
