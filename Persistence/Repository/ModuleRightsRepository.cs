@@ -48,12 +48,12 @@ namespace BusMeal.API.Persistence.Repository
       // filter
       if (!string.IsNullOrEmpty(moduleRightsParams.Code))
       {
-        modules = modules.Where(m => m.Code.Contains(m.Code, StringComparison.OrdinalIgnoreCase));
+        modules = modules.Where(m => m.Code.Contains(moduleRightsParams.Code, StringComparison.OrdinalIgnoreCase));
       }
 
       if (!string.IsNullOrEmpty(moduleRightsParams.Description))
       {
-        modules = modules.Where(m => m.Description.Contains(m.Description, StringComparison.OrdinalIgnoreCase));
+        modules = modules.Where(m => m.Description.Contains(moduleRightsParams.Description, StringComparison.OrdinalIgnoreCase));
       }
 
       //  sort
