@@ -23,7 +23,6 @@ namespace BusMeal.API.Persistence
       builder.Property(e => e.Fullname)
       .HasColumnType("varchar")
       .HasMaxLength(100);
-
     }
   }
 }

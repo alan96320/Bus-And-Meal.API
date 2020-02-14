@@ -53,42 +53,62 @@ namespace BusMeal.API.Persistence
 
       // perlu user id untuk membatasi 
 
-      if (!string.IsNullOrEmpty(departmentParams.Name)) {
+      if (!string.IsNullOrEmpty(departmentParams.Name))
+      {
 
         departments = departments.Where(d =>
           d.Name.Contains(departmentParams.Name, StringComparison.OrdinalIgnoreCase));
       }
 
-      if (!string.IsNullOrEmpty(departmentParams.Code)) {
-        departments = departments.Where(d => 
-          d.Code.Contains(departmentParams.Code,StringComparison.OrdinalIgnoreCase));
+      if (!string.IsNullOrEmpty(departmentParams.Code))
+      {
+        departments = departments.Where(d =>
+          d.Code.Contains(departmentParams.Code, StringComparison.OrdinalIgnoreCase));
       }
 
-        //name,sort
-      if (!string.IsNullOrEmpty(departmentParams.OrderBy)) {
-        var direction = string.IsNullOrEmpty(departmentParams.OrderDir) == true ? "asc" : departmentParams.OrderDir;
-        switch (departmentParams.OrderBy.ToLower()) {
-          case "code" :
-              if ((string.IsNullOrEmpty(departmentParams.OrderDir) || (Char.ToLower(departmentParams.OrderDir[0])=='a'))) {
-                departments = departments.OrderBy( d => d.Code); 
-              }
-              else {
-                departments = departments.OrderByDescending( d => d.Code); 
-              }
-            
+      //name,sort
+      if (departmentParams.isDescending)
+      {
+        if (!string.IsNullOrEmpty(departmentParams.OrderBy))
+        {
+          switch (departmentParams.OrderBy.ToLower())
+          {
+            case "code":
+              departments = departments.OrderByDescending(d => d.Code);
               break;
-          case "name" :
-              if ((string.IsNullOrEmpty(departmentParams.OrderDir) || (Char.ToLower(departmentParams.OrderDir[0])=='a'))) {
-                departments = departments.OrderBy( d => d.Name) ;
-              } 
-              else {
-                departments = departments.OrderByDescending( d => d.Name); 
-              }
+            case "name":
+              departments = departments.OrderByDescending(d => d.Name);
               break;
-
-          default: //default sort
-              departments = departments.OrderBy( d => d.Code); 
+            default:
+              departments = departments.OrderByDescending(d => d.Code);
               break;
+          }
+        }
+        else
+        {
+          departments = departments.OrderByDescending(d => d.Code);
+        }
+      }
+      else
+      {
+        if (!string.IsNullOrEmpty(departmentParams.OrderBy))
+        {
+          switch (departmentParams.OrderBy.ToLower())
+          {
+            case "code":
+              departments = departments.OrderBy(d => d.Code);
+              break;
+            case "name":
+              departments = departments.OrderBy(d => d.Name);
+              break;
+            default:
+              departments = departments.OrderBy(d => d.Code);
+              break;
+          }
+        }
+        else
+        {
+          departments = departments.OrderBy(d => d.Code);
         }
       }
 

@@ -57,6 +57,12 @@ namespace BusMeal.API
               ValidateAudience = false
             };
           });
+      services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+      services.AddScoped<IUserRepository, UserRepository>();
+      services.AddScoped<IUserDepartmentRepository, UserDepartmentRepository>();
+
+      services.AddAutoMapper(typeof(Startup));
+      services.AddCors();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

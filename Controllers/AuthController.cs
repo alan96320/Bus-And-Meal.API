@@ -1,13 +1,9 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 namespace BusMeal.API.Controllers
 {
+
   public class User
   {
     public string Name { get; set; }
@@ -16,62 +12,32 @@ namespace BusMeal.API.Controllers
   }
 
   [Route("api/[controller]")]
-
   public class AuthController : Controller
   {
-
-    private readonly IConfiguration config;
-    public AuthController(IConfiguration config)
-    {
-      this.config = config;
-    }
-
     [HttpPost("login")]
     public ActionResult Post([FromBody]User user)
     {
       if (user.Name == "test" && user.Password == "123")
       {
-        var claims = new[]
-            {
-                new Claim(ClaimTypes.Name, user.Name)
-            };
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8
-            .GetBytes(this.config.GetSection("AppSettings:Token").Value));
-
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-        var tokenDescriptor = new SecurityTokenDescriptor
+        var result = new
         {
-          Subject = new ClaimsIdentity(claims),
-          Expires = DateTime.Now.AddDays(1),
-          SigningCredentials = creds
+          login = true,
+          msg = "Login success"
         };
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-
-
-        return Ok(new
-        {
-          token = tokenHandler.WriteToken(token),
-          message = "Login success!"
-        });
+        return Ok(result);
       }
       else
       {
-        return Unauthorized(new
+        var result = new
         {
-          token = "No token available!",
-          message = "Login failed!"
-        });
+          login = false,
+          msg = "Login Failed!"
+        };
+        return Unauthorized(result);
       }
     }
   }
 }
-
-
 
 
 

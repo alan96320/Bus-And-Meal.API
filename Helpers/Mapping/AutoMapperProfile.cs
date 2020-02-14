@@ -4,12 +4,19 @@ using BusMeal.API.Core.Models;
 
 namespace BusMeal.API.Helpers.Mapping
 {
-    public class AutoMapperProfile : Profile
+  public class AutoMapperProfile : Profile
+  {
+    public AutoMapperProfile()
     {
-        public AutoMapperProfile()
-        {
-        CreateMap<Department, ViewDepartmentResource>();
-        CreateMap<SaveDepartmentResource, Department>();
-        }
+      CreateMap<Department, ViewDepartmentResource>();
+      CreateMap<Employee, ViewEmployeeResource>();
+      CreateMap<User, ViewUserResource>();
+      CreateMap<UserDepartment, ViewUserDepartmentResource>();
+
+      CreateMap<SaveDepartmentResource, Department>();
+      CreateMap<SaveEmployeeResource, Employee>();
+      CreateMap<SaveUserResource, User>();
+      CreateMap<SaveUserDepartmentResource, UserDepartment>();
     }
+  }
 }
