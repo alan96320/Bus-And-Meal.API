@@ -46,6 +46,7 @@ namespace BusMeal.API
       services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
       services.AddScoped<IDepartmentRepository, DepartmentRepository>();
       services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+      services.AddScoped<IModuleRightsRepository, ModuleRightsRepository>();
       services.AddScoped<IUnitOfWork, UnitOfWork>();
       services.AddScoped<IUserDepartmentRepository, UserDepartmentRepository>();
       services.AddScoped<IUserRepository, UserRepository>();

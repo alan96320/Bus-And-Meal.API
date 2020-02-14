@@ -7,8 +7,7 @@ namespace BusMeal.API.Core.Models
   {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int MyProperty { get; set; }
-
+    public int Id { get; set; }
     public string Code { get; set; }
     public string Description { get; set; }
   }
