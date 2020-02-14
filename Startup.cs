@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BusMeal.API.Core;
-using BusMeal.API.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -22,6 +20,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using BusMeal.API.Core.Models;
+using BusMeal.API.Core.IRepository;
+using BusMeal.API.Persistence.Repository;
+using BusMeal.API.Persistence;
 
 namespace BusMeal.API
 {
@@ -41,8 +43,12 @@ namespace BusMeal.API
 
       services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
 
+      services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
       services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+      services.AddScoped<IEmployeeRepository, EmployeeRepository>();
       services.AddScoped<IUnitOfWork, UnitOfWork>();
+      services.AddScoped<IUserDepartmentRepository, UserDepartmentRepository>();
+      services.AddScoped<IUserRepository, UserRepository>();
 
       services.AddAutoMapper(typeof(Startup));
       services.AddCors();
@@ -58,12 +64,6 @@ namespace BusMeal.API
               ValidateAudience = false
             };
           });
-      services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-      services.AddScoped<IUserRepository, UserRepository>();
-      services.AddScoped<IUserDepartmentRepository, UserDepartmentRepository>();
-
-      services.AddAutoMapper(typeof(Startup));
-      services.AddCors();
 
       // Register the Swagger generator, defining 1 or more Swagger documents
       services.AddSwaggerGen(c =>
