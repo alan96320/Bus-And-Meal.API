@@ -64,6 +64,9 @@ namespace BusMeal.API.Controllers
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveUserDepartmentResource userDepartmentResource)
     {
+
+      ModelState.AddModelError("YourError","YourError");
+
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
