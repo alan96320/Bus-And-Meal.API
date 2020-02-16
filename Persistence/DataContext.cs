@@ -1,5 +1,6 @@
 using BusMeal.API.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using BusMeal.API.Persistence.Configuration;
 
 namespace BusMeal.API.Persistence
 {
@@ -9,7 +10,7 @@ namespace BusMeal.API.Persistence
 
     public DbSet<Department> Departments { get; set; }
     public DbSet<Employee> Employee { get; set; }
-    public DbSet<Configuration> Configuration { get; set; }
+    public DbSet<AppConfiguration> AppConfiguration { get; set; }
     public DbSet<Counter> Counter { get; set; }
     public DbSet<Audit> Audit { get; set; }
     public DbSet<ModuleRights> ModuleRights { get; set; }

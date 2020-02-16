@@ -1,4 +1,4 @@
-namespace BusMeal.API.Helpers
+namespace BusMeal.API.Helpers.Params
 {
   public class DepartmentParams : BaseParams
   {

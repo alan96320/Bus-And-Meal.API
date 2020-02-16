@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusMeal.API.Core.Models
 {
-  public class Configuration
+  public class AppConfiguration
   {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
