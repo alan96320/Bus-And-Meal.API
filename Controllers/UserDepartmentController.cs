@@ -12,7 +12,7 @@ using BusMeal.API.Helpers.Params;
 namespace BusMeal.API.Controllers
 {
   [Route("api/[controller]")]
-  [ApiController]
+  
   public class UserDepartmentController : Controller
   {
     private readonly IMapper mapper;
