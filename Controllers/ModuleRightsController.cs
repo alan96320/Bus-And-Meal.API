@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusMeal.API.Controllers
 {
   [Route("api/[controller]")]
-  [ApiController]
+  
   public class ModuleRightsController : Controller
   {
     private readonly IMapper mapper;

@@ -30,11 +30,11 @@ namespace BusMeal.API.Persistence.Repository
       context.Departments.Add(department);
     }
 
-    // public void Update(Department department)
-    // {
-    //   context.Departments.Add(department);
-    //   this.context.Entry(department).State = EntityState.Modified;
-    // }
+     public void Update(Department department)
+     {
+       context.Departments.Add(department);
+       this.context.Entry(department).State = EntityState.Modified;
+     }
 
     public void Remove(Department department)
     {

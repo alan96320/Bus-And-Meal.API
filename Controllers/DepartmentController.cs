@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusMeal.API.Controllers
 {
   [Route("api/[controller]")]
-  [ApiController]
+
   public class DepartmentController : Controller
   {
     private readonly IMapper mapper;
@@ -61,6 +61,8 @@ namespace BusMeal.API.Controllers
 
       department = mapper.Map(departmentResource, department);
 
+      departmentRepository.Update(department);
+      
       if (await unitOfWork.CompleteAsync() == false)
       {
         throw new Exception(message: $"Updating department {id} failed on save");
