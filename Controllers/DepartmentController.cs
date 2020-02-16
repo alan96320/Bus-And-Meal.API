@@ -61,6 +61,8 @@ namespace BusMeal.API.Controllers
 
       department = mapper.Map(departmentResource, department);
 
+      departmentRepository.Update(department);
+      
       if (await unitOfWork.CompleteAsync() == false)
       {
         throw new Exception(message: $"Updating department {id} failed on save");
