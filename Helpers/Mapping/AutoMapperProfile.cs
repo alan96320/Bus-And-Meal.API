@@ -17,6 +17,7 @@ namespace BusMeal.API.Helpers.Mapping
       CreateMap<ModuleRights, ViewModuleRightsResource>();
       CreateMap<UserModuleRights, ViewUserModuleRightsResource>();
       CreateMap<DormitoryBlock, ViewDormitoryBlockResource>();
+      CreateMap<BusTime, ViewBusTimeResource>();
 
       CreateMap<SaveDepartmentResource, Department>();
       CreateMap<SaveEmployeeResource, Employee>();
@@ -26,6 +27,7 @@ namespace BusMeal.API.Helpers.Mapping
       CreateMap<SaveModuleRightsResource, ModuleRights>();
       CreateMap<SaveUserModuleRightsResource, UserModuleRights>();
       CreateMap<SaveDormitoryBlockResource, DormitoryBlock>();
+      CreateMap<SaveBusTimeResource, BusTime>();
     }
   }
 }
