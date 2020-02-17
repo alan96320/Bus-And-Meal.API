@@ -9,8 +9,7 @@ namespace BusMeal.API.Persistence.Configuration
     public void Configure(EntityTypeBuilder<MealOrderVerificationHeader> builder)
     {
       builder.Property(m => m.OrderNo)
-      .HasColumnType("varchar")
-      .HasMaxLength(10);
+      .HasColumnType("varchar(10)");
     }
   }
 }
