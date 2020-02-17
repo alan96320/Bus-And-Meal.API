@@ -9,13 +9,13 @@ namespace BusMeal.API.Persistence.Configuration
     public void Configure(EntityTypeBuilder<Department> builder)
     {
       builder.Property(d => d.Name)
+      .HasColumnType("varchar(255)")
      .IsRequired()
-     .HasMaxLength(255)
      .IsUnicode();
 
       builder.Property(d => d.Code)
+      .HasColumnType("varchar(50)")
       .IsRequired()
-      .HasMaxLength(50)
       .IsUnicode();
     }
   }

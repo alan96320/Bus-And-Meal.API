@@ -9,8 +9,7 @@ namespace BusMeal.API.Persistence.Configuration
     public void Configure(EntityTypeBuilder<BusTime> builder)
     {
       builder.Property(b => b.Code)
-      .HasColumnType("varchar")
-      .HasMaxLength(5);
+      .HasColumnType("varchar(5)");
     }
 
   }

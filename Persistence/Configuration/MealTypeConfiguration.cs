@@ -9,12 +9,10 @@ namespace BusMeal.API.Persistence.Configuration
     public void Configure(EntityTypeBuilder<MealType> builder)
     {
       builder.Property(m => m.Code)
-      .HasColumnType("varchar")
-      .HasMaxLength(50);
+      .HasColumnType("varchar(50)");
 
       builder.Property(m => m.Name)
-      .HasColumnType("varchar")
-      .HasMaxLength(100);
+      .HasColumnType("varchar(100)");
     }
   }
 }
