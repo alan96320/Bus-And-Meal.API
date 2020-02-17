@@ -91,5 +91,40 @@ namespace BusMeal.API.Controllers
             return Ok(result);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody]SaveCounterResource counterResource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var counter = await counterRepository.GetOne(id);
+
+            if (counter == null)
+                return NotFound();
+
+            counter = mapper.Map(counterResource, counter);
+
+            if (await unitOfWork.CompleteAsync() == false)
+            {
+                throw new Exception(message: $"Updating counter {id} failed on save");
+            }
+
+            counter = await counterRepository.GetOne(counter.Id);
+
+            var result = mapper.Map<Counter, ViewCounterResource>(counter);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var counters = await counterRepository.GetAll();
+
+            var result = mapper.Map<IEnumerable<ViewCounterResource>>(counters);
+
+            return Ok(result);
+        }
+
     }
 }
