@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BusMeal.API.Controllers
 {
-    [Route("api/[controller")]
+    [Route("api/[controller]")]
     public class AuditController : Controller
     {
         private IMapper mapper;
