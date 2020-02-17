@@ -1,8 +1,8 @@
 namespace BusMeal.API.Controllers.Resources
 {
-  public class SaveUserDepartmentResource
+  public class SaveUserModuleRightsResource
   {
-    public int DepartmentId { get; set; }
+    public int RightsId { get; set; }
     public int UserId { get; set; }
   }
 }
