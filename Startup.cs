@@ -51,6 +51,7 @@ namespace BusMeal.API
       services.AddScoped<IUserDepartmentRepository, UserDepartmentRepository>();
       services.AddScoped<IUserRepository, UserRepository>();
       services.AddScoped<IUserModuleRightsRepository, UserModuleRightsRepository>();
+      services.AddScoped<IDormitoryBlockRepository, DormitoryBlockRepository>();
 
       services.AddAutoMapper(typeof(Startup));
       services.AddCors();
