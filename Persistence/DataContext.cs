@@ -27,6 +27,7 @@ namespace BusMeal.API.Persistence
     public DbSet<BusOrderEntryHeader> BusOrderEntryHeader { get; set; }
     public DbSet<BusOrderEntryDetail> BusOrderEntryDetail { get; set; }
     public DbSet<BusOrderVerificationHeaderTotal> BusOrderVerificationHeaderTotal { get; set; }
+    public DbSet<MealVendor> MealVendor { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
