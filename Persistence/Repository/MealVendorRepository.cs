@@ -32,7 +32,7 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<MealVendor> GetOne(int id)
     {
-      return await context.MealVendor.FindAsync();
+      return await context.MealVendor.FindAsync(id);
     }
 
     public async Task<PagedList<MealVendor>> GetPagedMealVendor(MealVendorParams mealVendorParams)
