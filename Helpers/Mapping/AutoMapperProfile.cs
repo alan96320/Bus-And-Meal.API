@@ -20,6 +20,7 @@ namespace BusMeal.API.Helpers.Mapping
       CreateMap<BusTime, ViewBusTimeResource>();
       CreateMap<MealType, ViewMealTypeResource>();
       CreateMap<MealVendor, ViewMealVendorResource>();
+      CreateMap<Counter, ViewCounterResource>();
 
       CreateMap<SaveDepartmentResource, Department>();
       CreateMap<SaveEmployeeResource, Employee>();
@@ -33,6 +34,7 @@ namespace BusMeal.API.Helpers.Mapping
       CreateMap<SaveMealTypeResource, MealType>();
 
       CreateMap<SaveMealVendorResource, MealVendor>();
+      CreateMap<SaveCounterResource,Counter>();
     }
   }
 }
