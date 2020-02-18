@@ -12,7 +12,7 @@ using BusMeal.API.Helpers.Params;
 namespace BusMeal.API.Controllers
 {
   [Route("api/[controller]")]
-  
+
   public class UserController : Controller
   {
     private readonly IMapper mapper;
@@ -67,9 +67,10 @@ namespace BusMeal.API.Controllers
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      var user = mapper.Map<SaveUserResource, Core.Models.User>(userResource);
+      var user = mapper.Map<Core.Models.User>(userResource);
 
-      userRepository.Add(user);
+      userRepository.Add(user, userResource.Password);
+
       if (await unitOfWork.CompleteAsync() == false)
       {
         throw new Exception(message: "Create new user fail on save");
