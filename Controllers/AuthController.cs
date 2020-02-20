@@ -12,12 +12,6 @@ using AutoMapper;
 
 namespace BusMeal.API.Controllers
 {
-  public class User
-  {
-    public string Name { get; set; }
-    public string Password { get; set; }
-
-  }
 
   [Route("api/[controller]")]
 
@@ -36,9 +30,12 @@ namespace BusMeal.API.Controllers
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginResource loginResource)
+    public async Task<IActionResult> Login([FromBody]LoginResource loginResource)
     {
-      var userLogin = await userRepository.Login(loginResource.Username, loginResource.Password);
+      var username = loginResource.Username;
+      var password = loginResource.Password;
+
+      var userLogin = await userRepository.Login(username, password);
 
       if (userLogin == null)
         return Unauthorized();
