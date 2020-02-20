@@ -24,6 +24,9 @@ using BusMeal.API.Core.Models;
 using BusMeal.API.Core.IRepository;
 using BusMeal.API.Persistence.Repository;
 using BusMeal.API.Persistence;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using BusMeal.API.Core.Validator;
 
 namespace BusMeal.API
 {
@@ -39,7 +42,12 @@ namespace BusMeal.API
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+      services.AddMvc()
+      .AddFluentValidation(
+        fv => fv.RegisterValidatorsFromAssemblyContaining<DepartmentValidation>()
+      )
+      .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
 
       services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
 
@@ -57,6 +65,7 @@ namespace BusMeal.API
       services.AddScoped<IMealVendorRepository, MealVendorRepository>();
       services.AddScoped<ICounterRepository, CounterRepository>();
       services.AddScoped<IAuditRepository, AuditRepository>();
+
 
       services.AddAutoMapper(typeof(Startup));
       services.AddCors();
