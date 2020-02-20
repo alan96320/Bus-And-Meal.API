@@ -8,6 +8,9 @@ namespace BusMeal.API.Persistence.Configuration
   {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+      builder.Property(u => u.Username)
+      .HasColumnType("varchar(100)");
+
       builder.Property(u => u.FirstName)
       .HasColumnType("varchar(100)");
 
