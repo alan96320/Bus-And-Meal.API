@@ -9,8 +9,9 @@ namespace BusMeal.API.Core.Models
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
+    public int? MealOrderEntryHeaderId { get; set; }
     public MealOrderEntryHeader MealOrderEntryHeader { get; set; }
-    public int MealOrderEntryHeaderId { get; set; }
+
     public MealType MealType { get; set; }
     public int MealTypeId { get; set; }
     public int OrderQty { get; set; }
