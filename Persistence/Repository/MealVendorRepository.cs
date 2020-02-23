@@ -44,9 +44,25 @@ namespace BusMeal.API.Persistence.Repository
       {
         mealvendors = mealvendors.Where(m => m.Code.Contains(mealVendorParams.Code, StringComparison.OrdinalIgnoreCase));
       }
+
       if (!string.IsNullOrEmpty(mealVendorParams.Name))
       {
         mealvendors = mealvendors.Where(m => m.Name.Contains(mealVendorParams.Name, StringComparison.OrdinalIgnoreCase));
+      }
+
+      if (!string.IsNullOrEmpty(mealVendorParams.ContactName))
+      {
+        mealvendors = mealvendors.Where(m => m.ContactName.Contains(mealVendorParams.ContactName, StringComparison.OrdinalIgnoreCase));
+      }
+
+      if (!string.IsNullOrEmpty(mealVendorParams.ContactPhone))
+      {
+        mealvendors = mealvendors.Where(m => m.ContactPhone.Contains(mealVendorParams.ContactPhone, StringComparison.OrdinalIgnoreCase));
+      }
+
+      if (!string.IsNullOrEmpty(mealVendorParams.ContactEmail))
+      {
+        mealvendors = mealvendors.Where(m => m.ContactEmail.Contains(mealVendorParams.ContactEmail, StringComparison.OrdinalIgnoreCase));
       }
 
       //   sort
@@ -61,6 +77,15 @@ namespace BusMeal.API.Persistence.Repository
               break;
             case "name":
               mealvendors = mealvendors.OrderByDescending(m => m.Name);
+              break;
+            case "contactname":
+              mealvendors = mealvendors.OrderByDescending(m => m.ContactName);
+              break;
+            case "contactphone":
+              mealvendors = mealvendors.OrderByDescending(m => m.ContactPhone);
+              break;
+            case "contactemail":
+              mealvendors = mealvendors.OrderByDescending(m => m.ContactEmail);
               break;
             default:
               mealvendors = mealvendors.OrderByDescending(m => m.Code);
@@ -84,6 +109,15 @@ namespace BusMeal.API.Persistence.Repository
               break;
             case "name":
               mealvendors = mealvendors.OrderBy(m => m.Name);
+              break;
+            case "contactname":
+              mealvendors = mealvendors.OrderBy(m => m.ContactName);
+              break;
+            case "contactphone":
+              mealvendors = mealvendors.OrderBy(m => m.ContactPhone);
+              break;
+            case "contactemail":
+              mealvendors = mealvendors.OrderBy(m => m.ContactEmail);
               break;
             default:
               mealvendors = mealvendors.OrderBy(m => m.Code);
