@@ -35,8 +35,9 @@ namespace BusMeal.API.Helpers.Mapping
       CreateMap<SaveMealTypeResource, MealType>();
 
       CreateMap<SaveMealVendorResource, MealVendor>();
-      CreateMap<SaveCounterResource,Counter>();
+      CreateMap<SaveCounterResource, Counter>();
       CreateMap<SaveAuditResource, Audit>();
+      CreateMap<SaveMealOrderResource, MealOrderEntryHeader>();
     }
   }
 }
