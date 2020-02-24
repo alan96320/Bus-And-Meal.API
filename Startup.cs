@@ -66,6 +66,7 @@ namespace BusMeal.API
       services.AddScoped<ICounterRepository, CounterRepository>();
       services.AddScoped<IAuditRepository, AuditRepository>();
       services.AddScoped<IMealOrderRepository, MealOrderRepository>();
+      services.AddScoped<IMealVerificationRepository, MealVerificationRepository>();
 
 
       services.AddAutoMapper(typeof(Startup));

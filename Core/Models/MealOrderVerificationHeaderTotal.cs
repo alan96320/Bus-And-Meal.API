@@ -17,6 +17,5 @@ namespace BusMeal.API.Core.Models
     public int AdjusmentQty { get; set; }
     public int SwipeQty { get; set; }
     public int LogBookQty { get; set; }
-
   }
 }

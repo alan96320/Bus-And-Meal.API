@@ -42,7 +42,7 @@ namespace BusMeal.API.Persistence.Repository
       // auth by user id
       if (DateTime.Compare(mealOrderParams.OrderEntryDate, new DateTime(01, 1, 1)) != 0)
       {
-        mealOrders = mealOrders.Where(m => m.OrderEntryDate.ToString("yyyy/MM/dd") == mealOrderParams.OrderEntryDate.ToString("yyyy/MM/dd"));
+        mealOrders = mealOrders.Where(m => m.OrderEntryDate.Date == mealOrderParams.OrderEntryDate.Date);
       }
 
       if (mealOrderParams.DepartmentId > 0)
