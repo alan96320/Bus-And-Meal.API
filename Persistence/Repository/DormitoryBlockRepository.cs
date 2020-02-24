@@ -10,95 +10,101 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BusMeal.API.Persistence.Repository
 {
-    public class DormitoryBlockRepository : IDormitoryBlockRepository
+  public class DormitoryBlockRepository : IDormitoryBlockRepository
+  {
+    private readonly DataContext context;
+    public DormitoryBlockRepository(DataContext context)
     {
-        private readonly DataContext context;
-        public DormitoryBlockRepository(DataContext context)
-        {
-            this.context = context;
-        }
-
-        public void Add(DormitoryBlock dormitoryBlock)
-        {
-            context.DormitoryBlock.Add(dormitoryBlock);
-        }
-
-        public async Task<IEnumerable<DormitoryBlock>> GetAll()
-        {
-            var dormitoryBlock = await context.DormitoryBlock.ToListAsync();
-            return dormitoryBlock;
-        }
-
-        public async Task<DormitoryBlock> GetOne(int id)
-        {
-            return await context.DormitoryBlock.FindAsync(id);
-        }
-        
-        public void Remove(DormitoryBlock dormitoryBlock)
-        {
-            context.Remove(dormitoryBlock);
-        }
-
-        public async Task<PagedList<DormitoryBlock>> GetPagedDormitoryBlock(DormitoryBlockParams dormitoryBlockParams)
-        {
-            var dormitoryBlock = context.DormitoryBlock.AsQueryable();
-
-            // perlu user id untuk membatasi 
-            if (!string.IsNullOrEmpty(dormitoryBlockParams.Code))
-            {
-                dormitoryBlock = dormitoryBlock.Where(e =>
-                e.Code.Contains(dormitoryBlockParams.Code, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (!string.IsNullOrEmpty(dormitoryBlockParams.Name))
-            {
-                dormitoryBlock = dormitoryBlock.Where(e =>
-                e.Name.Contains(dormitoryBlockParams.Name, StringComparison.OrdinalIgnoreCase));
-            }
-
-            //name,sort
-            if (dormitoryBlockParams.isDescending)
-            {
-                if (!string.IsNullOrEmpty(dormitoryBlockParams.OrderBy))
-                {
-                    switch (dormitoryBlockParams.OrderBy.ToLower())
-                    {
-                        case "Code":
-                        dormitoryBlock = dormitoryBlock.OrderByDescending(e => e.Code);
-                        break;
-                        case "Name":
-                        dormitoryBlock = dormitoryBlock.OrderByDescending(e => e.Name);
-                        break;
-                        default:
-                        dormitoryBlock = dormitoryBlock.OrderByDescending(e => e.Code);
-                        break;
-                    }
-                }else{
-                    dormitoryBlock = dormitoryBlock.OrderByDescending(e => e.Code);
-                }
-            }else{
-                if (!string.IsNullOrEmpty(dormitoryBlockParams.OrderBy))
-                {
-                    switch (dormitoryBlockParams.OrderBy.ToLower())
-                    {
-                        case "Code":
-                        dormitoryBlock = dormitoryBlock.OrderBy(e => e.Code);
-                        break;
-                        case "Name":
-                        dormitoryBlock = dormitoryBlock.OrderBy(e => e.Name);
-                        break;
-                        default:
-                        dormitoryBlock = dormitoryBlock.OrderBy(e => e.Code);
-                        break;
-                    }
-                }else{
-                    dormitoryBlock = dormitoryBlock.OrderBy(e => e.Code);
-                }
-            }
-            return await PagedList<DormitoryBlock>
-                .CreateAsync(dormitoryBlock, dormitoryBlockParams.PageNumber, dormitoryBlockParams.PageSize);
-        }
-
-        
+      this.context = context;
     }
+
+    public void Add(DormitoryBlock dormitoryBlock)
+    {
+      context.DormitoryBlock.Add(dormitoryBlock);
+    }
+
+    public async Task<IEnumerable<DormitoryBlock>> GetAll()
+    {
+      var dormitoryBlock = await context.DormitoryBlock.ToListAsync();
+      return dormitoryBlock;
+    }
+
+    public async Task<DormitoryBlock> GetOne(int id)
+    {
+      return await context.DormitoryBlock.FindAsync(id);
+    }
+
+    public void Remove(DormitoryBlock dormitoryBlock)
+    {
+      context.Remove(dormitoryBlock);
+    }
+
+    public async Task<PagedList<DormitoryBlock>> GetPagedDormitoryBlock(DormitoryBlockParams dormitoryBlockParams)
+    {
+      var dormitoryBlock = context.DormitoryBlock.AsQueryable();
+
+      // perlu user id untuk membatasi 
+      if (!string.IsNullOrEmpty(dormitoryBlockParams.Code))
+      {
+        dormitoryBlock = dormitoryBlock.Where(e =>
+        e.Code.Contains(dormitoryBlockParams.Code, StringComparison.OrdinalIgnoreCase));
+      }
+
+      if (!string.IsNullOrEmpty(dormitoryBlockParams.Name))
+      {
+        dormitoryBlock = dormitoryBlock.Where(e =>
+        e.Name.Contains(dormitoryBlockParams.Name, StringComparison.OrdinalIgnoreCase));
+      }
+
+      //name,sort
+      if (dormitoryBlockParams.isDescending)
+      {
+        if (!string.IsNullOrEmpty(dormitoryBlockParams.OrderBy))
+        {
+          switch (dormitoryBlockParams.OrderBy.ToLower())
+          {
+            case "code":
+              dormitoryBlock = dormitoryBlock.OrderByDescending(e => e.Code);
+              break;
+            case "name":
+              dormitoryBlock = dormitoryBlock.OrderByDescending(e => e.Name);
+              break;
+            default:
+              dormitoryBlock = dormitoryBlock.OrderByDescending(e => e.Code);
+              break;
+          }
+        }
+        else
+        {
+          dormitoryBlock = dormitoryBlock.OrderByDescending(e => e.Code);
+        }
+      }
+      else
+      {
+        if (!string.IsNullOrEmpty(dormitoryBlockParams.OrderBy))
+        {
+          switch (dormitoryBlockParams.OrderBy.ToLower())
+          {
+            case "code":
+              dormitoryBlock = dormitoryBlock.OrderBy(e => e.Code);
+              break;
+            case "name":
+              dormitoryBlock = dormitoryBlock.OrderBy(e => e.Name);
+              break;
+            default:
+              dormitoryBlock = dormitoryBlock.OrderBy(e => e.Code);
+              break;
+          }
+        }
+        else
+        {
+          dormitoryBlock = dormitoryBlock.OrderBy(e => e.Code);
+        }
+      }
+      return await PagedList<DormitoryBlock>
+          .CreateAsync(dormitoryBlock, dormitoryBlockParams.PageNumber, dormitoryBlockParams.PageSize);
+    }
+
+
+  }
 }

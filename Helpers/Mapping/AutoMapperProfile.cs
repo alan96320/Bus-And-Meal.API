@@ -26,6 +26,8 @@ namespace BusMeal.API.Helpers.Mapping
       CreateMap<MealOrderDetail, ViewMealOrderDetailResource>();
       CreateMap<MealOrderVerificationHeader, ViewMealVerificationResource>();
       CreateMap<MealOrderVerificationHeaderTotal, ViewMealVerificationTotalResource>();
+      CreateMap<BusOrderEntryHeader, ViewBusOrderResource>();
+      CreateMap<BusOrderEntryDetail, ViewBusOrderDetailResource>();
 
       CreateMap<SaveDepartmentResource, Department>();
       CreateMap<SaveEmployeeResource, Employee>();
@@ -44,6 +46,8 @@ namespace BusMeal.API.Helpers.Mapping
       CreateMap<SaveMealOrderDetailResource, MealOrderDetail>();
       CreateMap<SaveMealVerificationResource, MealOrderVerificationHeader>();
       CreateMap<SaveMealVerificationTotalResource, MealOrderVerificationHeaderTotal>();
+      CreateMap<SaveBusOrderResource, BusOrderEntryHeader>();
+      CreateMap<SaveBusOrderDetailResource, BusOrderEntryDetail>();
     }
   }
 }

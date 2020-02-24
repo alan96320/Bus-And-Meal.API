@@ -36,7 +36,7 @@ namespace BusMeal.API.Persistence.Repository
       return await context.MealOrderVerificationHeader.Include(m => m.MealVerificationTotal).FirstOrDefaultAsync(m => m.Id == id);
     }
 
-    public async Task<PagedList<MealOrderVerificationHeader>> GetPagedMealOrderEntryHeader(MealVerificationParams mealVerificationParams)
+    public async Task<PagedList<MealOrderVerificationHeader>> GetPagedMealVerification(MealVerificationParams mealVerificationParams)
     {
       var mealVerifications = context.MealOrderVerificationHeader.Include(m => m.MealVerificationTotal).AsQueryable();
 

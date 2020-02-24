@@ -13,6 +13,6 @@ namespace BusMeal.API.Core.IRepository
     void Remove(MealOrderVerificationHeader mealOrderVerificationHeader);
 
     Task<IEnumerable<MealOrderVerificationHeader>> GetAll();
-    Task<PagedList<MealOrderVerificationHeader>> GetPagedMealOrderEntryHeader(MealVerificationParams mealVerificationParams);
+    Task<PagedList<MealOrderVerificationHeader>> GetPagedMealVerification(MealVerificationParams mealVerificationParams);
   }
 }

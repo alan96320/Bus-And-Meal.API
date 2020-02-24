@@ -49,9 +49,9 @@ namespace BusMeal.API.Controllers
     }
 
     [HttpGet("paged")]
-    public async Task<IActionResult> GetPagedMealOrderEntryHeader([FromQuery]MealVerificationParams mealVerificationParams)
+    public async Task<IActionResult> GetPagedVerification([FromQuery]MealVerificationParams mealVerificationParams)
     {
-      var mealVerifications = await mealVerificationRepository.GetPagedMealOrderEntryHeader(mealVerificationParams);
+      var mealVerifications = await mealVerificationRepository.GetPagedMealVerification(mealVerificationParams);
 
       var result = mapper.Map<IEnumerable<ViewMealVerificationResource>>(mealVerifications);
 
