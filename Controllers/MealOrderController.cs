@@ -61,7 +61,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveMealOrderResource mealOrderResource)
     {

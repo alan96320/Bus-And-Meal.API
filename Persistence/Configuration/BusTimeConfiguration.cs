@@ -10,6 +10,9 @@ namespace BusMeal.API.Persistence.Configuration
     {
       builder.Property(b => b.Code)
       .HasColumnType("varchar(5)");
+
+      builder.Property(b => b.Time)
+      .HasColumnType("varchar(10)");
     }
 
   }
