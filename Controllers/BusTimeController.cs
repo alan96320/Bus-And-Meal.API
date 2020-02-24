@@ -11,117 +11,115 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BusMeal.API.Controllers
 {
-    [Route("api/[controller]")]
-    public class BusTimeController : Controller
+  [Route("api/[controller]")]
+  public class BusTimeController : Controller
+  {
+    private readonly IMapper mapper;
+    private readonly IBusTimeRepository busTimeRepository;
+    private readonly IUnitOfWork unitOfWork;
+    public BusTimeController(IMapper mapper, IBusTimeRepository busTimeRepository, IUnitOfWork unitOfWork)
     {
-        private readonly IMapper mapper;
-        private readonly IBusTimeRepository busTimeRepository;
-        private readonly IUnitOfWork unitOfWork;
-        public BusTimeController(IMapper mapper, IBusTimeRepository busTimeRepository, IUnitOfWork unitOfWork)
-        {
-            this.mapper = mapper;
-            this.busTimeRepository = busTimeRepository;
-            this.unitOfWork = unitOfWork;
-        }
+      this.mapper = mapper;
+      this.busTimeRepository = busTimeRepository;
+      this.unitOfWork = unitOfWork;
+    }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var busTime = await busTimeRepository.GetAll();
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+      var busTime = await busTimeRepository.GetAll();
 
-            var result = mapper.Map<IEnumerable<ViewBusTimeResource>>(busTime);
+      var result = mapper.Map<IEnumerable<ViewBusTimeResource>>(busTime);
 
-            return Ok(result);
-        }
+      return Ok(result);
+    }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOne(int id)
-        {
-            var busTime = await busTimeRepository.GetOne(id);
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetOne(int id)
+    {
+      var busTime = await busTimeRepository.GetOne(id);
 
-            if (busTime == null)
-            return NotFound();
+      if (busTime == null)
+        return NotFound();
 
-            var result = mapper.Map<BusTime, ViewBusTimeResource>(busTime);
+      var result = mapper.Map<BusTime, ViewBusTimeResource>(busTime);
 
-            return Ok(result);
-        }
+      return Ok(result);
+    }
 
-        [HttpGet("paged")]
-        public async Task<IActionResult> GetPagedBusTime([FromQuery]BusTimeParams busTimeParams)
-        {
-            var busTime = await busTimeRepository.GetPagedBusTimes(busTimeParams);
+    [HttpGet("paged")]
+    public async Task<IActionResult> GetPagedBusTime([FromQuery]BusTimeParams busTimeParams)
+    {
+      var busTime = await busTimeRepository.GetPagedBusTimes(busTimeParams);
 
-            var result = mapper.Map<IEnumerable<ViewBusTimeResource>>(busTime);
+      var result = mapper.Map<IEnumerable<ViewBusTimeResource>>(busTime);
 
-            Response.AddPagination(busTime.CurrentPage, busTime.PageSize, busTime.TotalCount, busTime.TotalPages);
+      Response.AddPagination(busTime.CurrentPage, busTime.PageSize, busTime.TotalCount, busTime.TotalPages);
 
-            return Ok(result);
-        }
+      return Ok(result);
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody]SaveBusTimeResource busTimeResource)
-        {
-            if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody]SaveBusTimeResource busTimeResource)
+    {
+      if (!ModelState.IsValid)
+        return BadRequest(ModelState);
 
-            var busTime = mapper.Map<SaveBusTimeResource, BusTime>(busTimeResource);
+      var busTime = mapper.Map<SaveBusTimeResource, BusTime>(busTimeResource);
 
-            busTimeRepository.Add(busTime);
-            if (await unitOfWork.CompleteAsync() == false)
-            {
-                throw new Exception(message: $"Create new busTime fail on save");
-            }
+      busTimeRepository.Add(busTime);
+      if (await unitOfWork.CompleteAsync() == false)
+      {
+        throw new Exception(message: $"Create new bus time fail on save");
+      }
 
-            busTime = await busTimeRepository.GetOne(busTime.Id);
-            var result = mapper.Map<BusTime, ViewBusTimeResource>(busTime);
-            return Ok(result);
-
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody]SaveBusTimeResource busTimeResource)
-        {
-            if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-            var busTime = await busTimeRepository.GetOne(id);
-
-            if (busTime == null)
-            return NotFound();
-
-            busTime = mapper.Map(busTimeResource, busTime);
-
-            if (await unitOfWork.CompleteAsync() == false)
-            {
-                throw new Exception(message: $"Updating busTime {id} failed on save");
-            }
-
-            busTime = await busTimeRepository.GetOne(busTime.Id);
-
-            var result = mapper.Map<BusTime, ViewBusTimeResource>(busTime);
-
-            return Ok(result);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> RemovebusTime(int id)
-        {
-            var busTime = await busTimeRepository.GetOne(id);
-
-            if (busTime == null)
-                return NotFound();
-
-            busTimeRepository.Remove(busTime);
-
-            if (await unitOfWork.CompleteAsync() == false)
-            {
-                throw new Exception(message: $"Deleting busTime {id} failed");
-            }
-
-            return Ok($"{id}");
-        }
-
+      busTime = await busTimeRepository.GetOne(busTime.Id);
+      var result = mapper.Map<BusTime, ViewBusTimeResource>(busTime);
+      return Ok(result);
 
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody]SaveBusTimeResource busTimeResource)
+    {
+      if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
+      var busTime = await busTimeRepository.GetOne(id);
+
+      if (busTime == null)
+        return NotFound();
+
+      busTime = mapper.Map(busTimeResource, busTime);
+
+      if (await unitOfWork.CompleteAsync() == false)
+      {
+        throw new Exception(message: $"Updating bus time {id} failed on save");
+      }
+
+      busTime = await busTimeRepository.GetOne(busTime.Id);
+
+      var result = mapper.Map<BusTime, ViewBusTimeResource>(busTime);
+
+      return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemovebusTime(int id)
+    {
+      var busTime = await busTimeRepository.GetOne(id);
+
+      if (busTime == null)
+        return NotFound();
+
+      busTimeRepository.Remove(busTime);
+
+      if (await unitOfWork.CompleteAsync() == false)
+      {
+        throw new Exception(message: $"Deleting bus time {id} failed");
+      }
+
+      return Ok($"{id}");
+    }
+  }
 }

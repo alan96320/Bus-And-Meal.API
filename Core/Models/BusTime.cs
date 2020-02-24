@@ -10,7 +10,7 @@ namespace BusMeal.API.Core.Models
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public string Code { get; set; }
-    public DateTime Time { get; set; }
+    public string Time { get; set; }
     public int DirectionEnum { get; set; }
   }
 }
