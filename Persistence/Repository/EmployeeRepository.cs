@@ -19,7 +19,9 @@ namespace BusMeal.API.Persistence.Repository
     }
     public async Task<Employee> GetOne(int id)
     {
-      return await context.Employee.FindAsync(id);
+      return await context.Employee
+            .Include(e => e.Department)
+            .FirstOrDefaultAsync(e => e.Id == id);
     }
     public void Add(Employee employee)
     {
@@ -37,14 +39,18 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<IEnumerable<Employee>> GetAll()
     {
-      var employees = await context.Employee.ToListAsync();
+      var employees = await context.Employee
+                      .Include( e => e.Department)
+                      .ToListAsync();
 
       return employees;
     }
 
     public async Task<PagedList<Employee>> GetPagedEmployees(EmployeeParams employeeParams)
     {
-      var employees = context.Employee.AsQueryable();
+      var employees = context.Employee
+                        .Include( e => e.Department)
+                        .AsQueryable();
 
       // perlu user id untuk membatasi 
       if (!string.IsNullOrEmpty(employeeParams.HrCoreNo))
@@ -65,6 +71,19 @@ namespace BusMeal.API.Persistence.Repository
           e.Lastname.Contains(employeeParams.Lastname, StringComparison.OrdinalIgnoreCase));
       }
 
+      if (!string.IsNullOrEmpty(employeeParams.DepartmentCode))
+      {
+        employees = employees.Where(e =>
+          e.Department.Code.Contains(employeeParams.DepartmentCode, StringComparison.OrdinalIgnoreCase));
+      }
+
+      if (!string.IsNullOrEmpty(employeeParams.DepartmentName))
+      {
+        employees = employees.Where(e =>
+          e.Department.Name.Contains(employeeParams.DepartmentName, StringComparison.OrdinalIgnoreCase));
+      }
+
+
       //name,sort
       if (employeeParams.isDescending)
       {
@@ -80,6 +99,12 @@ namespace BusMeal.API.Persistence.Repository
               break;
             case "lastname":
               employees = employees.OrderByDescending(e => e.Lastname);
+              break;
+            case "departmentcode":
+              employees = employees.OrderByDescending(e => e.Department.Code);
+              break;
+            case "departmentname":            
+              employees = employees.OrderByDescending(e => e.Department.Name);
               break;
             default:
               employees = employees.OrderByDescending(e => e.HrCoreNo);
@@ -107,9 +132,16 @@ namespace BusMeal.API.Persistence.Repository
             case "lastname":
               employees = employees.OrderBy(e => e.Lastname);
               break;
+            case "departmentcode":
+              employees = employees.OrderByDescending(e => e.Department.Code);
+              break;
+            case "departmentname":            
+              employees = employees.OrderByDescending(e => e.Department.Name);
+              break;
             default:
               employees = employees.OrderBy(e => e.HrCoreNo);
               break;
+              
           }
         }
         else

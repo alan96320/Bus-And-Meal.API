@@ -7,6 +7,6 @@ namespace BusMeal.API.Controllers.Resources
     public string Firstname { get; set; }
     public string Lastname { get; set; }
     public string Fullname { get; set; }
-    public int DepartmentId { get; set; }
+    public ViewDepartmentResource Department {get;set;}
   }
 }
