@@ -8,10 +8,10 @@ namespace BusMeal.API.Core.IRepository
 {
   public interface IMealtypeRepository
   {
-    // Task<MealType> GetOne(int id);
-    // void Add(MealType mealType);
-    // void Remove(MealType mealType);        
+    Task<MealType> GetOne(int id);
+    void Add(MealType mealType);
+    void Remove(MealType mealType);
     Task<IEnumerable<MealType>> GetAll();
-    // Task<PagedList<MealType>> GetPagedmealType(MealTypeParams mealTypeParams);
+    Task<PagedList<MealType>> GetPagedmealType(MealTypeParams mealTypeParams);
   }
 }
