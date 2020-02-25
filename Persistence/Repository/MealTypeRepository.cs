@@ -25,7 +25,7 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<IEnumerable<MealType>> GetAll()
     {
-      var mealType = await context.MealType.Include(m => m.Vendor).ToListAsync();
+      var mealType = await context.MealType.Include(m => m.MealVendor).ToListAsync();
       return mealType;
     }
 

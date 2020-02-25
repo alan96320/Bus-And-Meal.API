@@ -14,9 +14,9 @@ namespace BusMeal.API.Persistence.Configuration
       builder.Property(m => m.Name)
       .HasColumnType("varchar(100)");
 
-      builder.HasOne<MealVendor>(m => m.Vendor)
+      builder.HasOne<MealVendor>(m => m.MealVendor)
       .WithOne(v => v.MealType)
-      .HasForeignKey<MealType>(m => m.VendorId);
+      .HasForeignKey<MealType>(m => m.MealVendorId);
     }
   }
 }

@@ -28,9 +28,9 @@ namespace BusMeal.API.Controllers
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-      var mealType = await mealtypeRepository.GetAll();
+      var mealTypes = await mealtypeRepository.GetAll();
 
-      var result = mapper.Map<IEnumerable<MealType>>(mealType);
+      var result = mapper.Map<IEnumerable<ViewMealTypeResource>>(mealTypes);
 
       return Ok(result);
     }
