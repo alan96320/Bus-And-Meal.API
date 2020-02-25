@@ -12,5 +12,7 @@ namespace BusMeal.API.Core.Models
     public int RightsId { get; set; }
     public User User { get; set; }
     public int UserId { get; set; }
+    public bool Read { get; set; }
+    public bool Write { get; set; }
   }
 }
