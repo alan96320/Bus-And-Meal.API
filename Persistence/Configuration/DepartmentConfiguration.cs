@@ -17,6 +17,12 @@ namespace BusMeal.API.Persistence.Configuration
       .HasColumnType("varchar(50)")
       .IsRequired()
       .IsUnicode();
+
+      builder
+        .HasMany<Employee>(d => d.Employees)
+        .WithOne(e => e.Department)
+        .HasForeignKey(e => e.DepartmentId)
+        .OnDelete(DeleteBehavior.Restrict);
     }
   }
 }
