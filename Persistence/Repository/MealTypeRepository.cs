@@ -23,6 +23,11 @@ namespace BusMeal.API.Persistence.Repository
       context.MealType.Add(mealType);
     }
 
+    public async Task<MealType> isVendorDuplicate(int vendorId)
+    {
+      return await context.MealType.Where(m => m.MealVendorId == vendorId).FirstOrDefaultAsync();
+    }
+
     public async Task<IEnumerable<MealType>> GetAll()
     {
       var mealType = await context.MealType.Include(m => m.MealVendor).ToListAsync();
@@ -32,7 +37,7 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<MealType> GetOne(int id)
     {
-      return await context.MealType.FindAsync(id);
+      return await context.MealType.Include(m => m.MealVendor).FirstOrDefaultAsync(m => m.Id == id);
     }
 
     public void Remove(MealType mealType)
@@ -42,24 +47,24 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<PagedList<MealType>> GetPagedmealType(MealTypeParams mealTypeParams)
     {
-      var mealType = context.MealType.Include(m => m.MealVendor).AsQueryable();
+      var mealTypes = context.MealType.Include(m => m.MealVendor).AsQueryable();
 
       // perlu user id untuk membatasi 
       if (!string.IsNullOrEmpty(mealTypeParams.Code))
       {
-        mealType = mealType.Where(e =>
-        e.Code.Contains(mealTypeParams.Code, StringComparison.OrdinalIgnoreCase));
+        mealTypes = mealTypes.Where(m =>
+        m.Code.Contains(mealTypeParams.Code, StringComparison.OrdinalIgnoreCase));
       }
 
       if (!string.IsNullOrEmpty(mealTypeParams.Name))
       {
-        mealType = mealType.Where(e =>
-        e.Name.Contains(mealTypeParams.Name, StringComparison.OrdinalIgnoreCase));
+        mealTypes = mealTypes.Where(m =>
+        m.Name.Contains(mealTypeParams.Name, StringComparison.OrdinalIgnoreCase));
       }
 
-      if (mealTypeParams.MealVendorId > 0)
+      if (!string.IsNullOrEmpty(mealTypeParams.vendorName))
       {
-        mealType = mealType.Where(u => u.MealVendorId == mealTypeParams.MealVendorId);
+        mealTypes = mealTypes.Where(m => m.MealVendor.Name.Contains(mealTypeParams.vendorName, StringComparison.OrdinalIgnoreCase));
       }
 
       //name,sort
@@ -70,22 +75,22 @@ namespace BusMeal.API.Persistence.Repository
           switch (mealTypeParams.OrderBy.ToLower())
           {
             case "code":
-              mealType = mealType.OrderByDescending(e => e.Code);
+              mealTypes = mealTypes.OrderByDescending(m => m.Code);
               break;
             case "name":
-              mealType = mealType.OrderByDescending(e => e.Name);
+              mealTypes = mealTypes.OrderByDescending(m => m.Name);
               break;
-            case "lastname":
-              mealType = mealType.OrderByDescending(e => e.MealVendorId);
+            case "vendorname":
+              mealTypes = mealTypes.OrderByDescending(m => m.MealVendor.Name);
               break;
             default:
-              mealType = mealType.OrderByDescending(e => e.Code);
+              mealTypes = mealTypes.OrderByDescending(m => m.Code);
               break;
           }
         }
         else
         {
-          mealType = mealType.OrderByDescending(e => e.Code);
+          mealTypes = mealTypes.OrderByDescending(m => m.Code);
         }
 
       }
@@ -96,29 +101,26 @@ namespace BusMeal.API.Persistence.Repository
           switch (mealTypeParams.OrderBy.ToLower())
           {
             case "code":
-              mealType = mealType.OrderBy(e => e.Code);
+              mealTypes = mealTypes.OrderBy(m => m.Code);
               break;
             case "name":
-              mealType = mealType.OrderBy(e => e.Name);
+              mealTypes = mealTypes.OrderBy(m => m.Name);
               break;
-            case "lastname":
-              mealType = mealType.OrderBy(e => e.MealVendorId);
+            case "vendorname":
+              mealTypes = mealTypes.OrderBy(m => m.MealVendor.Name);
               break;
             default:
-              mealType = mealType.OrderBy(e => e.Code);
+              mealTypes = mealTypes.OrderBy(m => m.Code);
               break;
           }
         }
         else
         {
-          mealType = mealType.OrderBy(e => e.Code);
+          mealTypes = mealTypes.OrderBy(m => m.Code);
         }
       }
-
-      var mealTypeToReturn = mealType.Include(m => m.MealVendor);
-
       return await PagedList<MealType>
-          .CreateAsync(mealTypeToReturn, mealTypeParams.PageNumber, mealTypeParams.PageSize);
+          .CreateAsync(mealTypes, mealTypeParams.PageNumber, mealTypeParams.PageSize);
     }
 
   }

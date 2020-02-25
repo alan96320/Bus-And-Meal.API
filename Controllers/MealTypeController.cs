@@ -51,11 +51,11 @@ namespace BusMeal.API.Controllers
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedmealType([FromQuery]MealTypeParams mealTypeParams)
     {
-      var mealType = await mealtypeRepository.GetPagedmealType(mealTypeParams);
+      var mealTypes = await mealtypeRepository.GetPagedmealType(mealTypeParams);
 
-      var result = mapper.Map<IEnumerable<ViewMealTypeResource>>(mealType);
+      var result = mapper.Map<IEnumerable<ViewMealTypeResource>>(mealTypes);
 
-      Response.AddPagination(mealType.CurrentPage, mealType.PageSize, mealType.TotalCount, mealType.TotalPages);
+      Response.AddPagination(mealTypes.CurrentPage, mealTypes.PageSize, mealTypes.TotalCount, mealTypes.TotalPages);
 
       return Ok(result);
     }
@@ -63,6 +63,12 @@ namespace BusMeal.API.Controllers
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveMealTypeResource mealTypeResource)
     {
+      var vendorExist = await mealtypeRepository.isVendorDuplicate(mealTypeResource.MealVendorId);
+      if (vendorExist != null)
+      {
+        ModelState.AddModelError("vendorId", "Vendor id can't be duplicated");
+      }
+
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
