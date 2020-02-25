@@ -6,7 +6,7 @@ namespace BusMeal.API.Controllers.Resources
   {
     public int Id { get; set; }
     public int RowGrid { get; set; }
-    public DateTime LockedBusOrder { get; set; }
-    public DateTime LockedMealOrder { get; set; }
+    public string LockedBusOrder { get; set; }
+    public string LockedMealOrder { get; set; }
   }
 }
