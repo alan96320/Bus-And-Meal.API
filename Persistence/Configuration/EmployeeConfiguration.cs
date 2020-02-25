@@ -19,6 +19,9 @@ namespace BusMeal.API.Persistence.Configuration
 
       builder.Property(e => e.Fullname)
       .HasColumnType("varchar(100)");
+
+      builder.Property(e => e.HIDNo)
+      .HasColumnType("varchar(30)");
     }
   }
 }

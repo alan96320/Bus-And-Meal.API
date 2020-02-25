@@ -5,5 +5,7 @@ namespace BusMeal.API.Controllers.Resources
     public int Id { get; set; }
     public int RightsId { get; set; }
     public int UserId { get; set; }
+    public bool Read { get; set; }
+    public bool Write { get; set; }
   }
 }

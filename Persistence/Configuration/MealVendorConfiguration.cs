@@ -22,6 +22,7 @@ namespace BusMeal.API.Persistence.Configuration
 
       builder.Property(m => m.ContactEmail)
             .HasColumnType("varchar(100)");
+
     }
   }
 }

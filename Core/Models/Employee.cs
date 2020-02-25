@@ -16,6 +16,7 @@ namespace BusMeal.API.Core.Models
     public string Lastname { get; set; }
 
     public string Fullname { get; set; }
+    public string HIDNo { get; set; }
 
     public Department Department { get; set; }
     public int? DepartmentId { get; set; }

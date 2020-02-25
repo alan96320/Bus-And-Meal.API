@@ -43,6 +43,11 @@ namespace BusMeal.API
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddMvc()
+      .AddJsonOptions(opt => {
+              opt.SerializerSettings.ReferenceLoopHandling = 
+                  Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+          })      
+
       .AddFluentValidation(
         fv => fv.RegisterValidatorsFromAssemblyContaining<DepartmentValidation>()
       )
