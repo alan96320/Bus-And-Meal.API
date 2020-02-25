@@ -13,6 +13,10 @@ namespace BusMeal.API.Persistence.Configuration
 
       builder.Property(m => m.Name)
       .HasColumnType("varchar(100)");
+
+      builder.HasOne<MealVendor>(m => m.Vendor)
+      .WithOne(v => v.MealType)
+      .HasForeignKey<MealType>(m => m.VendorId);
     }
   }
 }
