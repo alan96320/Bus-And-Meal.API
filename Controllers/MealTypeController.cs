@@ -63,6 +63,12 @@ namespace BusMeal.API.Controllers
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveMealTypeResource mealTypeResource)
     {
+      var vendorExist = await mealtypeRepository.isVendorDuplicate(mealTypeResource.MealVendorId);
+      if (vendorExist != null)
+      {
+        ModelState.AddModelError("vendorId", "Vendor id can't be duplicated");
+      }
+
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
