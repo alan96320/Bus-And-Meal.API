@@ -17,9 +17,9 @@ namespace BusMeal.API.Persistence.Configuration
       builder.Property(m => m.MealVendorId)
       .IsRequired(false);
 
-      // builder.HasOne(m => m.mealVendor)
-      // .WithOne(v => v.mealType)
-      // .HasForeignKey<MealType>(m => m.MealVendorId);
+      builder.HasOne(m => m.MealVendor)
+      .WithOne(v => v.MealType)
+      .HasForeignKey<MealType>(m => m.MealVendorId);
     }
   }
 }

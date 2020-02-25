@@ -12,7 +12,7 @@ namespace BusMeal.API.Core.Models
     public string Code { get; set; }
     public string Name { get; set; }
     public int? MealVendorId { get; set; }
-    public Collection<MealVendor> mealVendor { get; set; }
+    public MealVendor MealVendor { get; set; }
 
   }
 }
