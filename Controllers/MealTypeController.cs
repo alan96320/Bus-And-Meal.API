@@ -11,118 +11,118 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BusMeal.API.Controllers
 {
-    [Route("api/[controller]")]
-    public class MealTypeController : Controller
+  [Route("api/[controller]")]
+  public class MealTypeController : Controller
+  {
+    private readonly IMapper mapper;
+    private readonly IMealtypeRepository mealtypeRepository;
+    private readonly IUnitOfWork unitOfWork;
+    public MealTypeController(IMapper mapper, IMealtypeRepository mealtypeRepository, IUnitOfWork unitOfWork)
     {
-        private readonly IMapper mapper;
-        private readonly IMealtypeRepository mealtypeRepository;
-        private readonly IUnitOfWork unitOfWork;
-        public MealTypeController(IMapper mapper, IMealtypeRepository mealtypeRepository, IUnitOfWork unitOfWork)
-        {
-            this.mapper = mapper;
-            this.mealtypeRepository = mealtypeRepository;
-            this.unitOfWork = unitOfWork;
-        }
+      this.mapper = mapper;
+      this.mealtypeRepository = mealtypeRepository;
+      this.unitOfWork = unitOfWork;
+    }
 
-        
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-        var mealType = await mealtypeRepository.GetAll();
 
-        var result = mapper.Map<IEnumerable<ViewMealTypeResource>>(mealType);
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+      var mealType = await mealtypeRepository.GetAll();
 
-        return Ok(result);
-        }
+      var result = mapper.Map<IEnumerable<MealType>>(mealType);
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOne(int id)
-        {
-        var mealType = await mealtypeRepository.GetOne(id);
+      return Ok(result);
+    }
 
-        if (mealType == null)
-            return NotFound();
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetOne(int id)
+    {
+      var mealType = await mealtypeRepository.GetOne(id);
 
-        var result = mapper.Map<MealType, ViewMealTypeResource>(mealType);
+      if (mealType == null)
+        return NotFound();
 
-        return Ok(result);
-        }
+      var result = mapper.Map<MealType, ViewMealTypeResource>(mealType);
 
-        [HttpGet("paged")]
-        public async Task<IActionResult> GetPagedmealType([FromQuery]MealTypeParams mealTypeParams)
-        {
-        var mealType = await mealtypeRepository.GetPagedmealType(mealTypeParams);
+      return Ok(result);
+    }
 
-        var result = mapper.Map<IEnumerable<ViewMealTypeResource>>(mealType);
+    [HttpGet("paged")]
+    public async Task<IActionResult> GetPagedmealType([FromQuery]MealTypeParams mealTypeParams)
+    {
+      var mealType = await mealtypeRepository.GetPagedmealType(mealTypeParams);
 
-        Response.AddPagination(mealType.CurrentPage, mealType.PageSize, mealType.TotalCount, mealType.TotalPages);
+      var result = mapper.Map<IEnumerable<ViewMealTypeResource>>(mealType);
 
-        return Ok(result);
-        }
+      Response.AddPagination(mealType.CurrentPage, mealType.PageSize, mealType.TotalCount, mealType.TotalPages);
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody]SaveMealTypeResource mealTypeResource)
-        {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+      return Ok(result);
+    }
 
-        var mealType = mapper.Map<SaveMealTypeResource, MealType>(mealTypeResource);
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody]SaveMealTypeResource mealTypeResource)
+    {
+      if (!ModelState.IsValid)
+        return BadRequest(ModelState);
 
-        mealtypeRepository.Add(mealType);
-        if (await unitOfWork.CompleteAsync() == false)
-        {
-            throw new Exception(message: $"Create new mealType fail on save");
-        }
+      var mealType = mapper.Map<SaveMealTypeResource, MealType>(mealTypeResource);
 
-        mealType = await mealtypeRepository.GetOne(mealType.Id);
-        var result = mapper.Map<MealType, ViewMealTypeResource>(mealType);
-        return Ok(result);
+      mealtypeRepository.Add(mealType);
+      if (await unitOfWork.CompleteAsync() == false)
+      {
+        throw new Exception(message: $"Create new mealType fail on save");
+      }
 
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody]SaveMealTypeResource mealTypeResource)
-        {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var mealType = await mealtypeRepository.GetOne(id);
-
-        if (mealType == null)
-            return NotFound();
-
-        mealType = mapper.Map(mealTypeResource, mealType);
-
-        if (await unitOfWork.CompleteAsync() == false)
-        {
-            throw new Exception(message: $"Updating mealType {id} failed on save");
-        }
-
-        mealType = await mealtypeRepository.GetOne(mealType.Id);
-
-        var result = mapper.Map<MealType, ViewMealTypeResource>(mealType);
-
-        return Ok(result);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> RemovemealType(int id)
-        {
-        var mealType = await mealtypeRepository.GetOne(id);
-
-        if (mealType == null)
-            return NotFound();
-
-        mealtypeRepository.Remove(mealType);
-
-        if (await unitOfWork.CompleteAsync() == false)
-        {
-            throw new Exception(message: $"Deleting mealType {id} failed");
-        }
-
-        return Ok($"{id}");
-        }
-
+      mealType = await mealtypeRepository.GetOne(mealType.Id);
+      var result = mapper.Map<MealType, ViewMealTypeResource>(mealType);
+      return Ok(result);
 
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody]SaveMealTypeResource mealTypeResource)
+    {
+      if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
+      var mealType = await mealtypeRepository.GetOne(id);
+
+      if (mealType == null)
+        return NotFound();
+
+      mealType = mapper.Map(mealTypeResource, mealType);
+
+      if (await unitOfWork.CompleteAsync() == false)
+      {
+        throw new Exception(message: $"Updating mealType {id} failed on save");
+      }
+
+      mealType = await mealtypeRepository.GetOne(mealType.Id);
+
+      var result = mapper.Map<MealType, ViewMealTypeResource>(mealType);
+
+      return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemovemealType(int id)
+    {
+      var mealType = await mealtypeRepository.GetOne(id);
+
+      if (mealType == null)
+        return NotFound();
+
+      mealtypeRepository.Remove(mealType);
+
+      if (await unitOfWork.CompleteAsync() == false)
+      {
+        throw new Exception(message: $"Deleting mealType {id} failed");
+      }
+
+      return Ok($"{id}");
+    }
+
+
+  }
 }

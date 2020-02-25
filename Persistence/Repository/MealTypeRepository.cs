@@ -25,7 +25,8 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<IEnumerable<MealType>> GetAll()
     {
-      var mealType = await context.MealType.ToListAsync();
+      var mealType = await context.MealType.Include(m => m.MealVendor).ToListAsync();
+
       return mealType;
     }
 
@@ -41,7 +42,7 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<PagedList<MealType>> GetPagedmealType(MealTypeParams mealTypeParams)
     {
-      var mealType = context.MealType.AsQueryable();
+      var mealType = context.MealType.Include(m => m.MealVendor).AsQueryable();
 
       // perlu user id untuk membatasi 
       if (!string.IsNullOrEmpty(mealTypeParams.Code))
@@ -113,8 +114,11 @@ namespace BusMeal.API.Persistence.Repository
           mealType = mealType.OrderBy(e => e.Code);
         }
       }
+
+      var mealTypeToReturn = mealType.Include(m => m.MealVendor);
+
       return await PagedList<MealType>
-          .CreateAsync(mealType, mealTypeParams.PageNumber, mealTypeParams.PageSize);
+          .CreateAsync(mealTypeToReturn, mealTypeParams.PageNumber, mealTypeParams.PageSize);
     }
 
   }
