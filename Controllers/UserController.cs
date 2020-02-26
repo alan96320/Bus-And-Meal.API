@@ -21,7 +21,13 @@ namespace BusMeal.API.Controllers
     private readonly IUserModuleRightsRepository userModuleRightsRepository;
     private readonly IUnitOfWork unitOfWork;
 
-    public UserController(IMapper mapper, IUserRepository userRepository, IModuleRightsRepository moduleRightsRepository, IUserModuleRightsRepository userModuleRightsRepository, IUnitOfWork unitOfWork)
+    public UserController(
+      IMapper mapper,
+      IUserRepository userRepository,
+      IUnitOfWork unitOfWork,
+      IModuleRightsRepository moduleRightsRepository,
+      IUserModuleRightsRepository userModuleRightsRepository
+      )
     {
       this.mapper = mapper;
       this.userRepository = userRepository;

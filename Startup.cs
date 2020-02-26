@@ -27,6 +27,8 @@ using BusMeal.API.Persistence;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using BusMeal.API.Core.Validator;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace BusMeal.API
 {
@@ -42,11 +44,19 @@ namespace BusMeal.API
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddMvc()
-      .AddJsonOptions(opt => {
-              opt.SerializerSettings.ReferenceLoopHandling = 
-                  Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-          })      
+      services.AddMvc(options =>
+      {
+        // var policy = new AuthorizationPolicyBuilder()
+        //               .RequireAuthenticatedUser()
+        //               .Build();
+        // options.Filters.Add(new AuthorizeFilter(policy));
+
+      })
+      .AddJsonOptions(opt =>
+      {
+        opt.SerializerSettings.ReferenceLoopHandling =
+            Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+      })
 
       .AddFluentValidation(
         fv => fv.RegisterValidatorsFromAssemblyContaining<DepartmentValidation>()
@@ -137,6 +147,8 @@ namespace BusMeal.API
 
       //app.UseHttpsRedirection();
       app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+      // Use JWT authentication
+      app.UseAuthentication();
       app.UseMvc();
     }
   }

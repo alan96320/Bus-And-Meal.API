@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,10 @@ namespace BusMeal.API.Persistence.Repository
     }
     public async Task<User> GetOne(int id)
     {
-      return await context.User.FindAsync(id);
+      return await context.User
+              .Include(u => u.UserModuleRights)
+                .ThenInclude(u => u.ModuleRights)
+              .FirstOrDefaultAsync(u => u.Id == id);
     }
 
     public async Task<User> Login(string username, string password)
@@ -75,14 +79,20 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<IEnumerable<User>> GetAll()
     {
-      var users = await context.User.ToListAsync();
+      var users = await context.User
+                  .Include(u => u.UserModuleRights)
+                    .ThenInclude(u => u.ModuleRights)
+                  .ToListAsync();
 
       return users;
     }
 
     public async Task<PagedList<User>> GetPagedUsers(UserParams userParams)
     {
-      var users = context.User.AsQueryable();
+      var users = context.User
+                  .Include(u => u.UserModuleRights)
+                    .ThenInclude(u => u.ModuleRights)
+                  .AsQueryable();
 
       // filter
       if (!string.IsNullOrEmpty(userParams.FirstName))

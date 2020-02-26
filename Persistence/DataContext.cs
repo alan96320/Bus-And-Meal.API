@@ -46,6 +46,7 @@ namespace BusMeal.API.Persistence
       modelBuilder.ApplyConfiguration(new BusOrderVerificationHeaderConfiguration());
       modelBuilder.ApplyConfiguration(new BusOrderEntryHeaderConfiguration());
       modelBuilder.ApplyConfiguration(new AppConfigConfiguration());
+      modelBuilder.ApplyConfiguration(new UserModuleRightConfiguration());
     }
   }
 }
