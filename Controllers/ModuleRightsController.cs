@@ -7,12 +7,13 @@ using BusMeal.API.Core.IRepository;
 using BusMeal.API.Core.Models;
 using BusMeal.API.Helpers;
 using BusMeal.API.Helpers.Params;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusMeal.API.Controllers
 {
   [Route("api/[controller]")]
-  
+  [Authorize]
   public class ModuleRightsController : Controller
   {
     private readonly IMapper mapper;

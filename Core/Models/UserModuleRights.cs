@@ -9,7 +9,7 @@ namespace BusMeal.API.Core.Models
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public ModuleRights ModuleRights { get; set; }
-    public int RightsId { get; set; }
+    public int ModuleRightsId { get; set; }
     public User User { get; set; }
     public int UserId { get; set; }
     public bool Read { get; set; }

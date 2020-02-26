@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,5 +18,6 @@ namespace BusMeal.API.Core.Models
     public string GddbId { get; set; }
     public bool AdminStatus { get; set; }
     public int LockTransStatus { get; set; }
+    public ICollection<UserModuleRights> UserModuleRights { get; set; }
   }
 }
