@@ -1,5 +1,5 @@
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace BusMeal.API.Controllers.Resources
 {
@@ -10,6 +10,6 @@ namespace BusMeal.API.Controllers.Resources
     public int? DepartmentId { get; set; }
     public int? DormitoryBlockId { get; set; }
     public int? BusOrderVerificationHeaderId { get; set; }
-    public Collection<ViewBusOrderDetailResource> BusOrderDetail { get; set; }
+    public ICollection<ViewBusOrderDetailResource> BusOrderDetail { get; set; }
   }
 }

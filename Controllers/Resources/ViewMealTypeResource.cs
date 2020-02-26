@@ -1,5 +1,4 @@
-using System.Collections.ObjectModel;
-using BusMeal.API.Core.Models;
+using System.Collections.Generic;
 
 namespace BusMeal.API.Controllers.Resources
 {
@@ -8,6 +7,6 @@ namespace BusMeal.API.Controllers.Resources
     public int Id { get; set; }
     public string Code { get; set; }
     public string Name { get; set; }
-    public Collection<ViewMealVendorResource> mealVendor { get; set; }
+    public ICollection<ViewMealVendorResource> mealVendor { get; set; }
   }
 }

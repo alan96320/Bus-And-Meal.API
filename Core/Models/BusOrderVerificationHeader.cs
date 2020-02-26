@@ -1,5 +1,5 @@
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,6 +14,6 @@ namespace BusMeal.API.Core.Models
     public DateTime Orderdate { get; set; }
     public bool OrderStatus { get; set; }
 
-    public Collection<BusOrderVerificationHeaderTotal> BusOrderVerificationDetail { get; set; }
+    public ICollection<BusOrderVerificationHeaderTotal> BusOrderVerificationDetail { get; set; }
   }
 }

@@ -1,5 +1,5 @@
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace BusMeal.API.Controllers.Resources
 {
@@ -9,6 +9,6 @@ namespace BusMeal.API.Controllers.Resources
     public DateTime Orderdate { get; set; }
     public bool OrderStatus { get; set; }
 
-    public Collection<SaveBusVerificationDetailResource> BusOrderVerificationDetail { get; set; }
+    public ICollection<SaveBusVerificationDetailResource> BusOrderVerificationDetail { get; set; }
   }
 }
