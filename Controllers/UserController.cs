@@ -17,12 +17,16 @@ namespace BusMeal.API.Controllers
   {
     private readonly IMapper mapper;
     private readonly IUserRepository userRepository;
+    private IModuleRightsRepository moduleRightsRepository;
+    private readonly IUserModuleRightsRepository userModuleRightsRepository;
     private readonly IUnitOfWork unitOfWork;
 
-    public UserController(IMapper mapper, IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public UserController(IMapper mapper, IUserRepository userRepository, IModuleRightsRepository moduleRightsRepository, IUserModuleRightsRepository userModuleRightsRepository, IUnitOfWork unitOfWork)
     {
       this.mapper = mapper;
       this.userRepository = userRepository;
+      this.moduleRightsRepository = moduleRightsRepository;
+      this.userModuleRightsRepository = userModuleRightsRepository;
       this.unitOfWork = unitOfWork;
     }
 
@@ -69,7 +73,25 @@ namespace BusMeal.API.Controllers
 
       var user = mapper.Map<Core.Models.User>(userResource);
 
+      // Add user
       userRepository.Add(user, userResource.Password);
+
+      // Copy all right to module right
+      var rightLists = await moduleRightsRepository.GetAll();
+      foreach (ModuleRights list in rightLists)
+      {
+        var userModuleRights = new UserModuleRights
+        {
+          ModuleRightsId = list.Id,
+          UserId = user.Id,
+          Read = false,
+          Write = false
+        };
+
+        var saveUserModule = mapper.Map<UserModuleRights>(userModuleRights);
+
+        userModuleRightsRepository.Add(saveUserModule);
+      }
 
       if (await unitOfWork.CompleteAsync() == false)
       {

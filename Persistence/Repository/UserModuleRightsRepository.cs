@@ -51,7 +51,7 @@ namespace BusMeal.API.Persistence.Repository
 
       if (userModuleRightsParams.RightsId > 0)
       {
-        usermodulerights = usermodulerights.Where(u => u.RightsId == userModuleRightsParams.RightsId);
+        usermodulerights = usermodulerights.Where(u => u.ModuleRightsId == userModuleRightsParams.RightsId);
       }
 
       // sort
@@ -65,7 +65,7 @@ namespace BusMeal.API.Persistence.Repository
               usermodulerights = usermodulerights.OrderByDescending(u => u.UserId);
               break;
             case "rightsid":
-              usermodulerights = usermodulerights.OrderByDescending(u => u.RightsId);
+              usermodulerights = usermodulerights.OrderByDescending(u => u.ModuleRightsId);
               break;
             default:
               usermodulerights = usermodulerights.OrderByDescending(u => u.UserId);
@@ -87,7 +87,7 @@ namespace BusMeal.API.Persistence.Repository
               usermodulerights = usermodulerights.OrderBy(u => u.UserId);
               break;
             case "rightsid":
-              usermodulerights = usermodulerights.OrderBy(u => u.RightsId);
+              usermodulerights = usermodulerights.OrderBy(u => u.ModuleRightsId);
               break;
             default:
               usermodulerights = usermodulerights.OrderBy(u => u.UserId);
