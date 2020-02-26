@@ -45,19 +45,17 @@ namespace BusMeal.API.Persistence.Repository
       // perlu user id untuk membatasi 
       if (!string.IsNullOrEmpty(busTimeParams.Code))
       {
-        busTime = busTime.Where(e =>
-        e.Code.Contains(busTimeParams.Code, StringComparison.OrdinalIgnoreCase));
+        busTime = busTime.Where(b => b.Code.Contains(busTimeParams.Code, StringComparison.OrdinalIgnoreCase));
       }
 
       if (!string.IsNullOrEmpty(busTimeParams.Time))
       {
-        busTime = busTime.Where(e =>
-        e.Time.Contains(busTimeParams.Time, StringComparison.OrdinalIgnoreCase));
+        busTime = busTime.Where(b => b.Time.Contains(busTimeParams.Time, StringComparison.OrdinalIgnoreCase));
       }
 
       if (busTimeParams.DirectionEnum > 0)
       {
-        busTime = busTime.Where(u => u.DirectionEnum == busTimeParams.DirectionEnum);
+        busTime = busTime.Where(b => b.DirectionEnum == busTimeParams.DirectionEnum);
       }
 
       //name,sort
@@ -68,22 +66,22 @@ namespace BusMeal.API.Persistence.Repository
           switch (busTimeParams.OrderBy.ToLower())
           {
             case "code":
-              busTime = busTime.OrderByDescending(e => e.Code);
+              busTime = busTime.OrderByDescending(b => b.Code);
               break;
             case "time":
-              busTime = busTime.OrderByDescending(e => e.Time);
+              busTime = busTime.OrderByDescending(b => b.Time);
               break;
             case "directionenum":
-              busTime = busTime.OrderByDescending(e => e.DirectionEnum);
+              busTime = busTime.OrderByDescending(b => b.DirectionEnum);
               break;
             default:
-              busTime = busTime.OrderByDescending(e => e.Code);
+              busTime = busTime.OrderByDescending(b => b.Code);
               break;
           }
         }
         else
         {
-          busTime = busTime.OrderByDescending(e => e.Code);
+          busTime = busTime.OrderByDescending(b => b.Code);
         }
 
       }
@@ -94,22 +92,22 @@ namespace BusMeal.API.Persistence.Repository
           switch (busTimeParams.OrderBy.ToLower())
           {
             case "code":
-              busTime = busTime.OrderBy(e => e.Code);
+              busTime = busTime.OrderBy(b => b.Code);
               break;
             case "time":
-              busTime = busTime.OrderBy(e => e.Time);
+              busTime = busTime.OrderBy(b => b.Time);
               break;
             case "directionenum":
-              busTime = busTime.OrderBy(e => e.DirectionEnum);
+              busTime = busTime.OrderBy(b => b.DirectionEnum);
               break;
             default:
-              busTime = busTime.OrderBy(e => e.Code);
+              busTime = busTime.OrderBy(b => b.Code);
               break;
           }
         }
         else
         {
-          busTime = busTime.OrderBy(e => e.Code);
+          busTime = busTime.OrderBy(b => b.Code);
         }
       }
       return await PagedList<BusTime>

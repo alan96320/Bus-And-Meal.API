@@ -1,5 +1,5 @@
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,6 +15,6 @@ namespace BusMeal.API.Core.Models
     public int? DepartmentId { get; set; }
     public MealOrderVerificationHeader MealOrderVerificationHeader { get; set; }
     public int? MealOrderVerificationHeaderId { get; set; }
-    public Collection<MealOrderDetail> MealOrderDetail { get; set; }
+    public ICollection<MealOrderDetail> MealOrderDetail { get; set; }
   }
 }

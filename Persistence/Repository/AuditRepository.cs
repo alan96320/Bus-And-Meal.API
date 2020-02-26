@@ -43,17 +43,16 @@ namespace BusMeal.API.Persistence.Repository
       var audit = context.Audit.AsQueryable();
       if (!string.IsNullOrEmpty(auditParams.TableName))
       {
-        audit = audit.Where(e =>
-        e.TableName.Contains(auditParams.TableName, StringComparison.OrdinalIgnoreCase));
+        audit = audit.Where(a => a.TableName.Contains(auditParams.TableName, StringComparison.OrdinalIgnoreCase));
       }
 
       if (auditParams.RowId > 0)
       {
-        audit = audit.Where(u => u.RowId == auditParams.RowId);
+        audit = audit.Where(a => a.RowId == auditParams.RowId);
       }
       if (auditParams.CreatedBy > 0)
       {
-        audit = audit.Where(u => u.CreatedBy == auditParams.CreatedBy);
+        audit = audit.Where(a => a.CreatedBy == auditParams.CreatedBy);
       }
 
       //name,sort
@@ -64,34 +63,34 @@ namespace BusMeal.API.Persistence.Repository
           switch (auditParams.OrderBy.ToLower())
           {
             case "trackeddate":
-              audit = audit.OrderByDescending(e => e.TrackedDate);
+              audit = audit.OrderByDescending(a => a.TrackedDate);
               break;
             case "tablename":
-              audit = audit.OrderByDescending(e => e.TableName);
+              audit = audit.OrderByDescending(a => a.TableName);
               break;
             case "rowid":
-              audit = audit.OrderByDescending(e => e.RowId);
+              audit = audit.OrderByDescending(a => a.RowId);
               break;
             case "createdby":
-              audit = audit.OrderByDescending(e => e.CreatedBy);
+              audit = audit.OrderByDescending(a => a.CreatedBy);
               break;
             case "createddate":
-              audit = audit.OrderByDescending(e => e.CreatedDate);
+              audit = audit.OrderByDescending(a => a.CreatedDate);
               break;
             case "updatedby":
-              audit = audit.OrderByDescending(e => e.UpdatedBy);
+              audit = audit.OrderByDescending(a => a.UpdatedBy);
               break;
             case "updateddate":
-              audit = audit.OrderByDescending(e => e.UpdatedDate);
+              audit = audit.OrderByDescending(a => a.UpdatedDate);
               break;
             default:
-              audit = audit.OrderByDescending(e => e.TrackedDate);
+              audit = audit.OrderByDescending(a => a.TrackedDate);
               break;
           }
         }
         else
         {
-          audit = audit.OrderByDescending(e => e.TrackedDate);
+          audit = audit.OrderByDescending(a => a.TrackedDate);
         }
 
       }
@@ -102,34 +101,34 @@ namespace BusMeal.API.Persistence.Repository
           switch (auditParams.OrderBy.ToLower())
           {
             case "trackeddate":
-              audit = audit.OrderBy(e => e.TrackedDate);
+              audit = audit.OrderBy(a => a.TrackedDate);
               break;
             case "tablename":
-              audit = audit.OrderBy(e => e.TableName);
+              audit = audit.OrderBy(a => a.TableName);
               break;
             case "rowid":
-              audit = audit.OrderBy(e => e.RowId);
+              audit = audit.OrderBy(a => a.RowId);
               break;
             case "createdby":
-              audit = audit.OrderBy(e => e.CreatedBy);
+              audit = audit.OrderBy(a => a.CreatedBy);
               break;
             case "createddate":
-              audit = audit.OrderBy(e => e.CreatedDate);
+              audit = audit.OrderBy(a => a.CreatedDate);
               break;
             case "updatedby":
-              audit = audit.OrderBy(e => e.UpdatedBy);
+              audit = audit.OrderBy(a => a.UpdatedBy);
               break;
             case "updateddate":
-              audit = audit.OrderBy(e => e.UpdatedDate);
+              audit = audit.OrderBy(a => a.UpdatedDate);
               break;
             default:
-              audit = audit.OrderBy(e => e.TrackedDate);
+              audit = audit.OrderBy(a => a.TrackedDate);
               break;
           }
         }
         else
         {
-          audit = audit.OrderBy(e => e.TrackedDate);
+          audit = audit.OrderBy(a => a.TrackedDate);
         }
       }
       return await PagedList<Audit>

@@ -12,18 +12,28 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusMeal.API.Controllers
 {
   [Route("api/[controller]")]
-  
+
   public class ModuleRightsController : Controller
   {
     private readonly IMapper mapper;
     private readonly IModuleRightsRepository moduleRepository;
     private readonly IUnitOfWork unitOfWork;
+    private IUserModuleRightsRepository userModuleRightsRepository;
+    private readonly IUserRepository userRepository;
 
-    public ModuleRightsController(IMapper mapper, IModuleRightsRepository moduleRepository, IUnitOfWork unitOfWork)
+    public ModuleRightsController(
+    IMapper mapper,
+    IModuleRightsRepository moduleRepository,
+    IUserModuleRightsRepository userModuleRightsRepository,
+    IUserRepository userRepository,
+    IUnitOfWork unitOfWork
+    )
     {
       this.mapper = mapper;
       this.moduleRepository = moduleRepository;
       this.unitOfWork = unitOfWork;
+      this.userModuleRightsRepository = userModuleRightsRepository;
+      this.userRepository = userRepository;
     }
 
     [HttpGet]
@@ -69,7 +79,26 @@ namespace BusMeal.API.Controllers
 
       var module = mapper.Map<SaveModuleRightsResource, ModuleRights>(moduleResource);
 
+      // Add module right
       moduleRepository.Add(module);
+
+      // Add module right to user module right
+      var users = await userRepository.GetAll();
+
+      foreach (User list in users)
+      {
+        var userModuleRights = new UserModuleRights
+        {
+          ModuleRightsId = module.Id,
+          UserId = list.Id,
+          Read = false,
+          Write = false
+        };
+
+        var saveUserModule = mapper.Map<UserModuleRights>(userModuleRights);
+
+        userModuleRightsRepository.Add(saveUserModule);
+      }
 
       if (await unitOfWork.CompleteAsync() == false)
       {
