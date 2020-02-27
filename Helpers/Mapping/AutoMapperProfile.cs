@@ -12,18 +12,11 @@ namespace BusMeal.API.Helpers.Mapping
     {
       CreateMap<Department, ViewDepartmentResource>();
       CreateMap<Employee, ViewEmployeeResource>();
-      CreateMap<User, ViewUserResource>()
-                .ForMember(dest => dest.UserModuleRights, opt => opt.MapFrom(src => src.UserModuleRights))
-                .ForMember(dest => dest.ModuleRights, opt => opt.MapFrom(s => s.UserModuleRights.SelectMany(x => x.ModuleRights)));
-      // .ForMember(d => d.);
-      // .ForMember(dest => dest.ModuleRights, opt => opt.MapFrom(src => src.UserModuleRights));
-
+      CreateMap<User, ViewUserResource>();
       CreateMap<UserDepartment, ViewUserDepartmentResource>();
       CreateMap<AppConfiguration, ViewConfigurationResource>();
       CreateMap<ModuleRights, ViewModuleRightsResource>();
-      CreateMap<UserModuleRights, ViewUserModuleRightsResource>()
-          .ForMember(d => d.ModuleRights, opt => opt.MapFrom(s => s.ModuleRights));
-
+      CreateMap<UserModuleRights, ViewUserModuleRightsResource>();
       CreateMap<DormitoryBlock, ViewDormitoryBlockResource>();
       CreateMap<BusTime, ViewBusTimeResource>();
       CreateMap<MealType, ViewMealTypeResource>();
@@ -60,7 +53,6 @@ namespace BusMeal.API.Helpers.Mapping
       CreateMap<SaveBusOrderDetailResource, BusOrderEntryDetail>();
       CreateMap<SaveBusVerificationResource, BusOrderVerificationHeader>();
       CreateMap<SaveBusVerificationDetailResource, BusOrderVerificationHeaderTotal>();
-
     }
   }
 }
