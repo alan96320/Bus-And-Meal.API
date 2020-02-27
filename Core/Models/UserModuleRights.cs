@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,5 +15,7 @@ namespace BusMeal.API.Core.Models
     public int UserId { get; set; }
     public bool Read { get; set; }
     public bool Write { get; set; }
+    public ICollection<ModuleRights> ModuleRight { get; set; }
+
   }
 }

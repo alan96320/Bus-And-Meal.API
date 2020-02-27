@@ -18,6 +18,7 @@ namespace BusMeal.API.Core.Models
     public string GddbId { get; set; }
     public bool AdminStatus { get; set; }
     public int LockTransStatus { get; set; }
-    public ICollection<UserModuleRights> UserModuleRights { get; set; }
+    public ICollection<UserModuleRights> UserModuleRights { get; } = new List<UserModuleRights>();
+    // public ICollection<ModuleRights> ModuleRights { get; } = new List<ModuleRights>();
   }
 }

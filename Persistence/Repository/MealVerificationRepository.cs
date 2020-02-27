@@ -26,14 +26,20 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<IEnumerable<MealOrderVerificationHeader>> GetAll()
     {
-      var mealVerifications = await context.MealOrderVerificationHeader.Include(m => m.MealVerificationTotal).ToListAsync();
+      var mealVerifications = await context.MealOrderVerificationHeader
+      .Include(m => m.MealVerificationTotal)
+        .ThenInclude(m => m.MealType)
+      .ToListAsync();
 
       return mealVerifications;
     }
 
     public async Task<MealOrderVerificationHeader> GetOne(int id)
     {
-      return await context.MealOrderVerificationHeader.Include(m => m.MealVerificationTotal).FirstOrDefaultAsync(m => m.Id == id);
+      return await context.MealOrderVerificationHeader
+      .Include(m => m.MealVerificationTotal)
+        .ThenInclude(m => m.MealType)
+      .FirstOrDefaultAsync(m => m.Id == id);
     }
 
     public async Task<PagedList<MealOrderVerificationHeader>> GetPagedMealVerification(MealVerificationParams mealVerificationParams)

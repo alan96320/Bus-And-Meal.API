@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using BusMeal.API.Core.Models;
+
 namespace BusMeal.API.Controllers.Resources
 {
   public class SaveUserResource
@@ -22,5 +25,7 @@ namespace BusMeal.API.Controllers.Resources
     public string GddbId { get; set; }
     public bool AdminStatus { get; set; }
     public int LockTransStatus { get; set; }
+    public ICollection<ViewModuleRightsResource> ModuleRights { get; set; }
+    public ICollection<ViewUserModuleRightsResource> UserModuleRights { get; set; }
   }
 }

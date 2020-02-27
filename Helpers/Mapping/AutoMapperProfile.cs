@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using BusMeal.API.Controllers.Resources;
@@ -11,11 +12,18 @@ namespace BusMeal.API.Helpers.Mapping
     {
       CreateMap<Department, ViewDepartmentResource>();
       CreateMap<Employee, ViewEmployeeResource>();
-      CreateMap<User, ViewUserResource>();
+      CreateMap<User, ViewUserResource>()
+                .ForMember(dest => dest.UserModuleRights, opt => opt.MapFrom(src => src.UserModuleRights))
+                .ForMember(dest => dest.ModuleRights, opt => opt.MapFrom(s => s.UserModuleRights.SelectMany(x => x.ModuleRights)));
+      // .ForMember(d => d.);
+      // .ForMember(dest => dest.ModuleRights, opt => opt.MapFrom(src => src.UserModuleRights));
+
       CreateMap<UserDepartment, ViewUserDepartmentResource>();
       CreateMap<AppConfiguration, ViewConfigurationResource>();
       CreateMap<ModuleRights, ViewModuleRightsResource>();
-      CreateMap<UserModuleRights, ViewUserModuleRightsResource>();
+      CreateMap<UserModuleRights, ViewUserModuleRightsResource>()
+          .ForMember(d => d.ModuleRights, opt => opt.MapFrom(s => s.ModuleRights));
+
       CreateMap<DormitoryBlock, ViewDormitoryBlockResource>();
       CreateMap<BusTime, ViewBusTimeResource>();
       CreateMap<MealType, ViewMealTypeResource>();
