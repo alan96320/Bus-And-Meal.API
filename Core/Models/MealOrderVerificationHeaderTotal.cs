@@ -13,6 +13,9 @@ namespace BusMeal.API.Core.Models
     public int MealOrderVerificationHeaderId { get; set; }
     public MealType MealType { get; set; }
     public int MealTypeId { get; set; }
+
+    public int? VendorId { get; set; }
+
     public int SumOrderQty { get; set; }
     public int AdjusmentQty { get; set; }
     public int SwipeQty { get; set; }

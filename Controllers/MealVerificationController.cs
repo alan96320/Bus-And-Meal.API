@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,12 +18,14 @@ namespace BusMeal.API.Controllers
     private readonly IMapper mapper;
     private readonly IMealVerificationRepository mealVerificationRepository;
     private readonly IUnitOfWork unitOfWork;
+    private IMealtypeRepository mealtypeRepository;
 
-    public MealVerificationController(IMapper mapper, IMealVerificationRepository mealVerificationRepository, IUnitOfWork unitOfWork)
+    public MealVerificationController(IMapper mapper, IMealVerificationRepository mealVerificationRepository, IMealtypeRepository mealtypeRepository, IUnitOfWork unitOfWork)
     {
       this.mapper = mapper;
       this.mealVerificationRepository = mealVerificationRepository;
       this.unitOfWork = unitOfWork;
+      this.mealtypeRepository = mealtypeRepository;
     }
 
     [HttpGet]
@@ -68,6 +71,13 @@ namespace BusMeal.API.Controllers
 
       var mealVerification = mapper.Map<SaveMealVerificationResource, MealOrderVerificationHeader>(mealVerificationResource);
 
+      var mealVerificationTotals = mealVerification.MealVerificationTotal;
+
+      foreach (MealOrderVerificationHeaderTotal mealVerificationTotal in mealVerificationTotals)
+      {
+        var mealTypeRecord = await mealtypeRepository.GetOne(mealVerificationTotal.MealTypeId);
+        mealVerificationTotal.VendorId = mealTypeRecord.MealVendorId;
+      }
 
       mealVerificationRepository.Add(mealVerification);
 

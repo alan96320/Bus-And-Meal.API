@@ -15,6 +15,6 @@ namespace BusMeal.API.Controllers.Resources
     public int Id { get; set; }
     public string Code { get; set; }
     public string Name { get; set; }
-    public ICollection<ViewMealVendorResource> mealVendor { get; set; }
+    public ViewMealVendorResource mealVendor { get; set; }
   }
 }
