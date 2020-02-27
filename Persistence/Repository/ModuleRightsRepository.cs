@@ -19,31 +19,31 @@ namespace BusMeal.API.Persistence.Repository
       this.context = context;
     }
 
-    public async Task<ModuleRights> GetOne(int id)
+    public async Task<ModuleRight> GetOne(int id)
     {
-      return await context.ModuleRights.FindAsync(id);
+      return await context.ModuleRight.FindAsync(id);
     }
 
-    public void Add(ModuleRights moduleRights)
+    public void Add(ModuleRight moduleRights)
     {
-      context.ModuleRights.Add(moduleRights);
+      context.ModuleRight.Add(moduleRights);
     }
 
-    public void Remove(ModuleRights moduleRights)
+    public void Remove(ModuleRight moduleRights)
     {
       context.Remove(moduleRights);
     }
 
-    public async Task<IEnumerable<ModuleRights>> GetAll()
+    public async Task<IEnumerable<ModuleRight>> GetAll()
     {
-      var modules = await context.ModuleRights.ToListAsync();
+      var modules = await context.ModuleRight.ToListAsync();
 
       return modules;
     }
 
-    public async Task<PagedList<ModuleRights>> GetPagedModuleRights(ModuleRightsParams moduleRightsParams)
+    public async Task<PagedList<ModuleRight>> GetPagedModuleRights(ModuleRightsParams moduleRightsParams)
     {
-      var modules = context.ModuleRights.AsQueryable();
+      var modules = context.ModuleRight.AsQueryable();
 
       // filter
       if (!string.IsNullOrEmpty(moduleRightsParams.Code))
@@ -102,7 +102,7 @@ namespace BusMeal.API.Persistence.Repository
         }
       }
 
-      return await PagedList<ModuleRights>.CreateAsync(modules, moduleRightsParams.PageNumber, moduleRightsParams.PageSize);
+      return await PagedList<ModuleRight>.CreateAsync(modules, moduleRightsParams.PageNumber, moduleRightsParams.PageSize);
     }
   }
 }

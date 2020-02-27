@@ -8,15 +8,15 @@ namespace BusMeal.API.Persistence
   {
     public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-    public DbSet<Department> Departments { get; set; }
+    public DbSet<Department> Department { get; set; }
     public DbSet<Employee> Employee { get; set; }
     public DbSet<AppConfiguration> AppConfiguration { get; set; }
     public DbSet<Counter> Counter { get; set; }
     public DbSet<Audit> Audit { get; set; }
-    public DbSet<ModuleRights> ModuleRights { get; set; }
+    public DbSet<ModuleRight> ModuleRight { get; set; }
     public DbSet<User> User { get; set; }
     public DbSet<UserDepartment> UserDepartment { get; set; }
-    public DbSet<UserModuleRights> UserModuleRights { get; set; }
+    public DbSet<UserModuleRight> UserModuleRight { get; set; }
     public DbSet<DormitoryBlock> DormitoryBlock { get; set; }
     public DbSet<BusTime> BusTime { get; set; }
     public DbSet<MealOrderEntryHeader> MealOrderEntryHeader { get; set; }

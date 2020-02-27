@@ -41,25 +41,7 @@ namespace BusMeal.API.Controllers
     {
       var users = await userRepository.GetAll();
 
-      // var userToReturn = new List<User>[] { };
-      // var userList = new List<User>
-
       var result = mapper.Map<IEnumerable<ViewUserResource>>(users);
-      // foreach (User user in users)
-      // {
-      //   userToReturn = new
-      //   {
-      //     Id = user.Id,
-      //     username = user.Username,
-      //     firstname = user.FirstName,
-      //     lastname = user.LastName,
-      //     GddbId = user.GddbId,
-      //     adminStatus = user.AdminStatus,
-      //     lockTransStatus = user.LockTransStatus,
-      //     userModulerights = user.UserModuleRights,
-      //     moduleRights = user.ModuleRights
-      //   };
-      // }
 
       return Ok(result);
     }
@@ -102,7 +84,7 @@ namespace BusMeal.API.Controllers
 
       // Copy all right to module right
       var rightLists = await moduleRightsRepository.GetAll();
-      foreach (ModuleRights list in rightLists)
+      foreach (ModuleRight list in rightLists)
       {
         var userModuleRights = new UserModuleRights
         {
@@ -112,7 +94,7 @@ namespace BusMeal.API.Controllers
           Write = false
         };
 
-        var saveUserModule = mapper.Map<UserModuleRights>(userModuleRights);
+        var saveUserModule = mapper.Map<UserModuleRight>(userModuleRights);
 
         userModuleRightsRepository.Add(saveUserModule);
       }
