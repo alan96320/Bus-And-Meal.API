@@ -87,7 +87,7 @@ namespace BusMeal.API.Controllers
 
       foreach (User list in users)
       {
-        var userModuleRights = new UserModuleRights
+        var userModuleRights = new UserModuleRight
         {
           ModuleRightsId = module.Id,
           UserId = list.Id,

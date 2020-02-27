@@ -86,7 +86,7 @@ namespace BusMeal.API.Controllers
       var rightLists = await moduleRightsRepository.GetAll();
       foreach (ModuleRight list in rightLists)
       {
-        var userModuleRights = new UserModuleRights
+        var userModuleRights = new UserModuleRight
         {
           ModuleRightsId = list.Id,
           UserId = user.Id,

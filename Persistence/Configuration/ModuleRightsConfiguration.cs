@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusMeal.API.Persistence.Configuration
 {
-  public class ModuleRightsConfiguration : IEntityTypeConfiguration<ModuleRights>
+  public class ModuleRightsConfiguration : IEntityTypeConfiguration<ModuleRight>
   {
-    public void Configure(EntityTypeBuilder<ModuleRights> builder)
+    public void Configure(EntityTypeBuilder<ModuleRight> builder)
     {
       builder.Property(m => m.Code)
       .HasColumnType("varchar(10)");
