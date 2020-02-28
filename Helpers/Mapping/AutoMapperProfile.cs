@@ -13,6 +13,10 @@ namespace BusMeal.API.Helpers.Mapping
       CreateMap<Department, ViewDepartmentResource>();
       CreateMap<Employee, ViewEmployeeResource>();
       CreateMap<User, ViewUserResource>();
+      CreateMap<AddUserResource, User>()
+        .ForMember(u => u.UserDepartment, opt => opt.Ignore())
+        .ForMember(u => u.UserModuleRights, opt => opt.Ignore());
+
       CreateMap<UserDepartment, ViewUserDepartmentResource>();
       CreateMap<AppConfiguration, ViewConfigurationResource>();
       CreateMap<ModuleRight, ViewModuleRightsResource>();

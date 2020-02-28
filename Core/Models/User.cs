@@ -19,5 +19,6 @@ namespace BusMeal.API.Core.Models
     public bool AdminStatus { get; set; }
     public int LockTransStatus { get; set; }
     public ICollection<UserModuleRight> UserModuleRights { get; set; }
+    public ICollection<UserDepartment> UserDepartment { get; set; }
   }
 }

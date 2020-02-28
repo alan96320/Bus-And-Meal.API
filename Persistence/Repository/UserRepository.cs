@@ -80,6 +80,7 @@ namespace BusMeal.API.Persistence.Repository
     public async Task<IEnumerable<User>> GetAll()
     {
       var users = await context.User
+                  .Include(u => u.UserDepartment)
                   .Include(u => u.UserModuleRights)
                     .ThenInclude(u => u.ModuleRights)
                   .ToListAsync();
