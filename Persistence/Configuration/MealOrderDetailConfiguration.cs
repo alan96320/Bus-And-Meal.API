@@ -8,10 +8,7 @@ namespace BusMeal.API.Persistence.Configuration
   {
     public void Configure(EntityTypeBuilder<MealOrderDetail> builder)
     {
-      //   builder
-      //   .WithMany(m => m.MealOrderDetail)
-      //   .HasForeignKey(m => m.MealOrderEntryHeaderId)
-      //   .WillCascadeOnDelete();
+
     }
   }
 }
