@@ -13,6 +13,7 @@ namespace BusMeal.API.Controllers.Resources
     public string GddbId { get; set; }
     public bool AdminStatus { get; set; }
     public int LockTransStatus { get; set; }
+    public ICollection<SaveUserModuleRightsResource> UserModuleRights { get; set; }
   }
 
   public class ViewUserResource
