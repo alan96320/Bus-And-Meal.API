@@ -18,42 +18,53 @@ namespace BusMeal.API.Persistence.Repository
     {
       this.context = context;
     }
-    public void Add(MealOrderEntryHeader mealOrderEntryHeader)
+    public void Add(MealOrder mealOrder)
     {
-      context.MealOrderEntryHeader.Add(mealOrderEntryHeader);
+      context.MealOrder.Add(mealOrder);
     }
 
-    public async Task<IEnumerable<MealOrderEntryHeader>> GetAll()
+    public async Task<IEnumerable<MealOrder>> GetAll(int? userId=null)
     {
-      var mealOrders = await context.MealOrderEntryHeader.Include(m => m.MealOrderDetail).ToListAsync();
+      var mealOrders = context.MealOrder.Include(m => m.MealOrderDetails).AsQueryable();
 
-      return mealOrders;
+      if (userId != null) 
+          mealOrders = mealOrders.Where(bo => bo.UserId == userId);
+
+      return await mealOrders.ToListAsync();
+
     }
 
-    public async Task<MealOrderEntryHeader> GetOne(int id)
+    public async Task<MealOrder> GetOne(int id, int? userId = null)
     {
-      return await context.MealOrderEntryHeader.Include(m => m.MealOrderDetail).FirstOrDefaultAsync(m => m.Id == id);
+      if (userId != null) {
+          return await context.MealOrder.Include(b => b.MealOrderDetails)
+                                        .FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId );
+      }
+      else {
+          return await context.MealOrder.Include(b => b.MealOrderDetails)
+                                       .FirstOrDefaultAsync(b => b.Id == id);                                      
+      }
     }
 
-    public async Task<PagedList<MealOrderEntryHeader>> GetPagedMealOrderEntryHeader(MealOrderParams mealOrderParams)
+    public async Task<PagedList<MealOrder>> GetPagedMealOrder(MealOrderParams mealOrderParams, int? userId = null)
     {
-      var mealOrders = context.MealOrderEntryHeader.Include(m => m.MealOrderDetail).AsQueryable();
+      var mealOrders = context.MealOrder.Include(m => m.MealOrderDetails).AsQueryable();
 
-      // auth by user id
+      if (userId != null) {
+          mealOrders = mealOrders.Where(b => b.UserId == userId);        
+      }
+
       if (DateTime.Compare(mealOrderParams.OrderEntryDate, new DateTime(01, 1, 1)) != 0)
       {
         mealOrders = mealOrders.Where(m => m.OrderEntryDate.Date == mealOrderParams.OrderEntryDate.Date);
       }
 
+      // FIXME : harusnya department Name, bukan Id untuk filter. kecuali di frontend pakai comboxbox
       if (mealOrderParams.DepartmentId > 0)
       {
         mealOrders = mealOrders.Where(m => m.DepartmentId == mealOrderParams.DepartmentId);
       }
-
-      if (mealOrderParams.MealOrderVerificationHeaderId > 0)
-      {
-        mealOrders = mealOrders.Where(m => m.MealOrderVerificationHeaderId == mealOrderParams.MealOrderVerificationHeaderId);
-      }
+      // TODO : implmentasikan Filter pada Status 
 
       // Sort
       if (mealOrderParams.isDescending)
@@ -68,9 +79,7 @@ namespace BusMeal.API.Persistence.Repository
             case "departmentid":
               mealOrders = mealOrders.OrderByDescending(m => m.DepartmentId);
               break;
-            case "mealorderverificationheaderid":
-              mealOrders = mealOrders.OrderByDescending(m => m.MealOrderVerificationHeaderId);
-              break;
+              // TODO : implementasikan Sort pada Status
             default:
               mealOrders = mealOrders.OrderByDescending(m => m.OrderEntryDate);
               break;
@@ -93,9 +102,9 @@ namespace BusMeal.API.Persistence.Repository
             case "departmentid":
               mealOrders = mealOrders.OrderBy(m => m.DepartmentId);
               break;
-            case "mealorderverificationheaderid":
-              mealOrders = mealOrders.OrderBy(m => m.MealOrderVerificationHeaderId);
-              break;
+
+              // TODO : implementasikan Sort pada Status              
+
             default:
               mealOrders = mealOrders.OrderBy(m => m.OrderEntryDate);
               break;
@@ -106,15 +115,15 @@ namespace BusMeal.API.Persistence.Repository
           mealOrders = mealOrders.OrderBy(m => m.OrderEntryDate);
         }
       }
-      var mealOrderToReturn = mealOrders.Include(m => m.MealOrderDetail);
+      var mealOrderToReturn = mealOrders.Include(m => m.MealOrderDetails);
 
-      return await PagedList<MealOrderEntryHeader>.CreateAsync(mealOrders, mealOrderParams.PageNumber, mealOrderParams.PageSize);
+      return await PagedList<MealOrder>.CreateAsync(mealOrders, mealOrderParams.PageNumber, mealOrderParams.PageSize);
 
     }
 
-    public void Remove(MealOrderEntryHeader mealOrderEntryHeader)
+    public void Remove(MealOrder mealOrder)
     {
-      context.Remove(mealOrderEntryHeader);
+      context.Remove(mealOrder);
     }
   }
 }
