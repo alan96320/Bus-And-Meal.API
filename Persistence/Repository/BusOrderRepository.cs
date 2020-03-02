@@ -28,31 +28,35 @@ namespace BusMeal.API.Persistence.Repository
     {
       // verifikasi dgn userId atau Admin
       var busOrders = context.BusOrder.Include(b => b.BusOrderDetails).AsQueryable();
-      
-      if (userId != null) 
-          busOrders = busOrders.Where(bo => bo.UserId == userId);
+
+      if (userId != null)
+        busOrders = busOrders.Where(bo => bo.UserId == userId);
 
       return await busOrders.ToListAsync();
     }
 
     public async Task<BusOrder> GetOne(int id, int? userId = null)
     {
-      if (userId != null) {
-          return await context.BusOrder.Include(b => b.BusOrderDetails)
-                                      .FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId );
+      // FIXME : cari alternative lain
+      if (userId != null)
+      {
+        return await context.BusOrder.Include(b => b.BusOrderDetails)
+                                    .FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId);
       }
-      else {
-          return await context.BusOrder.Include(b => b.BusOrderDetails)
-                                       .FirstOrDefaultAsync(b => b.Id == id);                                      
+      else
+      {
+        return await context.BusOrder.Include(b => b.BusOrderDetails)
+                                     .FirstOrDefaultAsync(b => b.Id == id);
       }
     }
 
-    public async Task<PagedList<BusOrder>> GetPagedBusOrder(BusOrderParams busOrderParams, int? userId=null)
+    public async Task<PagedList<BusOrder>> GetPagedBusOrder(BusOrderParams busOrderParams, int? userId = null)
     {
       var busOrders = context.BusOrder.Include(b => b.BusOrderDetails).AsQueryable();
 
-      if (userId != null) {
-          busOrders = busOrders.Where(b => b.UserId == userId);        
+      if (userId != null)
+      {
+        busOrders = busOrders.Where(b => b.UserId == userId);
       }
 
       if (DateTime.Compare(busOrderParams.OrderEntryDate, new DateTime(01, 1, 1)) != 0)
@@ -86,11 +90,11 @@ namespace BusMeal.API.Persistence.Repository
               busOrders = busOrders.OrderByDescending(b => b.OrderEntryDate);
               break;
 
-      // FIXME : seharusnya bukan departmentId tetapi departementcode atau departmentName , kecuali di FE pakai combobox                           
+            // FIXME : seharusnya bukan departmentId tetapi departementcode atau departmentName , kecuali di FE pakai combobox                           
             case "departmentid":
               busOrders = busOrders.OrderByDescending(b => b.DepartmentId);
               break;
-      // FIXME : seharusnya bukan BlockId tetapi dormitoryBlockcname, kecuali di FE pakai combobox                           
+            // FIXME : seharusnya bukan BlockId tetapi dormitoryBlockcname, kecuali di FE pakai combobox                           
 
             case "dormitoryblockid":
               busOrders = busOrders.OrderByDescending(b => b.DormitoryBlockId);
@@ -98,7 +102,7 @@ namespace BusMeal.API.Persistence.Repository
             default:
               busOrders = busOrders.OrderByDescending(b => b.OrderEntryDate);
               break;
-      // TODO  : Filter by Status ? Locked, Closed --> sebaiknya Locked dihilangkan, dan diganti dgn Open              
+              // TODO  : Filter by Status ? Locked, Closed --> sebaiknya Locked dihilangkan, dan diganti dgn Open              
           }
         }
         else
@@ -115,11 +119,11 @@ namespace BusMeal.API.Persistence.Repository
             case "orderentrydate":
               busOrders = busOrders.OrderBy(b => b.OrderEntryDate);
               break;
-      // FIXME : seharusnya bukan departmentId tetapi departementcode atau departmentName , kecuali di FE pakai combobox                           
+            // FIXME : seharusnya bukan departmentId tetapi departementcode atau departmentName , kecuali di FE pakai combobox                           
             case "departmentid":
               busOrders = busOrders.OrderBy(b => b.DepartmentId);
               break;
-      // FIXME : seharusnya bukan BlockId tetapi dormitoryBlockcname, kecuali di FE pakai combobox                           
+            // FIXME : seharusnya bukan BlockId tetapi dormitoryBlockcname, kecuali di FE pakai combobox                           
 
             case "dormitoryblockid":
               busOrders = busOrders.OrderBy(b => b.DormitoryBlockId);
@@ -127,7 +131,7 @@ namespace BusMeal.API.Persistence.Repository
             default:
               busOrders = busOrders.OrderBy(b => b.OrderEntryDate);
               break;
-    // TODO  : Filter by Status ? Locked, Closed --> sebaiknya Locked dihilangkan, dan diganti dgn Open                            
+              // TODO  : Filter by Status ? Locked, Closed --> sebaiknya Locked dihilangkan, dan diganti dgn Open                            
           }
         }
         else

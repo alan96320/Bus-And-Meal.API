@@ -8,25 +8,33 @@ namespace BusMeal.API.Persistence.Configuration
   {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
-      builder.Property(e => e.HrCoreNo)
-      .HasColumnType("varchar(8)");
+      builder
+        .Property(e => e.HrCoreNo)
+        .HasColumnType("varchar(8)");
 
-      builder.Property(e => e.Firstname)
-      .HasColumnType("varchar(100)");
+      builder
+        .Property(e => e.Firstname)
+        .HasColumnType("varchar(100)");
 
-      builder.Property(e => e.Lastname)
-            .HasColumnType("varchar(100)");
+      builder
+        .Property(e => e.Lastname)
+        .HasColumnType("varchar(100)");
 
-      builder.Property(e => e.Fullname)
-      .HasColumnType("varchar(100)");
+      builder
+        .Property(e => e.Fullname)
+        .HasColumnType("varchar(100)");
 
-      builder.Property(e => e.HIDNo)
-      .HasColumnType("varchar(30)");
-      builder.Property(e => e.Fullname)
-      .HasColumnType("varchar(100)");      
+      builder
+        .Property(e => e.HIDNo)
+        .HasColumnType("varchar(30)");
 
-      builder.Property(e => e.DepartmentId)
-      .IsRequired(true);
+      builder
+        .Property(e => e.Fullname)
+        .HasColumnType("varchar(100)");
+
+      builder
+        .Property(e => e.DepartmentId)
+        .IsRequired(true);
     }
   }
 }

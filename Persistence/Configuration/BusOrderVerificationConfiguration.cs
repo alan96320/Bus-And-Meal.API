@@ -9,20 +9,21 @@ namespace BusMeal.API.Persistence.Configuration
     public void Configure(EntityTypeBuilder<BusOrderVerification> builder)
 
     {
-      builder.Property(bov => bov.OrderNo)
-      .HasColumnType("varchar(10)");
+      builder
+        .Property(bov => bov.OrderNo)
+        .HasColumnType("varchar(10)");
 
       builder
-      .HasMany<BusOrderVerificationDetail>(bov => bov.BusOrderVerificationDetails)
-      .WithOne(bovd => bovd.BusOrderVerification)
-      .HasForeignKey(bovd => bovd.BusOrderVerificationId)
-      .OnDelete(DeleteBehavior.Cascade);
+        .HasMany<BusOrderVerificationDetail>(bov => bov.BusOrderVerificationDetails)
+        .WithOne(bovd => bovd.BusOrderVerification)
+        .HasForeignKey(bovd => bovd.BusOrderVerificationId)
+        .OnDelete(DeleteBehavior.Cascade);
 
       builder
-      .HasMany<BusOrder>(bov => bov.BusOrders)
-      .WithOne(bo => bo.BusOrderVerification)
-      .HasForeignKey(bo => bo.BusOrderVerificationId)
-      .OnDelete(DeleteBehavior.SetNull);      
+        .HasMany<BusOrder>(bov => bov.BusOrders)
+        .WithOne(bo => bo.BusOrderVerification)
+        .HasForeignKey(bo => bo.BusOrderVerificationId)
+        .OnDelete(DeleteBehavior.SetNull);
     }
   }
 }

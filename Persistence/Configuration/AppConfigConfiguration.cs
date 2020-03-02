@@ -8,11 +8,13 @@ namespace BusMeal.API.Persistence.Configuration
   {
     public void Configure(EntityTypeBuilder<AppConfiguration> builder)
     {
-      builder.Property(a => a.LockedBusOrder)
-      .HasColumnType("varchar(10)");
+      builder
+        .Property(a => a.LockedBusOrder)
+        .HasColumnType("varchar(10)");
 
-      builder.Property(a => a.LockedMealOrder)
-      .HasColumnType("varchar(10)");
+      builder
+        .Property(a => a.LockedMealOrder)
+        .HasColumnType("varchar(10)");
     }
   }
 }

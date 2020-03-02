@@ -15,9 +15,10 @@ namespace BusMeal.API.Core.Models
     public int? MealVendorId { get; set; }
     public MealVendor MealVendor { get; set; }
 
-    public ICollection<MealOrderDetail> MealOrderDetails {get;set;}
+    public ICollection<MealOrderDetail> MealOrderDetails { get; set; }
       = new Collection<MealOrderDetail>();
-    public ICollection<MealOrderVerificationDetail> MealOrderVerificationDetails {get;set;}
+    public ICollection<MealOrderVerificationDetail> MealOrderVerificationDetails { get; set; }
       = new Collection<MealOrderVerificationDetail>();
+    public ICollection<MealVendor> MealVendors { get; set; } = new Collection<MealVendor>();
   }
 }

@@ -8,12 +8,19 @@ namespace BusMeal.API.Persistence.Configuration
   {
     public void Configure(EntityTypeBuilder<ModuleRight> builder)
     {
-      builder.Property(m => m.Code)
-      .HasColumnType("varchar(10)");
+      builder
+        .Property(m => m.Code)
+        .HasColumnType("varchar(10)");
 
-      builder.Property(m => m.Description)
-      .HasColumnType("varchar(100)");
+      builder
+        .Property(m => m.Description)
+        .HasColumnType("varchar(100)");
 
+      builder
+        .HasMany<UserModuleRight>(mr => mr.UserModuleRights)
+        .WithOne(umr => umr.ModuleRights)
+        .HasForeignKey(umr => umr.ModuleRightsId)
+        .OnDelete(DeleteBehavior.Restrict);
     }
   }
 }

@@ -8,23 +8,25 @@ namespace BusMeal.API.Persistence.Configuration
   {
     public void Configure(EntityTypeBuilder<BusTime> builder)
     {
-      builder.Property(b => b.Code)
-      .HasColumnType("varchar(5)");
-
-      builder.Property(b => b.Time)
-      .HasColumnType("varchar(10)");
+      builder
+        .Property(b => b.Code)
+        .HasColumnType("varchar(5)");
 
       builder
-      .HasMany<BusOrderDetail>(bt => bt.BusOrderDetails)  // bt = bus time
-      .WithOne(bod => bod.BusTime)                        // bod = bus order detail
-      .HasForeignKey(bod => bod.BusTimeId)
-      .OnDelete(DeleteBehavior.Restrict);
+        .Property(b => b.Time)
+        .HasColumnType("varchar(10)");
 
       builder
-      .HasMany<BusOrderVerificationDetail>(bt => bt.BusOrderVerificationDetails)  // bt = bus time
-      .WithOne(bovd => bovd.BusTime)        // bovd = bus order verification detail
-      .HasForeignKey(bovd => bovd.BusTimeId)
-      .OnDelete(DeleteBehavior.Restrict);    
+        .HasMany<BusOrderDetail>(bt => bt.BusOrderDetails)  // bt = bus time
+        .WithOne(bod => bod.BusTime)                        // bod = bus order detail
+        .HasForeignKey(bod => bod.BusTimeId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+      builder
+        .HasMany<BusOrderVerificationDetail>(bt => bt.BusOrderVerificationDetails)  // bt = bus time
+        .WithOne(bovd => bovd.BusTime)        // bovd = bus order verification detail
+        .HasForeignKey(bovd => bovd.BusTimeId)
+        .OnDelete(DeleteBehavior.Restrict);
     }
 
   }
