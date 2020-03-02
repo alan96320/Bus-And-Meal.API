@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace BusMeal.API.Controllers.Resources
 {
@@ -11,18 +12,30 @@ namespace BusMeal.API.Controllers.Resources
 
     public int? DormitoryBlockId { get; set; }
 
-    public int? BusOrderVerificationHeaderId { get; set; }
+    public int? BusOrderVerificationId { get; set; }
 
-    public ICollection<SaveBusOrderDetailResource> BusOrderDetail { get; set; }
+    public bool isReadyToCollect {get;set;}
+
+    public ICollection<SaveBusOrderDetailResource> BusOrderDetails { get; set; }
+      = new Collection<SaveBusOrderDetailResource>();
   }
 
   public class ViewBusOrderResource
   {
     public int Id { get; set; }
     public DateTime OrderEntryDate { get; set; }
+
     public int? DepartmentId { get; set; }
+    public ViewDepartmentResource Department {get;set;}
+
     public int? DormitoryBlockId { get; set; }
+    public ViewDormitoryBlockResource DomitoryBlock {get;set;}
+
     public int? BusOrderVerificationHeaderId { get; set; }
-    public ICollection<ViewBusOrderDetailResource> BusOrderDetail { get; set; }
+
+    public bool IsReadyToCollect {get;set;}
+
+    public ICollection<ViewBusOrderDetailResource> BusOrderDetails { get; set; }
+     = new Collection<ViewBusOrderDetailResource>();
   }
 }
