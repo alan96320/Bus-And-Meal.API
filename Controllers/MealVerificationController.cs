@@ -20,7 +20,7 @@ namespace BusMeal.API.Controllers
     private readonly IUnitOfWork unitOfWork;
     private IMealtypeRepository mealtypeRepository;
 
-    public MealOrderVerificationController(IMapper mapper, IMealOrderVerificationRepository mealOrderVerificationRepository, IUnitOfWork unitOfWork)
+    public MealOrderVerificationController(IMapper mapper, IMealOrderVerificationRepository mealOrderVerificationRepository, IMealtypeRepository mealtypeRepository, IUnitOfWork unitOfWork)
     {
       this.mapper = mapper;
       this.mealOrderVerificationRepository = mealOrderVerificationRepository;
