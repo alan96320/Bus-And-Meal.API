@@ -9,10 +9,6 @@ namespace BusMeal.API.Persistence.Configuration
     public void Configure(EntityTypeBuilder<MealOrderVerification> builder)
     {
       builder
-        .Property(m => m.OrderNo)
-        .HasColumnType("varchar(10)");
-
-      builder
         .HasMany<MealOrder>(mov => mov.MealOrders)   //mov = meal order verification
         .WithOne(mo => mo.MealOrderVerification)    // mo = meal order
         .HasForeignKey(mo => mo.MealOrderVerificationId)

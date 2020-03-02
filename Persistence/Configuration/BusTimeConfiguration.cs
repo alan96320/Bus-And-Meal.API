@@ -9,14 +9,6 @@ namespace BusMeal.API.Persistence.Configuration
     public void Configure(EntityTypeBuilder<BusTime> builder)
     {
       builder
-        .Property(b => b.Code)
-        .HasColumnType("varchar(5)");
-
-      builder
-        .Property(b => b.Time)
-        .HasColumnType("varchar(10)");
-
-      builder
         .HasMany<BusOrderDetail>(bt => bt.BusOrderDetails)  // bt = bus time
         .WithOne(bod => bod.BusTime)                        // bod = bus order detail
         .HasForeignKey(bod => bod.BusTimeId)

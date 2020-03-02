@@ -10,14 +10,10 @@ namespace BusMeal.API.Persistence.Configuration
     {
       builder
         .Property(d => d.Name)
-        .HasColumnType("varchar(255)")
-        .IsRequired()
         .IsUnicode();
 
       builder
         .Property(d => d.Code)
-        .HasColumnType("varchar(50)")
-        .IsRequired()
         .IsUnicode();
 
       builder

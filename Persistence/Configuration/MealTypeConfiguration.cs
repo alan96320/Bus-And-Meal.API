@@ -9,18 +9,6 @@ namespace BusMeal.API.Persistence.Configuration
     public void Configure(EntityTypeBuilder<MealType> builder)
     {
       builder
-        .Property(m => m.Code)
-        .HasColumnType("varchar(50)");
-
-      builder
-        .Property(m => m.Name)
-        .HasColumnType("varchar(100)");
-
-      builder
-        .Property(m => m.MealVendorId)
-        .IsRequired(false);
-
-      builder
         .HasMany<MealVendor>(mt => mt.MealVendors)     // mt = meal type
         .WithOne(mv => mv.MealType)                           // mv = vendor
         .HasForeignKey(mv => mv.MealTypeId)

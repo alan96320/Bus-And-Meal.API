@@ -10,10 +10,6 @@ namespace BusMeal.API.Persistence.Configuration
 
     {
       builder
-        .Property(bov => bov.OrderNo)
-        .HasColumnType("varchar(10)");
-
-      builder
         .HasMany<BusOrderVerificationDetail>(bov => bov.BusOrderVerificationDetails)
         .WithOne(bovd => bovd.BusOrderVerification)
         .HasForeignKey(bovd => bovd.BusOrderVerificationId)

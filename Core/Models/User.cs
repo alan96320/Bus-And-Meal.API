@@ -9,12 +9,26 @@ namespace BusMeal.API.Core.Models
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
+
+    [Column(TypeName = "varchar(100)")]
     public string Username { get; set; }
+
+    [Column(TypeName = "varchar(255)")]
     public byte[] PasswordHash { get; set; }
+
+    [Column(TypeName = "varchar(255)")]
     public byte[] PasswordSalt { get; set; }
+
+    [Column(TypeName = "varchar(100)")]
     public string FirstName { get; set; }
+
+    [Column(TypeName = "varchar(100)")]
     public string LastName { get; set; }
+
+    [Column(TypeName = "varchar(100)")]
     public string FullName { get; set; }
+
+    [Column(TypeName = "varchar(100)")]
     public string GddbId { get; set; }
     public bool AdminStatus { get; set; }
     public int LockTransStatus { get; set; }
