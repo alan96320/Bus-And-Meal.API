@@ -72,7 +72,7 @@ namespace BusMeal.API.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] SaveUserResource userResource)
+    public async Task<IActionResult> Create([FromBody] AddUserResource userResource)
     {
       if (!ModelState.IsValid)
         return BadRequest(ModelState);

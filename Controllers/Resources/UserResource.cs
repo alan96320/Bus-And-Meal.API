@@ -3,6 +3,17 @@ using BusMeal.API.Core.Models;
 
 namespace BusMeal.API.Controllers.Resources
 {
+  public class AddUserResource
+  {
+    public string Username { get; set; }
+    public string Password { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string FullName { get; set; }
+    public string GddbId { get; set; }
+    public bool AdminStatus { get; set; }
+    public int LockTransStatus { get; set; }
+  }
   public class SaveUserResource
   {
     public string Username { get; set; }
@@ -14,6 +25,7 @@ namespace BusMeal.API.Controllers.Resources
     public bool AdminStatus { get; set; }
     public int LockTransStatus { get; set; }
     public ICollection<SaveUserModuleRightsResource> UserModuleRights { get; set; }
+    public ICollection<SaveUserDepartmentResource> UserDepartment { get; set; }
   }
 
   public class ViewUserResource
@@ -27,5 +39,6 @@ namespace BusMeal.API.Controllers.Resources
     public bool AdminStatus { get; set; }
     public int LockTransStatus { get; set; }
     public ICollection<ViewUserModuleRightsResource> UserModuleRights { get; set; }
+    public ICollection<ViewUserDepartmentResource> UserDepartment { get; set; }
   }
 }
