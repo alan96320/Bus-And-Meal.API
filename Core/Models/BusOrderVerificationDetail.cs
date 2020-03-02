@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusMeal.API.Core.Models
 {
-  public class BusOrderVerificationHeaderTotal
+  public class BusOrderVerificationDetail
   {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    public BusOrderVerificationHeader BusOrderVerificationHeader { get; set; }
-    public int? BusOrderVerificationHeaderId { get; set; }
+    public BusOrderVerification BusOrderVerification { get; set; }
+    public int? BusOrderVerificationId { get; set; }
     public BusTime BusTime { get; set; }
     public int? BusTimeId { get; set; }
     public DormitoryBlock DormitoryBlock { get; set; }

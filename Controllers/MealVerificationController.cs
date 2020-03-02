@@ -13,17 +13,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusMeal.API.Controllers
 {
   [Route("api/[controller]")]
-  public class MealVerificationController : Controller
+  public class MealOrderVerificationController : Controller
   {
     private readonly IMapper mapper;
-    private readonly IMealVerificationRepository mealVerificationRepository;
+    private readonly IMealOrderVerificationRepository mealOrderVerificationRepository;
     private readonly IUnitOfWork unitOfWork;
     private IMealtypeRepository mealtypeRepository;
 
-    public MealVerificationController(IMapper mapper, IMealVerificationRepository mealVerificationRepository, IMealtypeRepository mealtypeRepository, IUnitOfWork unitOfWork)
+    public MealOrderVerificationController(IMapper mapper, IMealOrderVerificationRepository mealOrderVerificationRepository, IUnitOfWork unitOfWork)
     {
       this.mapper = mapper;
-      this.mealVerificationRepository = mealVerificationRepository;
+      this.mealOrderVerificationRepository = mealOrderVerificationRepository;
       this.unitOfWork = unitOfWork;
       this.mealtypeRepository = mealtypeRepository;
     }
@@ -31,9 +31,9 @@ namespace BusMeal.API.Controllers
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-      var mealVerifications = await mealVerificationRepository.GetAll();
+      var mealOrderVerifications = await mealOrderVerificationRepository.GetAll();
 
-      var result = mapper.Map<IEnumerable<ViewMealVerificationResource>>(mealVerifications);
+      var result = mapper.Map<IEnumerable<ViewMealOrderVerificationResource>>(mealOrderVerifications);
 
       return Ok(result);
     }
@@ -41,79 +41,79 @@ namespace BusMeal.API.Controllers
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
-      var mealVerification = await mealVerificationRepository.GetOne(id);
+      var mealOrderVerification = await mealOrderVerificationRepository.GetOne(id);
 
-      if (mealVerification == null)
+      if (mealOrderVerification == null)
         return NotFound();
 
-      var result = mapper.Map<MealOrderVerificationHeader, ViewMealVerificationResource>(mealVerification);
+      var result = mapper.Map<MealOrderVerification, ViewMealOrderVerificationResource>(mealOrderVerification);
 
       return Ok(result);
     }
 
     [HttpGet("paged")]
-    public async Task<IActionResult> GetPagedVerification([FromQuery]MealVerificationParams mealVerificationParams)
+    public async Task<IActionResult> GetPagedMealOrderVerification([FromQuery]MealOrderVerificationParams mealOrderVerificationParams)
     {
-      var mealVerifications = await mealVerificationRepository.GetPagedMealVerification(mealVerificationParams);
+      var mealOrderVerifications = await mealOrderVerificationRepository.GetPagedMealOrderVerification(mealOrderVerificationParams);
 
-      var result = mapper.Map<IEnumerable<ViewMealVerificationResource>>(mealVerifications);
+      var result = mapper.Map<IEnumerable<ViewMealOrderVerificationResource>>(mealOrderVerifications);
 
-      Response.AddPagination(mealVerifications.CurrentPage, mealVerifications.PageSize, mealVerifications.TotalCount, mealVerifications.TotalPages);
+      Response.AddPagination(mealOrderVerifications.CurrentPage, mealOrderVerifications.PageSize, mealOrderVerifications.TotalCount, mealOrderVerifications.TotalPages);
 
       return Ok(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody]SaveMealVerificationResource mealVerificationResource)
+    public async Task<IActionResult> Create([FromBody]SaveMealOrderVerificationResource mealOrderVerificationResource)
     {
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      var mealVerification = mapper.Map<SaveMealVerificationResource, MealOrderVerificationHeader>(mealVerificationResource);
+      var mealOrderVerification = mapper.Map<SaveMealOrderVerificationResource, MealOrderVerification>(mealOrderVerificationResource);
 
-      var mealVerificationTotals = mealVerification.MealVerificationTotal;
+      var mealVerificationDetails = mealOrderVerification.MealOrderVerificationDetails;
 
-      foreach (MealOrderVerificationHeaderTotal mealVerificationTotal in mealVerificationTotals)
+      foreach (MealOrderVerificationDetail mealVerificationDetail in mealVerificationDetails)
       {
-        var mealTypeRecord = await mealtypeRepository.GetOne(mealVerificationTotal.MealTypeId);
-        mealVerificationTotal.VendorId = mealTypeRecord.MealVendorId;
+        var mealTypeRecord = await mealtypeRepository.GetOne(mealVerificationDetail.MealTypeId);
+        mealVerificationDetail.VendorId = mealTypeRecord.MealVendorId;
       }
 
-      mealVerificationRepository.Add(mealVerification);
+      mealOrderVerificationRepository.Add(mealOrderVerification);
 
       if (await unitOfWork.CompleteAsync() == false)
       {
         throw new Exception(message: "Create new order failed on save");
       }
 
-      mealVerification = await mealVerificationRepository.GetOne(mealVerification.Id);
+      mealOrderVerification = await mealOrderVerificationRepository.GetOne(mealOrderVerification.Id);
 
-      var result = mapper.Map<MealOrderVerificationHeader, ViewMealVerificationResource>(mealVerification);
+      var result = mapper.Map<MealOrderVerification, ViewMealOrderVerificationResource>(mealOrderVerification);
 
       return Ok(result);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody]SaveMealVerificationResource mealVerificationResource)
+    public async Task<IActionResult> Update(int id, [FromBody]SaveMealOrderVerificationResource mealOrderVerificationResource)
     {
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      var mealVerification = await mealVerificationRepository.GetOne(id);
+      var mealOrderVerification = await mealOrderVerificationRepository.GetOne(id);
 
-      if (mealVerification == null)
+      if (mealOrderVerification == null)
         return NotFound();
 
-      mealVerification = mapper.Map(mealVerificationResource, mealVerification);
+      mealOrderVerification = mapper.Map(mealOrderVerificationResource, mealOrderVerification);
 
       if (await unitOfWork.CompleteAsync() == false)
       {
         throw new Exception(message: $"Updating order with id: {id} failed on save");
       }
 
-      mealVerification = await mealVerificationRepository.GetOne(mealVerification.Id);
+      mealOrderVerification = await mealOrderVerificationRepository.GetOne(mealOrderVerification.Id);
 
-      var result = mapper.Map<MealOrderVerificationHeader, ViewMealVerificationResource>(mealVerification);
+      var result = mapper.Map<MealOrderVerification, ViewMealOrderVerificationResource>(mealOrderVerification);
 
       return Ok(result);
     }
@@ -121,12 +121,12 @@ namespace BusMeal.API.Controllers
     [HttpDelete("{id}")]
     public async Task<IActionResult> Remove(int id)
     {
-      var mealVerification = await mealVerificationRepository.GetOne(id);
+      var mealOrderVerification = await mealOrderVerificationRepository.GetOne(id);
 
-      if (mealVerification == null)
+      if (mealOrderVerification == null)
         return NotFound();
 
-      mealVerificationRepository.Remove(mealVerification);
+      mealOrderVerificationRepository.Remove(mealOrderVerification);
 
       if (await unitOfWork.CompleteAsync() == false)
       {
