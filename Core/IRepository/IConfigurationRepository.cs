@@ -8,7 +8,7 @@ namespace BusMeal.API.Core.IRepository
 {
   public interface IConfigurationRepository
   {
-    Task<AppConfiguration> GetOne(int id);
+    Task<AppConfiguration> GetOne(int? id = null);
     void Add(AppConfiguration configuration);
     void Remove(AppConfiguration configuration);
     Task<IEnumerable<AppConfiguration>> GetAll();

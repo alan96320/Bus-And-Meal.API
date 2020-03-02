@@ -19,9 +19,14 @@ namespace BusMeal.API.Persistence.Repository
       this.context = context;
     }
 
-    public async Task<AppConfiguration> GetOne(int id)
+    public async Task<AppConfiguration> GetOne(int? id=null)
     {
-      return await context.AppConfiguration.FindAsync(id);
+      if (id != null)
+      {
+        return await context.AppConfiguration.FindAsync(id);
+      } else {
+        return await context.AppConfiguration.FindAsync();
+      }
     }
 
     public void Add(AppConfiguration configuration)
