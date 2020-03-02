@@ -18,30 +18,30 @@ namespace BusMeal.API.Persistence.Repository
       this.context = context;
     }
 
-    public async Task<UserModuleRights> GetOne(int id)
+    public async Task<UserModuleRight> GetOne(int id)
     {
-      return await context.UserModuleRights.FindAsync(id);
+      return await context.UserModuleRight.FindAsync(id);
     }
 
-    public void Add(UserModuleRights userModuleRights)
+    public void Add(UserModuleRight userModuleRights)
     {
-      context.UserModuleRights.Add(userModuleRights);
+      context.UserModuleRight.Add(userModuleRights);
     }
 
-    public void Remove(UserModuleRights userModuleRights)
+    public void Remove(UserModuleRight userModuleRights)
     {
       context.Remove(userModuleRights);
     }
 
-    public async Task<IEnumerable<UserModuleRights>> GetAll()
+    public async Task<IEnumerable<UserModuleRight>> GetAll()
     {
-      var usermodulergihts = await context.UserModuleRights.ToListAsync();
+      var usermodulergihts = await context.UserModuleRight.ToListAsync();
       return usermodulergihts;
     }
 
-    public async Task<PagedList<UserModuleRights>> GetPagedUserModuleRights(UserModuleRightsParams userModuleRightsParams)
+    public async Task<PagedList<UserModuleRight>> GetPagedUserModuleRights(UserModuleRightsParams userModuleRightsParams)
     {
-      var usermodulerights = context.UserModuleRights.AsQueryable();
+      var usermodulerights = context.UserModuleRight.AsQueryable();
 
       // filter
       if (userModuleRightsParams.UserId > 0)
@@ -100,7 +100,7 @@ namespace BusMeal.API.Persistence.Repository
         }
       }
 
-      return await PagedList<UserModuleRights>.CreateAsync(usermodulerights, userModuleRightsParams.PageNumber, userModuleRightsParams.PageSize);
+      return await PagedList<UserModuleRight>.CreateAsync(usermodulerights, userModuleRightsParams.PageNumber, userModuleRightsParams.PageSize);
     }
   }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace BusMeal.API.Controllers.Resources
 {
@@ -7,8 +8,10 @@ namespace BusMeal.API.Controllers.Resources
   {
     public DateTime OrderEntryDate { get; set; }
     public int? DepartmentId { get; set; }
-    public int? MealOrderVerificationHeaderId { get; set; }
-    public ICollection<SaveMealOrderDetailResource> MealOrderDetail { get; set; }
+    public int? MealOrderVerificationId { get; set; }
+    public bool isReadyToCollect {get;set;}
+    public ICollection<SaveMealOrderDetailResource> MealOrderDetails { get; set; }
+      = new Collection<SaveMealOrderDetailResource>();
   }
 
   public class ViewMealOrderResource
@@ -16,7 +19,9 @@ namespace BusMeal.API.Controllers.Resources
     public int Id { get; set; }
     public DateTime OrderEntryDate { get; set; }
     public int? DepartmentId { get; set; }
-    public int? MealOrderVerificationHeaderId { get; set; }
-    public ICollection<ViewMealOrderDetailResource> MealOrderDetail { get; set; }
+    public int? MealOrderVerificationId { get; set; }
+    public bool isReadyToCollect {get;set;}
+    public ICollection<ViewMealOrderDetailResource> MealOrderDetails { get; set; }
+        = new Collection<ViewMealOrderDetailResource>();
   }
 }

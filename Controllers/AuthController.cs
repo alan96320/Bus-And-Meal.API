@@ -11,6 +11,7 @@ using BusMeal.API.Controllers.Resources;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusMeal.API.Core.Models;
+using System.Collections.Generic;
 
 namespace BusMeal.API.Controllers
 {
@@ -51,36 +52,31 @@ namespace BusMeal.API.Controllers
       if (userLogin == null)
         return Unauthorized();
 
-      var userModules = await userModuleRepository.GetAll();
-      var userModuleRights = userModules.Where(u => u.Id == userLogin.Id);
+      var allUserModules = await userModuleRepository.GetAll();
+      var userModules = allUserModules.Where(u => u.UserId == userLogin.Id).ToList();
 
-      var claims = new[]
+      var claims = new List<Claim>
           {
             new Claim(ClaimTypes.Name, userLogin.Username)
           };
 
+      // Add user claim
+      foreach (UserModuleRight userModule in userModules)
+      {
 
-      // var roles = new[] 
-      // {};
+        var right = await moduleRightsRepository.GetOne(userModule.ModuleRightsId);
+        var claim = right.Description.ToString();
 
-      //   foreach (UserModuleRights items in userModuleRights)
-      //   {
-      //     var right = await moduleRightsRepository.GetOne(items.Id);
-      //     if (items.Read == true)
-      //     {
-      //       claims[] = {
-      //         new Claim(ClaimTypes.Role, right.Code+ ".R");
-      //     };
-      //   }
+        if (userModule.Read == true)
+        {
+          claims.Add(new Claim(ClaimTypes.Role, $"{claim}.R"));
+        }
 
-      //   if (items.Write == true)
-      //   {
-      //     claims.Add({
-      //       new Claim(ClaimTypes.Role, right.Code + ".W");
-      //     });
-      //   }
-      // }
-
+        if (userModule.Write == true)
+        {
+          claims.Add(new Claim(ClaimTypes.Role, $"{claim}.W"));
+        }
+      }
 
       var key = new SymmetricSecurityKey(Encoding.UTF8
           .GetBytes(this.config.GetSection("AppSettings:Token").Value));

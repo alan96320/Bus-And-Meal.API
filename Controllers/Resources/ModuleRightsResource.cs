@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace BusMeal.API.Controllers.Resources
 {
   public class SaveModuleRightsResource

@@ -44,14 +44,7 @@ namespace BusMeal.API
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddMvc(options =>
-      {
-        // var policy = new AuthorizationPolicyBuilder()
-        //               .RequireAuthenticatedUser()
-        //               .Build();
-        // options.Filters.Add(new AuthorizeFilter(policy));
-
-      })
+      services.AddMvc()
       .AddJsonOptions(opt =>
       {
         opt.SerializerSettings.ReferenceLoopHandling =
@@ -81,9 +74,9 @@ namespace BusMeal.API
       services.AddScoped<ICounterRepository, CounterRepository>();
       services.AddScoped<IAuditRepository, AuditRepository>();
       services.AddScoped<IMealOrderRepository, MealOrderRepository>();
-      services.AddScoped<IMealVerificationRepository, MealVerificationRepository>();
+      services.AddScoped<IMealOrderVerificationRepository, MealOrderVerificationRepository>();
       services.AddScoped<IBusOrderRepository, BusOrderRepository>();
-      services.AddScoped<IBusVerificationRepository, BusVerificationRepository>();
+      services.AddScoped<IBusOrderVerificationRepository, BusOrderVerificationRepository>();
 
       services.AddAutoMapper(typeof(Startup));
       services.AddCors();

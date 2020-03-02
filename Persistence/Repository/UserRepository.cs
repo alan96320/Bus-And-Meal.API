@@ -22,6 +22,7 @@ namespace BusMeal.API.Persistence.Repository
     public async Task<User> GetOne(int id)
     {
       return await context.User
+              .Include(u => u.UserDepartments)
               .Include(u => u.UserModuleRights)
                 .ThenInclude(u => u.ModuleRights)
               .FirstOrDefaultAsync(u => u.Id == id);
@@ -80,6 +81,7 @@ namespace BusMeal.API.Persistence.Repository
     public async Task<IEnumerable<User>> GetAll()
     {
       var users = await context.User
+                  .Include(u => u.UserDepartments)
                   .Include(u => u.UserModuleRights)
                     .ThenInclude(u => u.ModuleRights)
                   .ToListAsync();
@@ -90,6 +92,7 @@ namespace BusMeal.API.Persistence.Repository
     public async Task<PagedList<User>> GetPagedUsers(UserParams userParams)
     {
       var users = context.User
+                  .Include(u => u.UserDepartments)
                   .Include(u => u.UserModuleRights)
                     .ThenInclude(u => u.ModuleRights)
                   .AsQueryable();

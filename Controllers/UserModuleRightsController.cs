@@ -43,7 +43,7 @@ namespace BusMeal.API.Controllers
       if (usermoduleright == null)
         return NotFound();
 
-      var result = mapper.Map<UserModuleRights, ViewUserModuleRightsResource>(usermoduleright);
+      var result = mapper.Map<UserModuleRight, ViewUserModuleRightsResource>(usermoduleright);
 
       return Ok(result);
     }
@@ -66,7 +66,7 @@ namespace BusMeal.API.Controllers
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      var usermoduleright = mapper.Map<SaveUserModuleRightsResource, UserModuleRights>(userModuleRightsResource);
+      var usermoduleright = mapper.Map<SaveUserModuleRightsResource, UserModuleRight>(userModuleRightsResource);
 
       userModuleRightRepository.Add(usermoduleright);
 
@@ -77,7 +77,7 @@ namespace BusMeal.API.Controllers
 
       usermoduleright = await userModuleRightRepository.GetOne(usermoduleright.Id);
 
-      var result = mapper.Map<UserModuleRights, ViewUserModuleRightsResource>(usermoduleright);
+      var result = mapper.Map<UserModuleRight, ViewUserModuleRightsResource>(usermoduleright);
 
       return Ok(result);
     }
@@ -102,7 +102,7 @@ namespace BusMeal.API.Controllers
 
       usermoduleright = await userModuleRightRepository.GetOne(usermoduleright.Id);
 
-      var result = mapper.Map<UserModuleRights, ViewUserModuleRightsResource>(usermoduleright);
+      var result = mapper.Map<UserModuleRight, ViewUserModuleRightsResource>(usermoduleright);
 
       return Ok(result);
     }

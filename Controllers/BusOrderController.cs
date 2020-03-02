@@ -28,6 +28,7 @@ namespace BusMeal.API.Controllers
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
+      // TODO : send the userId in getAll
       var busOrders = await busOrderRepository.GetAll();
 
       var result = mapper.Map<IEnumerable<ViewBusOrderResource>>(busOrders);
@@ -38,12 +39,13 @@ namespace BusMeal.API.Controllers
     [HttpGet("{id}")]
     public async Task<IActionResult> GetActionResult(int id)
     {
+      // TODO : send the userId in getOne
       var busOrder = await busOrderRepository.GetOne(id);
 
       if (busOrder == null)
         return NotFound();
 
-      var result = mapper.Map<BusOrderEntryHeader, ViewBusOrderResource>(busOrder);
+      var result = mapper.Map<BusOrder, ViewBusOrderResource>(busOrder);
 
       return Ok(result);
     }
@@ -51,6 +53,7 @@ namespace BusMeal.API.Controllers
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedBusOrder([FromQuery]BusOrderParams busOrderParams)
     {
+      // TODO : send the userId in getPaged     
       var busOrders = await busOrderRepository.GetPagedBusOrder(busOrderParams);
 
       var result = mapper.Map<IEnumerable<ViewBusOrderResource>>(busOrders);
@@ -63,10 +66,11 @@ namespace BusMeal.API.Controllers
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveBusOrderResource busOrderResource)
     {
+      // TODO : cegah save jika sudah lewat waktu      
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      var busOrder = mapper.Map<SaveBusOrderResource, BusOrderEntryHeader>(busOrderResource);
+      var busOrder = mapper.Map<SaveBusOrderResource, BusOrder>(busOrderResource);
 
       busOrderRepository.Add(busOrder);
 
@@ -77,7 +81,7 @@ namespace BusMeal.API.Controllers
 
       busOrder = await busOrderRepository.GetOne(busOrder.Id);
 
-      var result = mapper.Map<BusOrderEntryHeader, ViewBusOrderResource>(busOrder);
+      var result = mapper.Map<BusOrder, ViewBusOrderResource>(busOrder);
 
       return Ok(result);
     }
@@ -85,6 +89,7 @@ namespace BusMeal.API.Controllers
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveBusOrderResource busOrderResource)
     {
+      // TODO : cegah save jika sudah lewat waktu
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
@@ -102,7 +107,7 @@ namespace BusMeal.API.Controllers
 
       busOrder = await busOrderRepository.GetOne(busOrder.Id);
 
-      var result = mapper.Map<BusOrderEntryHeader, ViewBusOrderResource>(busOrder);
+      var result = mapper.Map<BusOrder, ViewBusOrderResource>(busOrder);
 
       return Ok(result);
     }

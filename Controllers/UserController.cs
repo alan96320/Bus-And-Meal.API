@@ -72,7 +72,7 @@ namespace BusMeal.API.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] SaveUserResource userResource)
+    public async Task<IActionResult> Create([FromBody] AddUserResource userResource)
     {
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
@@ -84,9 +84,9 @@ namespace BusMeal.API.Controllers
 
       // Copy all right to module right
       var rightLists = await moduleRightsRepository.GetAll();
-      foreach (ModuleRights list in rightLists)
+      foreach (ModuleRight list in rightLists)
       {
-        var userModuleRights = new UserModuleRights
+        var userModuleRights = new UserModuleRight
         {
           ModuleRightsId = list.Id,
           UserId = user.Id,
@@ -94,7 +94,7 @@ namespace BusMeal.API.Controllers
           Write = false
         };
 
-        var saveUserModule = mapper.Map<UserModuleRights>(userModuleRights);
+        var saveUserModule = mapper.Map<UserModuleRight>(userModuleRights);
 
         userModuleRightsRepository.Add(saveUserModule);
       }

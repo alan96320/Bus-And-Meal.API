@@ -1,9 +1,11 @@
+using System.Collections.Generic;
+using BusMeal.API.Core.Models;
+
 namespace BusMeal.API.Controllers.Resources
 {
   public class SaveUserModuleRightsResource
   {
-    public int RightsId { get; set; }
-    public int UserId { get; set; }
+    public int ModuleRightsId { get; set; }
     public bool Read { get; set; }
     public bool Write { get; set; }
   }
@@ -12,7 +14,7 @@ namespace BusMeal.API.Controllers.Resources
   {
     public int Id { get; set; }
     public int ModuleRightsId { get; set; }
-    public int UserId { get; set; }
+    public ViewModuleRightsResource ModuleRights { get; set; }
     public bool Read { get; set; }
     public bool Write { get; set; }
   }

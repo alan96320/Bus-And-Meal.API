@@ -22,19 +22,19 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<Department> GetOne(int id)
     {
-      return await context.Departments.FindAsync(id);
+      return await context.Department.FindAsync(id);
     }
 
     public void Add(Department department)
     {
-      context.Departments.Add(department);
+      context.Department.Add(department);
     }
 
-     public void Update(Department department)
-     {
-       context.Departments.Add(department);
-       this.context.Entry(department).State = EntityState.Modified;
-     }
+    public void Update(Department department)
+    {
+      context.Department.Add(department);
+      this.context.Entry(department).State = EntityState.Modified;
+    }
 
     public void Remove(Department department)
     {
@@ -43,14 +43,14 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<IEnumerable<Department>> GetAll()
     {
-      var departments = await context.Departments.ToListAsync();
+      var departments = await context.Department.ToListAsync();
 
       return departments;
     }
 
     public async Task<PagedList<Department>> GetPagedDepartments(DepartmentParams departmentParams)
     {
-      var departments = context.Departments.AsQueryable();
+      var departments = context.Department.AsQueryable();
 
       // perlu user id untuk membatasi 
 

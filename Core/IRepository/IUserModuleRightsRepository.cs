@@ -8,11 +8,11 @@ namespace BusMeal.API.Core.IRepository
 {
   public interface IUserModuleRightsRepository
   {
-    Task<UserModuleRights> GetOne(int id);
-    void Add(UserModuleRights userModuleRights);
-    void Remove(UserModuleRights userModuleRights);
-    Task<IEnumerable<UserModuleRights>> GetAll();
-    Task<PagedList<UserModuleRights>> GetPagedUserModuleRights(UserModuleRightsParams userModuleRightsParams);
+    Task<UserModuleRight> GetOne(int id);
+    void Add(UserModuleRight userModuleRights);
+    void Remove(UserModuleRight userModuleRights);
+    Task<IEnumerable<UserModuleRight>> GetAll();
+    Task<PagedList<UserModuleRight>> GetPagedUserModuleRights(UserModuleRightsParams userModuleRightsParams);
 
   }
 }
