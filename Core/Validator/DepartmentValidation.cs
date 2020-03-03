@@ -32,14 +32,14 @@ namespace BusMeal.API.Core.Validator
       RuleFor(d => d.Code)
         .NotEmpty().WithMessage("Code is required");
 
-      RuleFor(d => d).Must(d => !IsDuplicate(d)).WithMessage("There is a duplicated data detected, please input another data");
+      RuleFor(d => d.Code).Must(d => !IsDuplicate(d)).WithMessage("There is a duplicated data detected, please input another data");
     }
     // FIXME : duplicate check
-    private bool IsDuplicate(SaveDepartmentResource resource)
+    private bool IsDuplicate(string resource)
     {
-      if (!string.IsNullOrEmpty(resource.Name) || !string.IsNullOrEmpty(resource.Code))
+      if (!string.IsNullOrEmpty(resource))
       {
-        return context.Department.Any(d => d.Code == resource.Code && d.Name == resource.Name);
+        return context.Department.Any(d => d.Code == resource);
       }
       return false;
     }
