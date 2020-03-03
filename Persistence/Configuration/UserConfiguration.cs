@@ -12,13 +12,13 @@ namespace BusMeal.API.Persistence.Configuration
         .HasMany<UserDepartment>(u => u.UserDepartments)
         .WithOne(ud => ud.User)
         .HasForeignKey(ud => ud.UserId)
-        .OnDelete(DeleteBehavior.Restrict);
+        .OnDelete(DeleteBehavior.Cascade);
 
       builder
         .HasMany<UserModuleRight>(u => u.UserModuleRights)
         .WithOne(um => um.User)
         .HasForeignKey(um => um.UserId)
-        .OnDelete(DeleteBehavior.Restrict);
+        .OnDelete(DeleteBehavior.Cascade);
     }
   }
 }
