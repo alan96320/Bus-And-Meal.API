@@ -23,12 +23,6 @@ namespace BusMeal.API.Persistence.Repository
       context.MealType.Add(mealType);
     }
 
-    // FIXME : check duplicated value
-    public async Task<MealType> isVendorDuplicate(int vendorId)
-    {
-      return await context.MealType.Where(m => m.MealVendorId == vendorId).FirstOrDefaultAsync();
-    }
-
     public async Task<IEnumerable<MealType>> GetAll()
     {
       var mealType = await context.MealType.Include(m => m.MealVendor).ToListAsync();

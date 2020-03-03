@@ -14,6 +14,5 @@ namespace BusMeal.API.Core.IRepository
     void Remove(MealType mealType);
     Task<IEnumerable<MealType>> GetAll();
     Task<PagedList<MealType>> GetPagedmealType(MealTypeParams mealTypeParams);
-    Task<MealType> isVendorDuplicate(int vendorId);
   }
 }

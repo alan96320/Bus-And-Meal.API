@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
+
 using System.Linq;
 using BusMeal.API.Controllers.Resources;
-using BusMeal.API.Core.IRepository;
-using BusMeal.API.Core.Models;
-using BusMeal.API.Helpers;
 using BusMeal.API.Persistence;
 using FluentValidation;
-using FluentValidation.Results;
-using FluentValidation.Validators;
 
 namespace BusMeal.API.Core.Validator
 {
@@ -32,7 +26,7 @@ namespace BusMeal.API.Core.Validator
       RuleFor(d => d.Code)
         .NotEmpty().WithMessage("Code is required");
 
-      RuleFor(d => d.Code).Must(d => !IsDuplicate(d)).WithMessage("There is a duplicated data detected, please input another data");
+      RuleFor(d => d.Code).Must(d => !IsDuplicate(d)).WithMessage("Department Code must be unique");
     }
     // FIXME : duplicate check
     private bool IsDuplicate(string resource)
