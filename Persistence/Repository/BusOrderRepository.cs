@@ -78,7 +78,6 @@ namespace BusMeal.API.Persistence.Repository
 
       // TODO  : Filter by Status ? Locked, Closed --> sebaiknya Locked dihilangkan, dan diganti dgn Open
 
-
       // Sort
       if (busOrderParams.isDescending)
       {

@@ -29,6 +29,8 @@ using FluentValidation;
 using BusMeal.API.Core.Validator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using System.Reflection;
+using System.IO;
 
 namespace BusMeal.API
 {
@@ -97,6 +99,7 @@ namespace BusMeal.API
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "BusMeal API", Version = "v1" });
+
       });
     }
 

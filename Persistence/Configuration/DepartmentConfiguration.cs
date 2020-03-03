@@ -9,14 +9,6 @@ namespace BusMeal.API.Persistence.Configuration
     public void Configure(EntityTypeBuilder<Department> builder)
     {
       builder
-        .Property(d => d.Name)
-        .IsUnicode();
-
-      builder
-        .Property(d => d.Code)
-        .IsUnicode();
-
-      builder
         .HasMany<Employee>(d => d.Employees)
         .WithOne(e => e.Department)
         .HasForeignKey(e => e.DepartmentId)
