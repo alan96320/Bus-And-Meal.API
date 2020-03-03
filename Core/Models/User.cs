@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -32,7 +33,7 @@ namespace BusMeal.API.Core.Models
     public string GddbId { get; set; }
     public bool AdminStatus { get; set; }
     public int LockTransStatus { get; set; }
-    public ICollection<UserModuleRight> UserModuleRights { get; set; }
-    public ICollection<UserDepartment> UserDepartments { get; set; }
+    public ICollection<UserModuleRight> UserModuleRights { get; set; } = new Collection<UserModuleRight>();
+    public ICollection<UserDepartment> UserDepartments { get; set; } = new Collection<UserDepartment>();
   }
 }

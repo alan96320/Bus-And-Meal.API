@@ -39,6 +39,6 @@ namespace BusMeal.API.Controllers.Resources
     public bool AdminStatus { get; set; }
     public int LockTransStatus { get; set; }
     public ICollection<ViewUserModuleRightsResource> UserModuleRights { get; set; }
-    public ICollection<ViewUserDepartmentResource> UserDepartment { get; set; }
+    public ICollection<ViewUserDepartmentResource> UserDepartments { get; set; }
   }
 }
