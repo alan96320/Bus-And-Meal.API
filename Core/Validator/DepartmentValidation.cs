@@ -14,22 +14,18 @@ namespace BusMeal.API.Core.Validator
     {
       this.context = context;
 
-      RuleFor(d => d.Name)
-        .Length(1, 100).WithMessage("Name length must be between 1 to 100 character");
-
-      RuleFor(d => d.Name)
-        .NotEmpty().WithMessage("Name is required");
-
       RuleFor(d => d.Code)
-        .Length(1, 50).WithMessage("Code length must be between 1 to 50 character");
+        .NotEmpty().WithMessage("Code is required")
+        .Length(2, 25).WithMessage("Code length must be between 2 to 25 character")
+        .Must(d => !IsCodeDuplicate(d)).WithMessage("Department Code must be unique");
 
-      RuleFor(d => d.Code)
-        .NotEmpty().WithMessage("Code is required");
+      RuleFor(d => d.Name)
+        .NotEmpty().WithMessage("Name is required")
+        .Length(2, 50).WithMessage("Name length must be between 1 to 50 character");
 
-      RuleFor(d => d.Code).Must(d => !IsDuplicate(d)).WithMessage("Department Code must be unique");
     }
     // FIXME : duplicate check
-    private bool IsDuplicate(string resource)
+    private bool IsCodeDuplicate(string resource)
     {
       if (!string.IsNullOrEmpty(resource))
       {
