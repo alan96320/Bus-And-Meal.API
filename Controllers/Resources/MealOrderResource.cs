@@ -9,7 +9,8 @@ namespace BusMeal.API.Controllers.Resources
     public DateTime OrderEntryDate { get; set; }
     public int? DepartmentId { get; set; }
     public int? MealOrderVerificationId { get; set; }
-    public bool isReadyToCollect {get;set;}
+    public bool isReadyToCollect { get; set; }
+    public int UserId { get; set; }
     public ICollection<SaveMealOrderDetailResource> MealOrderDetails { get; set; }
       = new Collection<SaveMealOrderDetailResource>();
   }
@@ -20,7 +21,8 @@ namespace BusMeal.API.Controllers.Resources
     public DateTime OrderEntryDate { get; set; }
     public int? DepartmentId { get; set; }
     public int? MealOrderVerificationId { get; set; }
-    public bool isReadyToCollect {get;set;}
+    public bool isReadyToCollect { get; set; }
+    public int UserId { get; set; }
     public ICollection<ViewMealOrderDetailResource> MealOrderDetails { get; set; }
         = new Collection<ViewMealOrderDetailResource>();
   }
