@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BusMeal.API.Core.Models;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BusMeal.API.Controllers
 {
@@ -41,6 +42,7 @@ namespace BusMeal.API.Controllers
       this.moduleRightsRepository = moduleRightsRepository;
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody]LoginResource loginResource)
     {
@@ -55,15 +57,13 @@ namespace BusMeal.API.Controllers
       var allUserModules = await userModuleRepository.GetAll();
       var userModules = allUserModules.Where(u => u.UserId == userLogin.Id).ToList();
 
-      var claims = new List<Claim>
-          {
-            new Claim(ClaimTypes.Name, userLogin.Username)
-          };
+      var claims = new List<Claim>();
+      claims.Add(new Claim(ClaimTypes.Name, userLogin.Username));
+      claims.Add(new Claim("Id", userLogin.Id.ToString()));
 
       // Add user claim
       foreach (UserModuleRight userModule in userModules)
       {
-
         var right = await moduleRightsRepository.GetOne(userModule.ModuleRightsId);
         var claim = right.Description.ToString();
 
@@ -101,6 +101,18 @@ namespace BusMeal.API.Controllers
         token = tokenHandler.WriteToken(token),
         user
       });
+    }
+
+    // FIXME : make me to be reuseable
+    private int getUserId()
+    {
+      var idClaim = User.Claims.FirstOrDefault(c => c.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
+      if (idClaim != null)
+      {
+        var id = int.Parse(idClaim.Value);
+        return id;
+      }
+      return -1;
     }
   }
 }

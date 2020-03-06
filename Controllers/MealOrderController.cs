@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,9 @@ using BusMeal.API.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using BusMeal.API.Helpers.Params;
 using BusMeal.API.Helpers;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace BusMeal.API.Controllers
 {
@@ -30,6 +34,8 @@ namespace BusMeal.API.Controllers
     public async Task<IActionResult> GetAll()
     {
       // TODO : send userId to getAll
+
+
       var mealOrders = await mealOrderRepository.GetAll();
 
       var result = mapper.Map<IEnumerable<ViewMealOrderResource>>(mealOrders);
@@ -54,7 +60,7 @@ namespace BusMeal.API.Controllers
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedMealOrderEntryHeader([FromQuery]MealOrderParams mealOrderParams)
     {
-            // TODO : send userId to getPaged
+      // TODO : send userId to getPaged
       var mealOrders = await mealOrderRepository.GetPagedMealOrder(mealOrderParams);
 
       var result = mapper.Map<IEnumerable<ViewMealOrderResource>>(mealOrders);
@@ -132,6 +138,18 @@ namespace BusMeal.API.Controllers
       }
 
       return Ok($"{id}");
+    }
+
+    // FIXME : make me to be reuseable
+    private int getUserId()
+    {
+      var idClaim = User.Claims.FirstOrDefault(c => c.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
+      if (idClaim != null)
+      {
+        var id = int.Parse(idClaim.Value);
+        return id;
+      }
+      return -1;
     }
   }
 }

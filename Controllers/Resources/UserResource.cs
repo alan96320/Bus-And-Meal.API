@@ -11,7 +11,7 @@ namespace BusMeal.API.Controllers.Resources
     public string LastName { get; set; }
     public string FullName { get; set; }
     public string GddbId { get; set; }
-    public bool AdminStatus { get; set; }
+    public bool AdminStatus { get; set; } = false;
     public int LockTransStatus { get; set; }
   }
   public class SaveUserResource
