@@ -26,7 +26,7 @@ namespace BusMeal.API.Core.Validator
         .Must(m => !IsVendorIdDuplicate(m)).WithMessage("Vendor Id must be unique");
     }
 
-    // FIXME : check duplicate value
+    // TODO : Check for better technics
     private bool IsCodeDuplicate(string resource)
     {
       if (!string.IsNullOrEmpty(resource))

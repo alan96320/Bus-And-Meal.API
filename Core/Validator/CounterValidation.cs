@@ -21,6 +21,8 @@ namespace BusMeal.API.Core.Validator
       RuleFor(c => c.Name)
           .Length(5, 25).WithMessage("Counter name length must be between 5 to 25 character");
     }
+
+    // TODO : Check for better technics
     private bool IsCodeDuplicate(string resource)
     {
       if (!string.IsNullOrEmpty(resource))

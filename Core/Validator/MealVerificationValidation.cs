@@ -20,6 +20,7 @@ namespace BusMeal.API.Core.Validator
           .Must(mv => !IsDateDuplicate(mv)).WithMessage("Date can't be duplicated");
     }
 
+    // TODO : Check for better technics
     private bool IsDateDuplicate(SaveMealOrderVerificationResource resource)
     {
       if (!string.IsNullOrEmpty((resource.OrderDate).ToString()))

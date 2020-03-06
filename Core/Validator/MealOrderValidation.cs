@@ -31,7 +31,7 @@ namespace BusMeal.API.Core.Validator
     }
 
 
-
+    // TODO : Check for better technics
     private bool IsDepartmentDateUnique(SaveMealOrderResource resource)
     {
       if (!string.IsNullOrEmpty((resource.DepartmentId).ToString()))
