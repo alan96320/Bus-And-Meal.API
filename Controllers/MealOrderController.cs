@@ -42,10 +42,8 @@ namespace BusMeal.API.Controllers
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-      // TODO : send userId to getAll
-
-
-      var mealOrders = await mealOrderRepository.GetAll();
+      var userId = getUserId();
+      var mealOrders = await mealOrderRepository.GetAll(userId);
 
       var result = mapper.Map<IEnumerable<ViewMealOrderResource>>(mealOrders);
 
@@ -55,8 +53,8 @@ namespace BusMeal.API.Controllers
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
-      // TODO : send userId to getOne
-      var mealOrder = await mealOrderRepository.GetOne(id);
+      var userId = getUserId();
+      var mealOrder = await mealOrderRepository.GetOne(id, userId);
 
       if (mealOrder == null)
         return NotFound();
@@ -69,8 +67,8 @@ namespace BusMeal.API.Controllers
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedMealOrderEntryHeader([FromQuery]MealOrderParams mealOrderParams)
     {
-      // TODO : send userId to getPaged
-      var mealOrders = await mealOrderRepository.GetPagedMealOrder(mealOrderParams);
+      var userId = getUserId();
+      var mealOrders = await mealOrderRepository.GetPagedMealOrder(mealOrderParams, userId);
 
       var result = mapper.Map<IEnumerable<ViewMealOrderResource>>(mealOrders);
 
@@ -82,7 +80,6 @@ namespace BusMeal.API.Controllers
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveMealOrderResource mealOrderResource)
     {
-      // TODO : cegah save jika sudah lewat waktu  lockedMeal
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
@@ -107,8 +104,6 @@ namespace BusMeal.API.Controllers
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveMealOrderResource mealOrderResource)
     {
-      // TODO : cegah save jika sudah lewat waktu  lockedMeal
-
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 

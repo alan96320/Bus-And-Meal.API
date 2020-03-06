@@ -23,26 +23,27 @@ namespace BusMeal.API.Persistence.Repository
       context.MealOrder.Add(mealOrder);
     }
 
-    public async Task<IEnumerable<MealOrder>> GetAll(int? userId=null)
+    public async Task<IEnumerable<MealOrder>> GetAll(int? userId = null)
     {
       var mealOrders = context.MealOrder.Include(m => m.MealOrderDetails).AsQueryable();
 
-      if (userId != null) 
-          mealOrders = mealOrders.Where(bo => bo.UserId == userId);
+      if (userId != null)
+        mealOrders = mealOrders.Where(bo => bo.UserId == userId);
 
       return await mealOrders.ToListAsync();
-
     }
 
     public async Task<MealOrder> GetOne(int id, int? userId = null)
     {
-      if (userId != null) {
-          return await context.MealOrder.Include(b => b.MealOrderDetails)
-                                        .FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId );
+      if (userId != null)
+      {
+        return await context.MealOrder.Include(b => b.MealOrderDetails)
+                                      .FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId);
       }
-      else {
-          return await context.MealOrder.Include(b => b.MealOrderDetails)
-                                       .FirstOrDefaultAsync(b => b.Id == id);                                      
+      else
+      {
+        return await context.MealOrder.Include(b => b.MealOrderDetails)
+                                     .FirstOrDefaultAsync(b => b.Id == id);
       }
     }
 
@@ -50,8 +51,9 @@ namespace BusMeal.API.Persistence.Repository
     {
       var mealOrders = context.MealOrder.Include(m => m.MealOrderDetails).AsQueryable();
 
-      if (userId != null) {
-          mealOrders = mealOrders.Where(b => b.UserId == userId);        
+      if (userId != null)
+      {
+        mealOrders = mealOrders.Where(b => b.UserId == userId);
       }
 
       if (DateTime.Compare(mealOrderParams.OrderEntryDate, new DateTime(01, 1, 1)) != 0)
@@ -79,7 +81,7 @@ namespace BusMeal.API.Persistence.Repository
             case "departmentid":
               mealOrders = mealOrders.OrderByDescending(m => m.DepartmentId);
               break;
-              // TODO : implementasikan Sort pada Status
+            // TODO : implementasikan Sort pada Status
             default:
               mealOrders = mealOrders.OrderByDescending(m => m.OrderEntryDate);
               break;
@@ -103,7 +105,7 @@ namespace BusMeal.API.Persistence.Repository
               mealOrders = mealOrders.OrderBy(m => m.DepartmentId);
               break;
 
-              // TODO : implementasikan Sort pada Status              
+            // TODO : implementasikan Sort pada Status              
 
             default:
               mealOrders = mealOrders.OrderBy(m => m.OrderEntryDate);
