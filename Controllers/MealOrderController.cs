@@ -22,12 +22,21 @@ namespace BusMeal.API.Controllers
     private readonly IMapper mapper;
     private readonly IMealOrderRepository mealOrderRepository;
     private readonly IUnitOfWork unitOfWork;
+    private IUserRepository userRepository;
+    private readonly IMealOrderVerificationRepository orderVerificationRepository;
 
-    public MealOrderController(IMapper mapper, IMealOrderRepository mealOrderRepository, IUnitOfWork unitOfWork)
+    public MealOrderController(IMapper mapper,
+    IMealOrderRepository mealOrderRepository,
+    IUserRepository userRepository,
+    IUnitOfWork unitOfWork,
+    IMealOrderVerificationRepository orderVerificationRepository
+    )
     {
       this.mapper = mapper;
       this.mealOrderRepository = mealOrderRepository;
       this.unitOfWork = unitOfWork;
+      this.userRepository = userRepository;
+      this.orderVerificationRepository = orderVerificationRepository;
     }
 
     [HttpGet]
@@ -126,9 +135,30 @@ namespace BusMeal.API.Controllers
     public async Task<IActionResult> Remove(int id)
     {
       var mealOrder = await mealOrderRepository.GetOne(id);
-
       if (mealOrder == null)
         return NotFound();
+
+      var userId = getUserId();
+      if (userId < 0)
+        return BadRequest("You are not authorize to delete the record");
+
+      var user = await userRepository.GetOne(userId);
+      if (user.AdminStatus != true)
+      {
+        if (mealOrder.UserId != userId)
+          return BadRequest("You are not authorize to delete the record");
+      }
+
+      if (mealOrder.MealOrderVerificationId != null)
+      {
+        var verificationId = mealOrder.MealOrderVerificationId;
+        var orderVerification = await orderVerificationRepository.GetOne(verificationId.Value);
+        if (orderVerification.IsClosed == true)
+          return BadRequest("The order is already closed");
+      }
+
+      if (mealOrder.IsReadyToCollect == true)
+        return BadRequest("Can not delete the order which is already confirm as ready to collect");
 
       mealOrderRepository.Remove(mealOrder);
 

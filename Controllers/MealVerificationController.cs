@@ -19,18 +19,33 @@ namespace BusMeal.API.Controllers
     private readonly IMealOrderVerificationRepository mealOrderVerificationRepository;
     private readonly IUnitOfWork unitOfWork;
     private IMealtypeRepository mealtypeRepository;
+    private readonly IUserRepository userRepository;
 
-    public MealOrderVerificationController(IMapper mapper, IMealOrderVerificationRepository mealOrderVerificationRepository, IMealtypeRepository mealtypeRepository, IUnitOfWork unitOfWork)
+    public MealOrderVerificationController(
+    IMapper mapper,
+    IMealOrderVerificationRepository mealOrderVerificationRepository,
+    IMealtypeRepository mealtypeRepository,
+    IUnitOfWork unitOfWork,
+    IUserRepository userRepository
+    )
     {
       this.mapper = mapper;
       this.mealOrderVerificationRepository = mealOrderVerificationRepository;
       this.unitOfWork = unitOfWork;
       this.mealtypeRepository = mealtypeRepository;
+      this.userRepository = userRepository;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
+      var userId = getUserId();
+      var user = await userRepository.GetOne(userId);
+      if (user.AdminStatus != true)
+      {
+        return BadRequest("This data only available for admin");
+      }
+
       var mealOrderVerifications = await mealOrderVerificationRepository.GetAll();
 
       var result = mapper.Map<IEnumerable<ViewMealOrderVerificationResource>>(mealOrderVerifications);
@@ -41,6 +56,13 @@ namespace BusMeal.API.Controllers
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
+      var userId = getUserId();
+      var user = await userRepository.GetOne(userId);
+      if (user.AdminStatus != true)
+      {
+        return BadRequest("This data only available for admin");
+      }
+
       var mealOrderVerification = await mealOrderVerificationRepository.GetOne(id);
 
       if (mealOrderVerification == null)
@@ -54,6 +76,13 @@ namespace BusMeal.API.Controllers
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedMealOrderVerification([FromQuery]MealOrderVerificationParams mealOrderVerificationParams)
     {
+      var userId = getUserId();
+      var user = await userRepository.GetOne(userId);
+      if (user.AdminStatus != true)
+      {
+        return BadRequest("This data only available for admin");
+      }
+
       var mealOrderVerifications = await mealOrderVerificationRepository.GetPagedMealOrderVerification(mealOrderVerificationParams);
 
       var result = mapper.Map<IEnumerable<ViewMealOrderVerificationResource>>(mealOrderVerifications);
@@ -66,8 +95,27 @@ namespace BusMeal.API.Controllers
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveMealOrderVerificationResource mealOrderVerificationResource)
     {
+      var userId = getUserId();
+      var user = await userRepository.GetOne(userId);
+      if (user.AdminStatus != true)
+      {
+        return BadRequest("This data only available for admin");
+      }
+
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
+
+      if (mealOrderVerificationResource.IsClosed == true)
+      {
+        var orderVerificationDetail = mealOrderVerificationResource.MealOrderVerificationDetails;
+        foreach (SaveMealOrderVerificationDetailResource item in orderVerificationDetail)
+        {
+          var mealTypeId = item.MealTypeId;
+          var mealType = await mealtypeRepository.GetOne(mealTypeId);
+          var vendorId = mealType.MealVendorId;
+          item.VendorId = vendorId;
+        }
+      }
 
       var mealOrderVerification = mapper.Map<SaveMealOrderVerificationResource, MealOrderVerification>(mealOrderVerificationResource);
 
@@ -96,6 +144,13 @@ namespace BusMeal.API.Controllers
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveMealOrderVerificationResource mealOrderVerificationResource)
     {
+      var userId = getUserId();
+      var user = await userRepository.GetOne(userId);
+      if (user.AdminStatus != true)
+      {
+        return BadRequest("This data only available for admin");
+      }
+
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
@@ -121,10 +176,22 @@ namespace BusMeal.API.Controllers
     [HttpDelete("{id}")]
     public async Task<IActionResult> Remove(int id)
     {
+      var userId = getUserId();
+      var user = await userRepository.GetOne(userId);
+      if (user.AdminStatus != true)
+      {
+        return BadRequest("This data only available for admin");
+      }
+
       var mealOrderVerification = await mealOrderVerificationRepository.GetOne(id);
 
       if (mealOrderVerification == null)
         return NotFound();
+
+      if (mealOrderVerification.IsClosed == true)
+      {
+        return BadRequest("The transaction was closed, and can't be delete!");
+      }
 
       mealOrderVerificationRepository.Remove(mealOrderVerification);
 
