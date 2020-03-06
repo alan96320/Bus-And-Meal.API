@@ -19,13 +19,21 @@ namespace BusMeal.API.Controllers
     private readonly IMealOrderVerificationRepository mealOrderVerificationRepository;
     private readonly IUnitOfWork unitOfWork;
     private IMealtypeRepository mealtypeRepository;
+    private readonly IMealOrderRepository mealOrderRepository;
 
-    public MealOrderVerificationController(IMapper mapper, IMealOrderVerificationRepository mealOrderVerificationRepository, IMealtypeRepository mealtypeRepository, IUnitOfWork unitOfWork)
+    public MealOrderVerificationController(
+      IMapper mapper,
+      IMealOrderVerificationRepository mealOrderVerificationRepository,
+      IMealtypeRepository mealtypeRepository,
+      IUnitOfWork unitOfWork,
+      IMealOrderRepository mealOrderRepository
+      )
     {
       this.mapper = mapper;
       this.mealOrderVerificationRepository = mealOrderVerificationRepository;
       this.unitOfWork = unitOfWork;
       this.mealtypeRepository = mealtypeRepository;
+      this.mealOrderRepository = mealOrderRepository;
     }
 
     [HttpGet]
@@ -69,6 +77,8 @@ namespace BusMeal.API.Controllers
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
+      var OrderLists = mealOrderVerificationResource.OrderList;
+
       var mealOrderVerification = mapper.Map<SaveMealOrderVerificationResource, MealOrderVerification>(mealOrderVerificationResource);
 
       var mealVerificationDetails = mealOrderVerification.MealOrderVerificationDetails;
@@ -80,6 +90,12 @@ namespace BusMeal.API.Controllers
       }
 
       mealOrderVerificationRepository.Add(mealOrderVerification);
+
+      foreach (int item in OrderLists)
+      {
+        var Order = await mealOrderRepository.GetOne(item);
+        Order.MealOrderVerificationId = mealOrderVerification.Id;
+      }
 
       if (await unitOfWork.CompleteAsync() == false)
       {
@@ -104,7 +120,15 @@ namespace BusMeal.API.Controllers
       if (mealOrderVerification == null)
         return NotFound();
 
+      var OrderLists = mealOrderVerificationResource.OrderList;
+
       mealOrderVerification = mapper.Map(mealOrderVerificationResource, mealOrderVerification);
+
+      foreach (int item in OrderLists)
+      {
+        var Order = await mealOrderRepository.GetOne(item);
+        Order.MealOrderVerificationId = mealOrderVerification.Id;
+      }
 
       if (await unitOfWork.CompleteAsync() == false)
       {

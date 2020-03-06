@@ -16,8 +16,6 @@ namespace BusMeal.API.Core.Models
     public string OrderNo { get; set; }
     public DateTime OrderDate { get; set; }
     public bool IsClosed { get; set; }
-    public ICollection<MealOrder> MealOrders { get; set; }
-      = new Collection<MealOrder>();
     public ICollection<MealOrderVerificationDetail> MealOrderVerificationDetails { get; set; }
       = new Collection<MealOrderVerificationDetail>();
   }

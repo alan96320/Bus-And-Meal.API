@@ -23,8 +23,8 @@ namespace BusMeal.API.Persistence.Configuration
       builder
         .HasMany<MealOrderVerificationDetail>(mt => mt.MealOrderVerificationDetails)  // mt = meal type
         .WithOne(movd => movd.MealType)           // movd = meal order verification detail
-        .HasForeignKey(movd => movd.MealOrderVerificationId)
-        .OnDelete(DeleteBehavior.Cascade);
+        .HasForeignKey(movd => movd.MealTypeId)
+        .OnDelete(DeleteBehavior.SetNull);
     }
   }
 }

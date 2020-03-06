@@ -8,11 +8,11 @@ namespace BusMeal.API.Persistence.Configuration
   {
     public void Configure(EntityTypeBuilder<MealOrderVerification> builder)
     {
-      builder
-        .HasMany<MealOrder>(mov => mov.MealOrders)   //mov = meal order verification
-        .WithOne(mo => mo.MealOrderVerification)    // mo = meal order
-        .HasForeignKey(mo => mo.MealOrderVerificationId)
-        .OnDelete(DeleteBehavior.SetNull);
+      // builder
+      //   .HasMany<MealOrder>(mov => mov.MealOrders)   //mov = meal order verification
+      //   .WithOne(mo => mo.MealOrderVerification)    // mo = meal order
+      //   .HasForeignKey(mo => mo.MealOrderVerificationId)
+      //   .OnDelete(DeleteBehavior.SetNull);
 
       builder
         .HasMany(mov => mov.MealOrderVerificationDetails)    //mov = meal order verification
