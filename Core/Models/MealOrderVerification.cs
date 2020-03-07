@@ -18,5 +18,8 @@ namespace BusMeal.API.Core.Models
     public bool IsClosed { get; set; }
     public ICollection<MealOrderVerificationDetail> MealOrderVerificationDetails { get; set; }
       = new Collection<MealOrderVerificationDetail>();
+
+    public ICollection<MealOrder> MealOrders { get; set; }
+        = new Collection<MealOrder>();      
   }
 }
