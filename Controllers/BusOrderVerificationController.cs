@@ -17,12 +17,18 @@ namespace BusMeal.API.Controllers
     private readonly IMapper mapper;
     private readonly IBusOrderVerificationRepository busOrderVerificationRepository;
     private readonly IUnitOfWork unitOfWork;
+    private readonly IBusOrderRepository busOrderRepository;    
 
-    public BusOrderVerificationController(IMapper mapper, IBusOrderVerificationRepository busOrderVerificationRepository, IUnitOfWork unitOfWork)
+    public BusOrderVerificationController(
+      IMapper mapper, 
+      IBusOrderVerificationRepository busOrderVerificationRepository,
+      IUnitOfWork unitOfWork,
+      IBusOrderRepository busOrderRepository)
     {
       this.mapper = mapper;
       this.busOrderVerificationRepository = busOrderVerificationRepository;
       this.unitOfWork = unitOfWork;
+      this.busOrderRepository = busOrderRepository;      
     }
 
     [HttpGet]
@@ -67,9 +73,17 @@ namespace BusMeal.API.Controllers
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
+      var OrderLists = busOrderVerificationResource.OrderList;
+
       var busOrderVerification = mapper.Map<SaveBusOrderVerificationResource, BusOrderVerification>(busOrderVerificationResource);
 
       busOrderVerificationRepository.Add(busOrderVerification);
+
+      foreach (int item in OrderLists)
+      {
+        var Order = await busOrderRepository.GetOne(item);
+        Order.BusOrderVerificationId = busOrderVerification.Id;
+      }
 
       if (await unitOfWork.CompleteAsync() == false)
       {
@@ -94,7 +108,15 @@ namespace BusMeal.API.Controllers
       if (busOrderVerification == null)
         return NotFound();
 
+      var OrderLists = busOrderVerificationResource.OrderList;
+
       busOrderVerification = mapper.Map(busOrderVerificationResource, busOrderVerification);
+
+      foreach (int item in OrderLists)
+      {
+        var Order = await busOrderRepository.GetOne(item);
+        Order.BusOrderVerificationId = busOrderVerification.Id;
+      }
 
       if (await unitOfWork.CompleteAsync() == false)
       {
