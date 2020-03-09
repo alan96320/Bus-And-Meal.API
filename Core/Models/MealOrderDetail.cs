@@ -11,7 +11,7 @@ namespace BusMeal.API.Core.Models
     public MealOrder MealOrder { get; set; }
     public int? MealOrderId { get; set; }
     public MealType MealType { get; set; }
-    public int? MealTypeId { get; set; }
+    public int MealTypeId { get; set; }
     public int OrderQty { get; set; }
   }
 }
