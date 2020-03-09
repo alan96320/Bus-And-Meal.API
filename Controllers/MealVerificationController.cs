@@ -94,7 +94,7 @@ namespace BusMeal.API.Controllers
       foreach (int item in OrderLists)
       {
         var Order = await mealOrderRepository.GetOne(item);
-        Order.MealOrderVerificationId = mealOrderVerification.Id;
+        Order.MealOrderVerification = mealOrderVerification;
       }
 
       if (await unitOfWork.CompleteAsync() == false)
@@ -127,7 +127,7 @@ namespace BusMeal.API.Controllers
       foreach (int item in OrderLists)
       {
         var Order = await mealOrderRepository.GetOne(item);
-        Order.MealOrderVerificationId = mealOrderVerification.Id;
+        Order.MealOrderVerification = mealOrderVerification;
       }
 
       if (await unitOfWork.CompleteAsync() == false)

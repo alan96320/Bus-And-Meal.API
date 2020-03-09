@@ -77,13 +77,13 @@ namespace BusMeal.API.Controllers
 
       var busOrderVerification = mapper.Map<SaveBusOrderVerificationResource, BusOrderVerification>(busOrderVerificationResource);
 
-      busOrderVerificationRepository.Add(busOrderVerification);
-
       foreach (int item in OrderLists)
       {
         var Order = await busOrderRepository.GetOne(item);
-        Order.BusOrderVerificationId = busOrderVerification.Id;
+        Order.BusOrderVerification = busOrderVerification;
       }
+
+      busOrderVerificationRepository.Add(busOrderVerification);
 
       if (await unitOfWork.CompleteAsync() == false)
       {
@@ -115,7 +115,7 @@ namespace BusMeal.API.Controllers
       foreach (int item in OrderLists)
       {
         var Order = await busOrderRepository.GetOne(item);
-        Order.BusOrderVerificationId = busOrderVerification.Id;
+        Order.BusOrderVerification = busOrderVerification;
       }
 
       if (await unitOfWork.CompleteAsync() == false)
