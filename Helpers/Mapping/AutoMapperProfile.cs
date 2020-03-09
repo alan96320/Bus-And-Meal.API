@@ -59,7 +59,9 @@ namespace BusMeal.API.Helpers.Mapping
       CreateMap<SaveMealOrderVerificationDetailResource, MealOrderVerificationDetail>();
       CreateMap<SaveBusOrderResource, BusOrder>();
       CreateMap<SaveBusOrderDetailResource, BusOrderDetail>();
-      CreateMap<SaveBusOrderVerificationResource, BusOrderVerification>();
+      CreateMap<SaveBusOrderVerificationResource, BusOrderVerification>()
+              .ReverseMap()
+              .ForMember(ov => ov.OrderList, opt => opt.Ignore());
       CreateMap<SaveBusOrderVerificationDetailResource, BusOrderVerificationDetail>();
 
     }

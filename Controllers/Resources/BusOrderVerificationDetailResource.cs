@@ -4,7 +4,7 @@ namespace BusMeal.API.Controllers.Resources
   {
     public int BusOrderVerificationId { get; set; }
     public int BusTimeId { get; set; }
-    public int DormitoryBlockId { get; set; }
+    //public int DormitoryBlockId { get; set; }
     public int SumOrderQty { get; set; }
   }
 
@@ -16,8 +16,8 @@ namespace BusMeal.API.Controllers.Resources
     public ViewBusTimeResource BusTime {get;set;}
     public int BusTimeId { get; set; }
 
-    public ViewDormitoryBlockResource DormitoryBlock {get;set;}
-    public int DormitoryBlockId { get; set; }
+    // public ViewDormitoryBlockResource DormitoryBlock {get;set;}
+    // public int DormitoryBlockId { get; set; }
     public int SumOrderQty { get; set; }
   }
 }

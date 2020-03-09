@@ -14,11 +14,11 @@ namespace BusMeal.API.Persistence.Configuration
          .HasForeignKey(bo => bo.DormitoryBlockId)
          .OnDelete(DeleteBehavior.Restrict);
 
-      builder
-         .HasMany<BusOrderVerificationDetail>(d => d.BusOrderVerificationDetails)
-         .WithOne(bovd => bovd.DormitoryBlock)
-         .HasForeignKey(bovd => bovd.DormitoryBlockId)
-         .OnDelete(DeleteBehavior.Restrict);
+      // builder
+      //    .HasMany<BusOrderVerificationDetail>(d => d.BusOrderVerificationDetails)
+      //    .WithOne(bovd => bovd.DormitoryBlock)
+      //    .HasForeignKey(bovd => bovd.DormitoryBlockId)
+      //    .OnDelete(DeleteBehavior.Restrict);
     }
   }
 }
