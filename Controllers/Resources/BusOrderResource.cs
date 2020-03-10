@@ -28,7 +28,7 @@ namespace BusMeal.API.Controllers.Resources
 
     public int? DepartmentId { get; set; }
     public int? DormitoryBlockId { get; set; }
-    public int? BusOrderVerificationHeaderId { get; set; }
+    public int? BusOrderVerificationId { get; set; }
 
     public bool IsReadyToCollect {get;set;}
     public int UserId { get; set; }
