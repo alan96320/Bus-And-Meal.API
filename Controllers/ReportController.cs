@@ -55,7 +55,7 @@ namespace BusMeal.API.Controllers
     {
       var employees = await employeeRepository.GetAll();
 
-      var result = mapper.Map<IEnumerable<ViewDepartmentResource>>(employees);
+      var result = mapper.Map<IEnumerable<ViewEmployeeResource>>(employees);
 
       return Ok(result);
     }
@@ -65,7 +65,7 @@ namespace BusMeal.API.Controllers
     {
       var dormitoryblocks = await dormitoryBlockRepository.GetAll();
 
-      var result = mapper.Map<IEnumerable<ViewDepartmentResource>>(dormitoryblocks);
+      var result = mapper.Map<IEnumerable<ViewDormitoryBlockResource>>(dormitoryblocks);
 
       return Ok(result);
     }
