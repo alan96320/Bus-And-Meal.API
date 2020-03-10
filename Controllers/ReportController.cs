@@ -15,6 +15,9 @@ namespace BusMeal.API.Controllers
     private readonly IEmployeeRepository employeeRepository;
     private IDormitoryBlockRepository dormitoryBlockRepository;
     private readonly IMealVendorRepository mealVendorRepository;
+    private IBusTimeRepository busTimeRepository;
+    private readonly ICounterRepository counterRepository;
+    private IUserRepository userRepository;
     private readonly IDepartmentRepository departmentRepository;
     public ReportController(
     IMapper mapper,
@@ -22,7 +25,10 @@ namespace BusMeal.API.Controllers
     IMealtypeRepository mealtypeRepository,
     IEmployeeRepository employeeRepository,
     IDormitoryBlockRepository dormitoryBlockRepository,
-    IMealVendorRepository mealVendorRepository
+    IMealVendorRepository mealVendorRepository,
+    IBusTimeRepository busTimeRepository,
+    ICounterRepository counterRepository,
+    IUserRepository userRepository
     )
     {
       this.departmentRepository = departmenRepository;
@@ -31,6 +37,9 @@ namespace BusMeal.API.Controllers
       this.employeeRepository = employeeRepository;
       this.dormitoryBlockRepository = dormitoryBlockRepository;
       this.mealVendorRepository = mealVendorRepository;
+      this.busTimeRepository = busTimeRepository;
+      this.counterRepository = counterRepository;
+      this.userRepository = userRepository;
     }
 
     [HttpGet("department")]
@@ -79,6 +88,36 @@ namespace BusMeal.API.Controllers
       var mealVendors = await mealVendorRepository.GetAll();
 
       var result = mapper.Map<IEnumerable<ViewMealVendorResource>>(mealVendors);
+
+      return Ok(result);
+    }
+
+    [HttpGet("bustime")]
+    public async Task<IActionResult> GetBusTimeReport()
+    {
+      var busTimes = await busTimeRepository.GetAll();
+
+      var result = mapper.Map<IEnumerable<ViewBusTimeResource>>(busTimes);
+
+      return Ok(result);
+    }
+
+    [HttpGet("counter")]
+    public async Task<IActionResult> GetCounterReport()
+    {
+      var counters = await counterRepository.GetAll();
+
+      var result = mapper.Map<IEnumerable<ViewCounterResource>>(counters);
+
+      return Ok(result);
+    }
+
+    [HttpGet("user")]
+    public async Task<IActionResult> GetUserReport()
+    {
+      var users = await userRepository.GetAll();
+
+      var result = mapper.Map<IEnumerable<ViewUserResource>>(users);
 
       return Ok(result);
     }
