@@ -14,13 +14,15 @@ namespace BusMeal.API.Controllers
     public IMealtypeRepository mealtypeRepository { get; }
     private readonly IEmployeeRepository employeeRepository;
     private IDormitoryBlockRepository dormitoryBlockRepository;
+    private readonly IMealVendorRepository mealVendorRepository;
     private readonly IDepartmentRepository departmentRepository;
     public ReportController(
     IMapper mapper,
     IDepartmentRepository departmenRepository,
     IMealtypeRepository mealtypeRepository,
     IEmployeeRepository employeeRepository,
-    IDormitoryBlockRepository dormitoryBlockRepository
+    IDormitoryBlockRepository dormitoryBlockRepository,
+    IMealVendorRepository mealVendorRepository
     )
     {
       this.departmentRepository = departmenRepository;
@@ -28,6 +30,7 @@ namespace BusMeal.API.Controllers
       this.mealtypeRepository = mealtypeRepository;
       this.employeeRepository = employeeRepository;
       this.dormitoryBlockRepository = dormitoryBlockRepository;
+      this.mealVendorRepository = mealVendorRepository;
     }
 
     [HttpGet("department")]
@@ -66,6 +69,16 @@ namespace BusMeal.API.Controllers
       var dormitoryblocks = await dormitoryBlockRepository.GetAll();
 
       var result = mapper.Map<IEnumerable<ViewDormitoryBlockResource>>(dormitoryblocks);
+
+      return Ok(result);
+    }
+
+    [HttpGet("mealvendor")]
+    public async Task<IActionResult> GetMealVendorReport()
+    {
+      var mealVendors = await mealVendorRepository.GetAll();
+
+      var result = mapper.Map<IEnumerable<ViewMealVendorResource>>(mealVendors);
 
       return Ok(result);
     }
