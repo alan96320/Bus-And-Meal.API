@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BusMeal.API.Core.Models;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BusMeal.API.Controllers
 {
@@ -41,6 +42,7 @@ namespace BusMeal.API.Controllers
       this.moduleRightsRepository = moduleRightsRepository;
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody]LoginResource loginResource)
     {
