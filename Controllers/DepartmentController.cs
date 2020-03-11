@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace BusMeal.API.Controllers
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] SaveDepartmentResource departmentResource)
     {
+
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 

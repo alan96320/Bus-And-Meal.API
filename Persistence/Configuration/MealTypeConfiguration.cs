@@ -8,18 +8,23 @@ namespace BusMeal.API.Persistence.Configuration
   {
     public void Configure(EntityTypeBuilder<MealType> builder)
     {
-      builder.Property(m => m.Code)
-      .HasColumnType("varchar(50)");
+      builder
+        .HasMany<MealVendor>(mt => mt.MealVendors)     // mt = meal type
+        .WithOne(mv => mv.MealType)                           // mv = vendor
+        .HasForeignKey(mv => mv.MealTypeId)
+        .OnDelete(DeleteBehavior.Restrict);
 
-      builder.Property(m => m.Name)
-      .HasColumnType("varchar(100)");
+      builder
+        .HasMany<MealOrderDetail>(mt => mt.MealOrderDetails)   // mt = meal type
+        .WithOne(mod => mod.MealType)                         // mod = meal order detail
+        .HasForeignKey(mod => mod.MealOrderId)
+        .OnDelete(DeleteBehavior.Restrict);
 
-      builder.Property(m => m.MealVendorId)
-      .IsRequired(false);
-
-      builder.HasOne<MealVendor>(m => m.MealVendor)
-      .WithOne(v => v.MealType)
-      .HasForeignKey<MealType>(m => m.MealVendorId);
+      builder
+        .HasMany<MealOrderVerificationDetail>(mt => mt.MealOrderVerificationDetails)  // mt = meal type
+        .WithOne(movd => movd.MealType)           // movd = meal order verification detail
+        .HasForeignKey(movd => movd.MealOrderVerificationId)
+        .OnDelete(DeleteBehavior.Restrict);
     }
   }
 }

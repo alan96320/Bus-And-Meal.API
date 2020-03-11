@@ -8,11 +8,11 @@ namespace BusMeal.API.Core.IRepository
 {
   public interface IMealOrderRepository
   {
-    Task<MealOrderEntryHeader> GetOne(int id);
-    void Add(MealOrderEntryHeader mealOrderEntryHeader);
-    void Remove(MealOrderEntryHeader mealOrderEntryHeader);
+    Task<MealOrder> GetOne(int id, int? userId = null);
+    void Add(MealOrder mealOrder);
+    void Remove(MealOrder mealOrder);
 
-    Task<IEnumerable<MealOrderEntryHeader>> GetAll();
-    Task<PagedList<MealOrderEntryHeader>> GetPagedMealOrderEntryHeader(MealOrderParams mealOrderParams);
+    Task<IEnumerable<MealOrder>> GetAll(int? userId = null);
+    Task<PagedList<MealOrder>> GetPagedMealOrder(MealOrderParams mealOrderParams, int? userId = null);
   }
 }

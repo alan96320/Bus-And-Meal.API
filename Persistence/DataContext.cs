@@ -19,34 +19,29 @@ namespace BusMeal.API.Persistence
     public DbSet<UserModuleRight> UserModuleRight { get; set; }
     public DbSet<DormitoryBlock> DormitoryBlock { get; set; }
     public DbSet<BusTime> BusTime { get; set; }
-    public DbSet<MealOrderEntryHeader> MealOrderEntryHeader { get; set; }
-    public DbSet<MealOrderVerificationHeader> MealOrderVerificationHeader { get; set; }
+    public DbSet<MealOrder> MealOrder { get; set; }
+    public DbSet<MealOrderVerification> MealOrderVerification { get; set; }
     public DbSet<MealOrderDetail> MealOrderDetail { get; set; }
-    public DbSet<MealOrderVerificationHeaderTotal> MealOrderVerificationHeaderTotal { get; set; }
-    public DbSet<BusOrderVerificationHeader> BusOrderVerificationHeader { get; set; }
-    public DbSet<BusOrderEntryHeader> BusOrderEntryHeader { get; set; }
-    public DbSet<BusOrderEntryDetail> BusOrderEntryDetail { get; set; }
-    public DbSet<BusOrderVerificationHeaderTotal> BusOrderVerificationHeaderTotal { get; set; }
+    public DbSet<MealOrderVerificationDetail> MealOrderVerificationDetail { get; set; }
+    public DbSet<BusOrderVerification> BusOrderVerification { get; set; }
+    public DbSet<BusOrder> BusOrder { get; set; }
+    public DbSet<BusOrderDetail> BusOrderDetail { get; set; }
+    public DbSet<BusOrderVerificationDetail> BusOrderVerificationDetail { get; set; }
     public DbSet<MealType> MealType { get; set; }
     public DbSet<MealVendor> MealVendor { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
-      modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
-      modelBuilder.ApplyConfiguration(new CounterConfiguration());
-      modelBuilder.ApplyConfiguration(new AuditConfiguration());
       modelBuilder.ApplyConfiguration(new UserConfiguration());
       modelBuilder.ApplyConfiguration(new ModuleRightsConfiguration());
-      modelBuilder.ApplyConfiguration(new MealVendorConfiguration());
       modelBuilder.ApplyConfiguration(new MealTypeConfiguration());
       modelBuilder.ApplyConfiguration(new DormitoryBlockConfiguration());
       modelBuilder.ApplyConfiguration(new BusTimeConfiguration());
-      modelBuilder.ApplyConfiguration(new MealOrderVerificationHeaderConfiguration());
-      modelBuilder.ApplyConfiguration(new BusOrderVerificationHeaderConfiguration());
-      modelBuilder.ApplyConfiguration(new BusOrderEntryHeaderConfiguration());
-      modelBuilder.ApplyConfiguration(new AppConfigConfiguration());
-      modelBuilder.ApplyConfiguration(new UserModuleRightConfiguration());
+      modelBuilder.ApplyConfiguration(new MealOrderConfiguration());
+      modelBuilder.ApplyConfiguration(new MealOrderVerificationConfiguration());
+      modelBuilder.ApplyConfiguration(new BusOrderConfiguration());
+      modelBuilder.ApplyConfiguration(new BusOrderVerificationConfiguration());
     }
   }
 }

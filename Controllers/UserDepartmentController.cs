@@ -12,7 +12,7 @@ using BusMeal.API.Helpers.Params;
 namespace BusMeal.API.Controllers
 {
   [Route("api/[controller]")]
-  
+
   public class UserDepartmentController : Controller
   {
     private readonly IMapper mapper;
@@ -64,8 +64,6 @@ namespace BusMeal.API.Controllers
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveUserDepartmentResource userDepartmentResource)
     {
-
-      ModelState.AddModelError("YourError","YourError");
 
       if (!ModelState.IsValid)
         return BadRequest(ModelState);

@@ -19,32 +19,52 @@ namespace BusMeal.API.Persistence.Repository
       this.context = context;
     }
 
-    public void Add(BusOrderEntryHeader busOrderEntryHeader)
+    public void Add(BusOrder busOrder)
     {
-      context.BusOrderEntryHeader.Add(busOrderEntryHeader);
+      context.BusOrder.Add(busOrder);
     }
 
-    public async Task<IEnumerable<BusOrderEntryHeader>> GetAll()
+    public async Task<IEnumerable<BusOrder>> GetAll(int? userId = null)
     {
-      var busOrders = await context.BusOrderEntryHeader.Include(b => b.BusOrderDetail).ToListAsync();
+      // verifikasi dgn userId atau Admin
+      var busOrders = context.BusOrder.Include(b => b.BusOrderDetails).AsQueryable();
 
-      return busOrders;
+      if (userId != null)
+        busOrders = busOrders.Where(bo => bo.UserId == userId);
+
+      return await busOrders.ToListAsync();
     }
 
-    public async Task<BusOrderEntryHeader> GetOne(int id)
+    public async Task<BusOrder> GetOne(int id, int? userId = null)
     {
-      return await context.BusOrderEntryHeader.Include(b => b.BusOrderDetail).FirstOrDefaultAsync(b => b.Id == id);
+      // FIXME : cari alternative lain
+      if (userId != null)
+      {
+        return await context.BusOrder.Include(b => b.BusOrderDetails)
+                                    .FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId);
+      }
+      else
+      {
+        return await context.BusOrder.Include(b => b.BusOrderDetails)
+                                     .FirstOrDefaultAsync(b => b.Id == id);
+      }
     }
 
-    public async Task<PagedList<BusOrderEntryHeader>> GetPagedBusOrder(BusOrderParams busOrderParams)
+    public async Task<PagedList<BusOrder>> GetPagedBusOrder(BusOrderParams busOrderParams, int? userId = null)
     {
-      var busOrders = context.BusOrderEntryHeader.Include(b => b.BusOrderDetail).AsQueryable();
+      var busOrders = context.BusOrder.Include(b => b.BusOrderDetails).AsQueryable();
 
-      // auth by user id
+      if (userId != null)
+      {
+        busOrders = busOrders.Where(b => b.UserId == userId);
+      }
+
       if (DateTime.Compare(busOrderParams.OrderEntryDate, new DateTime(01, 1, 1)) != 0)
       {
         busOrders = busOrders.Where(b => b.OrderEntryDate.Date == busOrderParams.OrderEntryDate.Date);
       }
+
+      // FIXME : seharusnya bukan departmentId tetapi departementcode atau departmentName
 
       if (busOrderParams.DepartmentId > 0)
       {
@@ -56,10 +76,7 @@ namespace BusMeal.API.Persistence.Repository
         busOrders = busOrders.Where(b => b.DormitoryBlockId == busOrderParams.DormitoryBlockId);
       }
 
-      if (busOrderParams.BusOrderVerificationHeaderId > 0)
-      {
-        busOrders = busOrders.Where(b => b.BusOrderVerificationHeaderId == busOrderParams.BusOrderVerificationHeaderId);
-      }
+      // TODO  : Filter by Status ? Locked, Closed --> sebaiknya Locked dihilangkan, dan diganti dgn Open
 
       // Sort
       if (busOrderParams.isDescending)
@@ -71,18 +88,20 @@ namespace BusMeal.API.Persistence.Repository
             case "orderentrydate":
               busOrders = busOrders.OrderByDescending(b => b.OrderEntryDate);
               break;
+
+            // FIXME : seharusnya bukan departmentId tetapi departementcode atau departmentName , kecuali di FE pakai combobox                           
             case "departmentid":
               busOrders = busOrders.OrderByDescending(b => b.DepartmentId);
               break;
+            // FIXME : seharusnya bukan BlockId tetapi dormitoryBlockcname, kecuali di FE pakai combobox                           
+
             case "dormitoryblockid":
               busOrders = busOrders.OrderByDescending(b => b.DormitoryBlockId);
-              break;
-            case "busorderverificationheaderid":
-              busOrders = busOrders.OrderByDescending(b => b.BusOrderVerificationHeaderId);
               break;
             default:
               busOrders = busOrders.OrderByDescending(b => b.OrderEntryDate);
               break;
+              // TODO  : Filter by Status ? Locked, Closed --> sebaiknya Locked dihilangkan, dan diganti dgn Open              
           }
         }
         else
@@ -99,18 +118,19 @@ namespace BusMeal.API.Persistence.Repository
             case "orderentrydate":
               busOrders = busOrders.OrderBy(b => b.OrderEntryDate);
               break;
+            // FIXME : seharusnya bukan departmentId tetapi departementcode atau departmentName , kecuali di FE pakai combobox                           
             case "departmentid":
               busOrders = busOrders.OrderBy(b => b.DepartmentId);
               break;
+            // FIXME : seharusnya bukan BlockId tetapi dormitoryBlockcname, kecuali di FE pakai combobox                           
+
             case "dormitoryblockid":
               busOrders = busOrders.OrderBy(b => b.DormitoryBlockId);
-              break;
-            case "busorderverificationheaderid":
-              busOrders = busOrders.OrderBy(b => b.BusOrderVerificationHeaderId);
               break;
             default:
               busOrders = busOrders.OrderBy(b => b.OrderEntryDate);
               break;
+              // TODO  : Filter by Status ? Locked, Closed --> sebaiknya Locked dihilangkan, dan diganti dgn Open                            
           }
         }
         else
@@ -118,15 +138,16 @@ namespace BusMeal.API.Persistence.Repository
           busOrders = busOrders.OrderBy(b => b.OrderEntryDate);
         }
       }
-      var busOrderToReturn = busOrders.Include(b => b.BusOrderDetail);
 
-      return await PagedList<BusOrderEntryHeader>.CreateAsync(busOrderToReturn, busOrderParams.PageNumber, busOrderParams.PageSize);
+      var busOrderToReturn = busOrders.Include(b => b.BusOrderDetails);
+
+      return await PagedList<BusOrder>.CreateAsync(busOrderToReturn, busOrderParams.PageNumber, busOrderParams.PageSize);
 
     }
 
-    public void Remove(BusOrderEntryHeader busOrderEntryHeader)
+    public void Remove(BusOrder busOrder)
     {
-      context.Remove(busOrderEntryHeader);
+      context.Remove(busOrder);
     }
 
   }

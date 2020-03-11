@@ -4,10 +4,7 @@ namespace BusMeal.API.Controllers.Resources
   {
 
     public string Name { get; set; }
-
     public string Code { get; set; }
-
-
   }
 
   public class ViewDepartmentResource

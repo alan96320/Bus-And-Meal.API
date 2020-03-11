@@ -29,6 +29,8 @@ using FluentValidation;
 using BusMeal.API.Core.Validator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using System.Reflection;
+using System.IO;
 
 namespace BusMeal.API
 {
@@ -74,9 +76,9 @@ namespace BusMeal.API
       services.AddScoped<ICounterRepository, CounterRepository>();
       services.AddScoped<IAuditRepository, AuditRepository>();
       services.AddScoped<IMealOrderRepository, MealOrderRepository>();
-      services.AddScoped<IMealVerificationRepository, MealVerificationRepository>();
+      services.AddScoped<IMealOrderVerificationRepository, MealOrderVerificationRepository>();
       services.AddScoped<IBusOrderRepository, BusOrderRepository>();
-      services.AddScoped<IBusVerificationRepository, BusVerificationRepository>();
+      services.AddScoped<IBusOrderVerificationRepository, BusOrderVerificationRepository>();
 
       services.AddAutoMapper(typeof(Startup));
       services.AddCors();
@@ -97,6 +99,7 @@ namespace BusMeal.API
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "BusMeal API", Version = "v1" });
+
       });
     }
 
