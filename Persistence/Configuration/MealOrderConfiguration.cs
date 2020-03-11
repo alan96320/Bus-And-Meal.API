@@ -9,10 +9,10 @@ namespace BusMeal.API.Persistence.Configuration
     public void Configure(EntityTypeBuilder<MealOrder> builder)
     {
       builder
-      .HasMany(mo => mo.MealOrderDetails)
-      .WithOne(mod => mod.MealOrder)
-      .HasForeignKey(mod => mod.MealOrderId)
-      .OnDelete(DeleteBehavior.Cascade);
+        .HasMany(mo => mo.MealOrderDetails)
+        .WithOne(mod => mod.MealOrder)
+        .HasForeignKey(mod => mod.MealOrderId)
+        .OnDelete(DeleteBehavior.Cascade);
     }
   }
 }

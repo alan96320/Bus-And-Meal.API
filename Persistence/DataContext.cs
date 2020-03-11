@@ -33,21 +33,13 @@ namespace BusMeal.API.Persistence
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
-      modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
-      modelBuilder.ApplyConfiguration(new CounterConfiguration());
-      modelBuilder.ApplyConfiguration(new AuditConfiguration());
       modelBuilder.ApplyConfiguration(new UserConfiguration());
       modelBuilder.ApplyConfiguration(new ModuleRightsConfiguration());
-      modelBuilder.ApplyConfiguration(new MealVendorConfiguration());
       modelBuilder.ApplyConfiguration(new MealTypeConfiguration());
       modelBuilder.ApplyConfiguration(new DormitoryBlockConfiguration());
       modelBuilder.ApplyConfiguration(new BusTimeConfiguration());
-      modelBuilder.ApplyConfiguration(new AppConfigConfiguration());
-      modelBuilder.ApplyConfiguration(new UserModuleRightConfiguration());
-
       modelBuilder.ApplyConfiguration(new MealOrderConfiguration());
       modelBuilder.ApplyConfiguration(new MealOrderVerificationConfiguration());
-
       modelBuilder.ApplyConfiguration(new BusOrderConfiguration());
       modelBuilder.ApplyConfiguration(new BusOrderVerificationConfiguration());
     }

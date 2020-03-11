@@ -10,12 +10,16 @@ namespace BusMeal.API.Core.Models
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
+
+    [Column(TypeName = "varchar(5)")]
     public string Code { get; set; }
+
+    [Column(TypeName = "varchar(100)")]
     public string Name { get; set; }
-    public ICollection<BusOrder> BusOrders {get;set;}
+    public ICollection<BusOrder> BusOrders { get; set; }
       = new Collection<BusOrder>();
 
-    public ICollection<BusOrderVerificationDetail> BusOrderVerificationDetails {get;set;}
-      = new Collection<BusOrderVerificationDetail>();
+//    public ICollection<BusOrderVerificationDetail> BusOrderVerificationDetails { get; set; }
+//      = new Collection<BusOrderVerificationDetail>();
   }
 }

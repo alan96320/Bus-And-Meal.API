@@ -8,7 +8,6 @@ namespace BusMeal.API.Core.Models
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-
     public MealOrderVerification MealOrderVerification { get; set; }
     public int MealOrderVerificationId { get; set; }
     public MealType MealType { get; set; }

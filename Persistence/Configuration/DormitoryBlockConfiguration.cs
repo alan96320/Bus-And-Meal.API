@@ -8,24 +8,17 @@ namespace BusMeal.API.Persistence.Configuration
   {
     public void Configure(EntityTypeBuilder<DormitoryBlock> builder)
     {
-      builder.Property(d => d.Code)
-      .HasColumnType("varchar(2)");
+      builder
+         .HasMany<BusOrder>(d => d.BusOrders)
+         .WithOne(bo => bo.DormitoryBlock)
+         .HasForeignKey(bo => bo.DormitoryBlockId)
+         .OnDelete(DeleteBehavior.Restrict);
 
-      builder.Property(d => d.Name)
-      .HasColumnType("varchar(100)");
-
-     builder
-      .HasMany<BusOrder>(d => d.BusOrders)
-      .WithOne(bo => bo.DormitoryBlock)
-      .HasForeignKey(bo => bo.DormitoryBlockId)
-      .OnDelete(DeleteBehavior.Restrict);      
-
-     builder
-      .HasMany<BusOrderVerificationDetail>(d => d.BusOrderVerificationDetails)
-      .WithOne(bovd => bovd.DormitoryBlock)
-      .HasForeignKey(bovd => bovd.DormitoryBlockId)
-      .OnDelete(DeleteBehavior.Restrict);      
-
+      // builder
+      //    .HasMany<BusOrderVerificationDetail>(d => d.BusOrderVerificationDetails)
+      //    .WithOne(bovd => bovd.DormitoryBlock)
+      //    .HasForeignKey(bovd => bovd.DormitoryBlockId)
+      //    .OnDelete(DeleteBehavior.Restrict);
     }
   }
 }

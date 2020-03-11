@@ -10,6 +10,8 @@ namespace BusMeal.API.Core.Models
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public DateTime TrackedDate { get; set; }
+
+    [Column(TypeName = "varchar(100)")]
     public string TableName { get; set; }
     public int RowId { get; set; }
     public int CreatedBy { get; set; }
