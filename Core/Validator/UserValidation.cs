@@ -12,10 +12,10 @@ namespace BusMeal.API.Core.Validator
     public UserValidation(DataContext context)
     {
       this.context = context;
-
-      RuleFor(u => u.GddbId)
-          .Length(8, 10).WithMessage("User gddb Id length must be 8 to 10 character")
-          .Must(u => !IsIdDuplicate(u)).WithMessage("User gddb Id must be unique");
+      // TODO: remove validation gddbid
+      // RuleFor(u => u.GddbId)
+      //     .Length(8, 10).WithMessage("User gddb Id length must be 8 to 10 character")
+      //     .Must(u => !IsIdDuplicate(u)).WithMessage("User gddb Id must be unique");
 
       RuleFor(u => u.FirstName)
           .Length(3, 25).WithMessage("User first name length must be between 3 to 25 character");
