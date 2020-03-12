@@ -22,12 +22,8 @@ namespace BusMeal.API.Core.Models
       = new Collection<Employee>();
     public ICollection<BusOrder> BusOrders { get; set; }
       = new Collection<BusOrder>();
-    public ICollection<BusOrderVerification> BusOrderVerifications { get; set; }
-      = new Collection<BusOrderVerification>();
     public ICollection<MealOrder> MealOrders { get; set; }
       = new Collection<MealOrder>();
-    public ICollection<MealOrderVerification> MealOrderVerifications { get; set; }
-      = new Collection<MealOrderVerification>();
     public ICollection<UserDepartment> UserDepartments { get; set; } = new Collection<UserDepartment>();
 
 

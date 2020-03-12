@@ -9,21 +9,15 @@ namespace BusMeal.API.Persistence.Configuration
     public void Configure(EntityTypeBuilder<MealType> builder)
     {
       builder
-        .HasMany<MealVendor>(mt => mt.MealVendors)     // mt = meal type
-        .WithOne(mv => mv.MealType)                           // mv = vendor
-        .HasForeignKey(mv => mv.MealTypeId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-      builder
         .HasMany<MealOrderDetail>(mt => mt.MealOrderDetails)   // mt = meal type
         .WithOne(mod => mod.MealType)                         // mod = meal order detail
-        .HasForeignKey(mod => mod.MealOrderId)
+        .HasForeignKey(mod => mod.MealTypeId)
         .OnDelete(DeleteBehavior.Restrict);
 
       builder
         .HasMany<MealOrderVerificationDetail>(mt => mt.MealOrderVerificationDetails)  // mt = meal type
         .WithOne(movd => movd.MealType)           // movd = meal order verification detail
-        .HasForeignKey(movd => movd.MealOrderVerificationId)
+        .HasForeignKey(movd => movd.MealTypeId)
         .OnDelete(DeleteBehavior.Restrict);
     }
   }

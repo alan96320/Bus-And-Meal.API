@@ -19,7 +19,7 @@ namespace BusMeal.API.Core.Models
     public ICollection<BusOrder> BusOrders { get; set; }
       = new Collection<BusOrder>();
 
-    public ICollection<BusOrderVerificationDetail> BusOrderVerificationDetails { get; set; }
-      = new Collection<BusOrderVerificationDetail>();
+//    public ICollection<BusOrderVerificationDetail> BusOrderVerificationDetails { get; set; }
+//      = new Collection<BusOrderVerificationDetail>();
   }
 }

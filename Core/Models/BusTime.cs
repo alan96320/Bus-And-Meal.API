@@ -11,7 +11,7 @@ namespace BusMeal.API.Core.Models
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    [Column(TypeName = "varchar(5)")]
+    [Column(TypeName = "varchar(6)")]
     public string Code { get; set; }
     [Column(TypeName = "varchar(10)")]
     public string Time { get; set; }

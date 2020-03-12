@@ -16,13 +16,14 @@ namespace BusMeal.API.Core.Models
 
     [Column(TypeName = "varchar(100)")]
     public string Name { get; set; }
-    public int? MealVendorId { get; set; }
+    public int MealVendorId { get; set; }
     public MealVendor MealVendor { get; set; }
 
     public ICollection<MealOrderDetail> MealOrderDetails { get; set; }
       = new Collection<MealOrderDetail>();
     public ICollection<MealOrderVerificationDetail> MealOrderVerificationDetails { get; set; }
       = new Collection<MealOrderVerificationDetail>();
-    public ICollection<MealVendor> MealVendors { get; set; } = new Collection<MealVendor>();
+
+
   }
 }

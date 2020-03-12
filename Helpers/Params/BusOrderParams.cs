@@ -8,7 +8,7 @@ namespace BusMeal.API.Helpers.Params
     public int? DepartmentId { get; set; } = 0;
     public int? DormitoryBlockId { get; set; } = 0;
 
-    public int? BusOrderVerificationHeaderId { get; set; } = 0;
+    public int? BusOrderVerificationId { get; set; } = 0;
 
   }
 }
