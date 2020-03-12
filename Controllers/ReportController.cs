@@ -18,6 +18,7 @@ namespace BusMeal.API.Controllers
     private IBusTimeRepository busTimeRepository;
     private readonly ICounterRepository counterRepository;
     private IUserRepository userRepository;
+    private readonly IMealOrderRepository mealOrderRepository;
     private readonly IDepartmentRepository departmentRepository;
     public ReportController(
     IMapper mapper,
@@ -28,7 +29,8 @@ namespace BusMeal.API.Controllers
     IMealVendorRepository mealVendorRepository,
     IBusTimeRepository busTimeRepository,
     ICounterRepository counterRepository,
-    IUserRepository userRepository
+    IUserRepository userRepository,
+    IMealOrderRepository mealOrderRepository
     )
     {
       this.departmentRepository = departmenRepository;
@@ -40,6 +42,7 @@ namespace BusMeal.API.Controllers
       this.busTimeRepository = busTimeRepository;
       this.counterRepository = counterRepository;
       this.userRepository = userRepository;
+      this.mealOrderRepository = mealOrderRepository;
     }
 
     [HttpGet("department")]
@@ -120,6 +123,26 @@ namespace BusMeal.API.Controllers
       var result = mapper.Map<IEnumerable<ViewUserResource>>(users);
 
       return Ok(result);
+    }
+
+    [HttpGet("mealorder")]
+    public async Task<IActionResult> GetAll()
+    {
+
+      var mealOrders = await mealOrderRepository.GetAll();
+      var departments = await departmentRepository.GetAll();
+      var mealtypes = await mealtypeRepository.GetAll();
+
+      var mealOrderResult = mapper.Map<IEnumerable<ViewMealOrderResource>>(mealOrders);
+      var departmentResult = mapper.Map<IEnumerable<ViewDepartmentResource>>(departments);
+      var mealTypeResult = mapper.Map<IEnumerable<ViewMealTypeResource>>(mealtypes);
+
+      return Ok(new
+      {
+        mealOrderResult,
+        departmentResult,
+        mealTypeResult
+      });
     }
   }
 }
