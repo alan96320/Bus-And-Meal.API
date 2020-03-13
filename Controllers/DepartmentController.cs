@@ -113,7 +113,7 @@ namespace BusMeal.API.Controllers
       return Ok(id);
     }
 
-    [Authorize(Roles = "Department.R")]
+    // [Authorize(Roles = "Department.R")]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
