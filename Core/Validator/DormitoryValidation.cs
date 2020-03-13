@@ -16,8 +16,8 @@ namespace BusMeal.API.Core.Validator
 
       RuleFor(d => d.Code)
           .NotEmpty().WithMessage("Dormitory code is required")
-          .Length(2, 10).WithMessage("Dormitory code length must be between 2 to 10 character")
-          .Must(d => !IsCodeDuplicate(d)).WithMessage("Dormitory code must be unique");
+          .Length(2, 10).WithMessage("Dormitory code length must be between 2 to 10 character");
+      // .Must(d => !IsCodeDuplicate(d)).WithMessage("Dormitory code must be unique");
 
       RuleFor(d => d.Name)
           .NotEmpty().WithMessage("Dormitory name is required")

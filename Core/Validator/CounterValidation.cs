@@ -15,8 +15,8 @@ namespace BusMeal.API.Core.Validator
 
       RuleFor(c => c.Code)
           .NotEmpty().WithMessage("Counter code is required")
-          .Length(3, 3).WithMessage("Counter code length must be 3 character")
-          .Must(c => !IsCodeDuplicate(c)).WithMessage("Code must be unique");
+          .Length(3, 3).WithMessage("Counter code length must be 3 character");
+      // .Must(c => !IsCodeDuplicate(c)).WithMessage("Code must be unique");
 
       RuleFor(c => c.Name)
           .Length(5, 25).WithMessage("Counter name length must be between 5 to 25 character");

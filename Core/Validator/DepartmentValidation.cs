@@ -16,8 +16,8 @@ namespace BusMeal.API.Core.Validator
 
       RuleFor(d => d.Code)
         .NotEmpty().WithMessage("Code is required")
-        .Length(2, 25).WithMessage("Code length must be between 2 to 25 character")
-        .Must(d => !IsCodeDuplicate(d)).WithMessage("Department Code must be unique");
+        .Length(2, 25).WithMessage("Code length must be between 2 to 25 character");
+      // .Must(d => !IsCodeDuplicate(d)).WithMessage("Department Code must be unique");
 
       RuleFor(d => d.Name)
         .NotEmpty().WithMessage("Name is required")
