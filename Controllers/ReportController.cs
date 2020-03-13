@@ -155,10 +155,12 @@ namespace BusMeal.API.Controllers
       var busOrder = await busOrderRepository.GetAll();
       var departments = await departmentRepository.GetAll();
       var bustime = await busTimeRepository.GetAll();
+      var dormitoryblock = await dormitoryBlockRepository.GetAll();
 
       var busOrderResult = mapper.Map<IEnumerable<ViewBusOrderResource>>(busOrder);
       var departmentResult = mapper.Map<IEnumerable<ViewDepartmentResource>>(departments);
       var bustimeResult = mapper.Map<IEnumerable<ViewBusTimeResource>>(bustime);
+      var dormitoryblockResult = mapper.Map<IEnumerable<ViewDormitoryBlockResource>>(dormitoryblock);
 
       object[] direction = new object[3];
       direction[0] = new Direction { id = 1, name = "Office to Dormitory" };
@@ -170,7 +172,8 @@ namespace BusMeal.API.Controllers
         busOrderResult,
         departmentResult,
         bustimeResult,
-        direction
+        direction,
+        dormitoryblockResult
       }
     );
     }
