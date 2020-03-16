@@ -110,9 +110,18 @@ namespace BusMeal.API.Controllers
     {
       var busTimes = await busTimeRepository.GetAll();
 
-      var result = mapper.Map<IEnumerable<ViewBusTimeResource>>(busTimes);
+      var BusTime = mapper.Map<IEnumerable<ViewBusTimeResource>>(busTimes);
 
-      return Ok(result);
+      object[] direction = new object[3];
+      direction[0] = new Direction { id = 1, name = "Office to Dormitory" };
+      direction[1] = new Direction { id = 2, name = "Dormitory to Office" };
+      direction[2] = new Direction { id = 3, name = "Night Bus" };
+
+      return Ok(new
+      {
+        BusTime,
+        direction
+      });
     }
 
     [Authorize(Roles = "Administrator")]
