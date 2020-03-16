@@ -29,7 +29,7 @@ namespace BusMeal.API.Controllers
       this.mapper = mapper;
     }
 
-    // [Authorize(Roles = "Department.W, Administrator")]
+    [Authorize(Roles = "Department.W, Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] SaveDepartmentResource departmentResource)
     {
@@ -52,7 +52,7 @@ namespace BusMeal.API.Controllers
 
     }
 
-    // [Authorize(Roles = "Department.W, Administrator")]
+    [Authorize(Roles = "Department.W, Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] SaveDepartmentResource departmentResource)
     {
