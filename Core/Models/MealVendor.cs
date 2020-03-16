@@ -26,8 +26,8 @@ namespace BusMeal.API.Core.Models
     [Column(TypeName = "varchar(100)")]
     public string ContactEmail { get; set; }
 
-    public ICollection<MealType> MealTypes { get; set; }
-      = new Collection<MealType>();
+    // public ICollection<MealType> MealTypes { get; set; }
+    // = new Collection<MealType>();
 
 
   }

@@ -113,36 +113,36 @@ namespace BusMeal.API.Controllers
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      var OrderLists = mealOrderVerificationResource.OrderList;
-      if (mealOrderVerificationResource.IsClosed == true)
-      {
-        var orderVerificationDetail = mealOrderVerificationResource.MealOrderVerificationDetails;
-        foreach (SaveMealOrderVerificationDetailResource item in orderVerificationDetail)
-        {
-          var mealTypeId = item.MealTypeId;
-          var mealType = await mealtypeRepository.GetOne(mealTypeId);
-          var vendorId = mealType.MealVendorId;
-          item.VendorId = vendorId;
-        }
-      }
+      // var OrderLists = mealOrderVerificationResource.OrderList;
+      // if (mealOrderVerificationResource.IsClosed == true)
+      // {
+      //   var orderVerificationDetail = mealOrderVerificationResource.MealOrderVerificationDetails;
+      //   foreach (SaveMealOrderVerificationDetailResource item in orderVerificationDetail)
+      //   {
+      //     var mealTypeId = item.MealTypeId;
+      //     var mealType = await mealtypeRepository.GetOne(mealTypeId);
+      //     var vendorId = mealType.MealVendorId;
+      //     item.VendorId = vendorId;
+      //   }
+      // }
 
       var mealOrderVerification = mapper.Map<SaveMealOrderVerificationResource, MealOrderVerification>(mealOrderVerificationResource);
 
       var mealVerificationDetails = mealOrderVerification.MealOrderVerificationDetails;
 
-      foreach (MealOrderVerificationDetail mealVerificationDetail in mealVerificationDetails)
-      {
-        var mealTypeRecord = await mealtypeRepository.GetOne(mealVerificationDetail.MealTypeId);
-        mealVerificationDetail.VendorId = mealTypeRecord.MealVendorId;
-      }
+      // foreach (MealOrderVerificationDetail mealVerificationDetail in mealVerificationDetails)
+      // {
+      //   var mealTypeRecord = await mealtypeRepository.GetOne(mealVerificationDetail.MealTypeId);
+      //   mealVerificationDetail.VendorId = mealTypeRecord.MealVendorId;
+      // }
 
       mealOrderVerificationRepository.Add(mealOrderVerification);
 
-      foreach (int item in OrderLists)
-      {
-        var Order = await mealOrderRepository.GetOne(item);
-        Order.MealOrderVerification = mealOrderVerification;
-      }
+      // foreach (int item in OrderLists)
+      // {
+      //   var Order = await mealOrderRepository.GetOne(item);
+      //   Order.MealOrderVerification = mealOrderVerification;
+      // }
 
       if (await unitOfWork.CompleteAsync() == false)
       {

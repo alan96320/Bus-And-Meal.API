@@ -16,8 +16,8 @@ namespace BusMeal.API.Core.Models
 
     [Column(TypeName = "varchar(100)")]
     public string Name { get; set; }
-    public int MealVendorId { get; set; }
-    public MealVendor MealVendor { get; set; }
+    // public int MealVendorId { get; set; }
+    // public MealVendor MealVendor { get; set; }
 
     public ICollection<MealOrderDetail> MealOrderDetails { get; set; }
       = new Collection<MealOrderDetail>();

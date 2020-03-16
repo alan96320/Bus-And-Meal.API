@@ -4,14 +4,17 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusMeal.API.Persistence.Configuration
 {
-    public class MealVendorConfigurations  : IEntityTypeConfiguration<MealVendor> {
+  public class MealVendorConfigurations : IEntityTypeConfiguration<MealVendor>
+  {
 
-        public void Configure(EntityTypeBuilder<MealVendor> builder) {
-            builder
-                .HasMany<MealType>(mv => mv.MealTypes)      // mv = meal vendor
-                .WithOne(mt => mt.MealVendor)                           // mv = vendor
-                .HasForeignKey(mt => mt.MealVendorId)
-                .OnDelete(DeleteBehavior.Restrict);
-            }
+    public void Configure(EntityTypeBuilder<MealVendor> builder)
+    {
+      // builder
+      //     .HasMany<MealType>(mv => mv.MealTypes)      // mv = meal vendor
+      //     .WithOne(mt => mt.MealVendor)                           // mv = vendor
+      //     .HasForeignKey(mt => mt.MealVendorId)
+      //     .OnDelete(DeleteBehavior.Restrict);
+      // }
     }
+  }
 }
