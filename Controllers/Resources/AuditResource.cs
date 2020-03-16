@@ -11,6 +11,7 @@ namespace BusMeal.API.Controllers.Resources
     public DateTime CreatedDate { get; set; }
     public int UpdatedBy { get; set; }
     public DateTime UpdatedDate { get; set; }
+    public bool isUpdate { get; set; } = false;
   }
 
   public class ViewAuditResource

@@ -8,6 +8,7 @@ namespace BusMeal.API.Persistence.Configuration
   {
     public void Configure(EntityTypeBuilder<Department> builder)
     {
+
       builder
         .HasMany<Employee>(d => d.Employees)
         .WithOne(e => e.Department)

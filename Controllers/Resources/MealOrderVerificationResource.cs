@@ -10,6 +10,7 @@ namespace BusMeal.API.Controllers.Resources
     public DateTime OrderDate { get; set; }
     public bool IsClosed { get; set; }
     public IList<int> OrderList { get; set; }
+    public bool isUpdate { get; set; } = false;
 
     public ICollection<SaveMealOrderVerificationDetailResource> MealOrderVerificationDetails { get; set; }
       = new Collection<SaveMealOrderVerificationDetailResource>();

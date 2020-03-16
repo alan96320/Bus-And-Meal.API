@@ -19,12 +19,14 @@ namespace BusMeal.API.Persistence.Repository
       this.context = context;
     }
 
-    public async Task<AppConfiguration> GetOne(int? id=null)
+    public async Task<AppConfiguration> GetOne(int? id = null)
     {
       if (id != null)
       {
         return await context.AppConfiguration.FindAsync(id);
-      } else {
+      }
+      else
+      {
         return await context.AppConfiguration.FindAsync();
       }
     }
@@ -51,11 +53,6 @@ namespace BusMeal.API.Persistence.Repository
       var configurations = context.AppConfiguration.AsQueryable();
 
       // Filtering
-      if (configurationParams.RowGrid > 0)
-      {
-        configurations = configurations.Where(c => c.RowGrid == configurationParams.RowGrid);
-      }
-
       // if (configurationParams.LockedBusOrder != DateTime.Now.Date)
       // {
       //   configurations = configurations.Where(c => c.LockedBusOrder == configurationParams.LockedBusOrder);
@@ -73,9 +70,6 @@ namespace BusMeal.API.Persistence.Repository
         {
           switch (configurationParams.OrderBy.ToLower())
           {
-            case "rowgrid":
-              configurations = configurations.OrderByDescending(c => c.RowGrid);
-              break;
             case "lockedbusorder":
               configurations = configurations.OrderByDescending(c => c.LockedBusOrder);
               break;
@@ -83,13 +77,13 @@ namespace BusMeal.API.Persistence.Repository
               configurations = configurations.OrderByDescending(c => c.LockedMealOrder);
               break;
             default:
-              configurations = configurations.OrderByDescending(c => c.RowGrid);
+              configurations = configurations.OrderByDescending(c => c.LockedBusOrder);
               break;
           }
         }
         else
         {
-          configurations = configurations.OrderByDescending(c => c.RowGrid);
+          configurations = configurations.OrderByDescending(c => c.LockedBusOrder);
         }
       }
       else
@@ -98,9 +92,6 @@ namespace BusMeal.API.Persistence.Repository
         {
           switch (configurationParams.OrderBy.ToLower())
           {
-            case "rowgrid":
-              configurations = configurations.OrderBy(c => c.RowGrid);
-              break;
             case "lockedbusorder":
               configurations = configurations.OrderBy(c => c.LockedBusOrder);
               break;
@@ -108,13 +99,13 @@ namespace BusMeal.API.Persistence.Repository
               configurations = configurations.OrderBy(c => c.LockedMealOrder);
               break;
             default:
-              configurations = configurations.OrderBy(c => c.RowGrid);
+              configurations = configurations.OrderBy(c => c.LockedBusOrder);
               break;
           }
         }
         else
         {
-          configurations = configurations.OrderBy(c => c.RowGrid);
+          configurations = configurations.OrderBy(c => c.LockedBusOrder);
         }
       }
 

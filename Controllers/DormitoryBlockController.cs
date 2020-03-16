@@ -8,6 +8,7 @@ using BusMeal.API.Core.IRepository;
 using BusMeal.API.Core.Models;
 using BusMeal.API.Helpers;
 using BusMeal.API.Helpers.Params;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusMeal.API.Controllers
@@ -35,6 +36,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    // [Authorize(Roles = "Dormitory Block.R, Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
@@ -48,6 +50,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    // [Authorize(Roles = "Dormitory Block.R, Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedDormitoryBlock([FromQuery]DormitoryBlockParams dormitoryBlockParams)
     {
@@ -60,6 +63,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    // [Authorize(Roles = "Dormitory Block.W, Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveDormitoryBlockResource dormitoryBlockResource)
     {
@@ -80,6 +84,7 @@ namespace BusMeal.API.Controllers
 
     }
 
+    // [Authorize(Roles = "Dormitory Block.W, Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveDormitoryBlockResource dormitoryBlockResource)
     {
@@ -105,6 +110,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    // [Authorize(Roles = "Dormitory Block.W, Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemovedormitoryBlock(int id)
     {

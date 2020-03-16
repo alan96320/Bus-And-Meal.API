@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using BusMeal.API.Core.IRepository;
 using BusMeal.API.Helpers.Params;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BusMeal.API.Controllers
 {
@@ -37,6 +38,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    // [Authorize(Roles = "User Department.R, Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
@@ -50,6 +52,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    // [Authorize(Roles = "User Department.R, Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedUserDepartment([FromQuery]UserDepartmentParams userDepartmentParams)
     {
@@ -62,6 +65,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    // [Authorize(Roles = "User Department.W, Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveUserDepartmentResource userDepartmentResource)
     {
@@ -84,6 +88,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    // [Authorize(Roles = "User Department.W, Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveUserDepartmentResource userDepartmentResource)
     {
@@ -109,6 +114,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    // [Authorize(Roles = "User Department.W, Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemoveUserDepartment(int id)
     {
