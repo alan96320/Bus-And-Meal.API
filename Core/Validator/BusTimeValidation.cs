@@ -18,19 +18,25 @@ namespace BusMeal.API.Core.Validator
           .NotEmpty().WithMessage("Bus time code is required")
           .Length(3, 3).WithMessage("Bus time code length must be 3 character")
           .Matches("^[0-9]*$").WithMessage("Code must be a number");
-      // .Must(b => !IsCodeDuplicate(b)).WithMessage("Bus time code must be unique");
 
       RuleFor(b => b.Time)
           .NotEmpty().WithMessage("Time is required")
           .Length(5, 5).WithMessage("Time length must be 5 character");
+
+      RuleFor(b => b)
+          .Must(b => !IsCodeDuplicate(b)).WithName("Code").WithMessage("Bus time code must be unique");
     }
 
     // TODO : Check for better technics
-    private bool IsCodeDuplicate(string resource)
+    private bool IsCodeDuplicate(SaveBusTimeResource resource)
     {
-      if (!string.IsNullOrEmpty(resource))
+      if (!string.IsNullOrEmpty(resource.Code))
       {
-        return context.BusTime.Any(b => b.Code == resource);
+        if (resource.isUpdate == true)
+        {
+          return false;
+        }
+        return context.BusTime.Any(b => b.Code == resource.Code);
       }
       return false;
     }

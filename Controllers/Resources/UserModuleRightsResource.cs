@@ -8,6 +8,7 @@ namespace BusMeal.API.Controllers.Resources
     public int ModuleRightsId { get; set; }
     public bool Read { get; set; }
     public bool Write { get; set; }
+    public bool isUpdate { get; set; } = false;
   }
 
   public class ViewUserModuleRightsResource

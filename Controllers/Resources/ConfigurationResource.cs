@@ -4,6 +4,7 @@ namespace BusMeal.API.Controllers.Resources
   {
     public string LockedBusOrder { get; set; }
     public string LockedMealOrder { get; set; }
+    public bool isUpdate { get; set; } = false;
   }
 
   public class ViewConfigurationResource

@@ -5,6 +5,7 @@ namespace BusMeal.API.Controllers.Resources
 
     public string Name { get; set; }
     public string Code { get; set; }
+    public bool isUpdate { get; set; } = false;
   }
 
   public class ViewDepartmentResource

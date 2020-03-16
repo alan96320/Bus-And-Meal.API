@@ -8,6 +8,7 @@ namespace BusMeal.API.Controllers.Resources
     public int? VendorId { get; set; }
     public int SwipeQty { get; set; }
     public int LogBookQty { get; set; }
+    public bool isUpdate { get; set; } = false;
   }
 
   public class ViewMealOrderVerificationDetailResource

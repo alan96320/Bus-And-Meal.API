@@ -16,7 +16,6 @@ namespace BusMeal.API.Core.Validator
       RuleFor(e => e.HrCoreNo)
           .NotEmpty().WithMessage("HR code number is required")
           .Length(8, 25).WithMessage("HR code length must be between 8 to 25 character");
-      // .Must(e => !IsHrCodeDuplicate(e)).WithMessage("HR code must be unique");
 
       RuleFor(e => e.Firstname)
           .NotEmpty().WithMessage("First name is required")
@@ -29,28 +28,41 @@ namespace BusMeal.API.Core.Validator
       RuleFor(e => e.HIDNo)
                 .NotEmpty().WithMessage("HID number is required")
                 .Length(10, 25).WithMessage("HID number length must be between 10 to 25 character");
-      // .Must(e => !IsHIDDuplicate(e)).WithMessage("HR code must be unique");
 
       RuleFor(e => e.DepartmentId)
           .NotEmpty().WithMessage("Department id is required");
 
+      RuleFor(e => e)
+          .Must(e => !IsHrCodeDuplicate(e)).WithName("HR Code").WithMessage("HR code must be unique");
+
+      RuleFor(e => e)
+          .Must(e => !IsHIDDuplicate(e)).WithName("HID Code").WithMessage("HID code must be unique");
+
     }
 
     // TODO : Check for better technics
-    private bool IsHrCodeDuplicate(string resource)
+    private bool IsHrCodeDuplicate(SaveEmployeeResource resource)
     {
-      if (!string.IsNullOrEmpty(resource))
+      if (!string.IsNullOrEmpty(resource.HrCoreNo))
       {
-        return context.Employee.Any(e => e.HrCoreNo == resource);
+        if (resource.isUpdate == true)
+        {
+          return false;
+        }
+        return context.Employee.Any(e => e.HrCoreNo == resource.HrCoreNo);
       }
       return false;
     }
     // TODO : Check for better technics
-    private bool IsHIDDuplicate(string resource)
+    private bool IsHIDDuplicate(SaveEmployeeResource resource)
     {
-      if (!string.IsNullOrEmpty(resource))
+      if (!string.IsNullOrEmpty(resource.HIDNo))
       {
-        return context.Employee.Any(e => e.HIDNo == resource);
+        if (resource.isUpdate == true)
+        {
+          return false;
+        }
+        return context.Employee.Any(e => e.HIDNo == resource.HIDNo);
       }
       return false;
     }

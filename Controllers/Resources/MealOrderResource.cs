@@ -11,6 +11,7 @@ namespace BusMeal.API.Controllers.Resources
     public int? MealOrderVerificationId { get; set; }
     public bool isReadyToCollect { get; set; }
     public int UserId { get; set; }
+    public bool isUpdate { get; set; } = false;
     public ICollection<SaveMealOrderDetailResource> MealOrderDetails { get; set; }
       = new Collection<SaveMealOrderDetailResource>();
   }
