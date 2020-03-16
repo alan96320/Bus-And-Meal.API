@@ -25,6 +25,7 @@ namespace BusMeal.API.Core.Validator
           .Length(5, 5).WithMessage("Time length must be 5 character");
     }
 
+    // TODO : Check for better technics
     private bool IsCodeDuplicate(string resource)
     {
       if (!string.IsNullOrEmpty(resource))

@@ -8,6 +8,7 @@ using BusMeal.API.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using BusMeal.API.Core.IRepository;
 using BusMeal.API.Helpers.Params;
+using System.Linq;
 
 namespace BusMeal.API.Controllers
 {
@@ -124,6 +125,18 @@ namespace BusMeal.API.Controllers
       }
 
       return Ok($"{id}");
+    }
+
+    // FIXME : make me to be reuseable
+    private int getUserId()
+    {
+      var idClaim = User.Claims.FirstOrDefault(c => c.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
+      if (idClaim != null)
+      {
+        var id = int.Parse(idClaim.Value);
+        return id;
+      }
+      return -1;
     }
   }
 }

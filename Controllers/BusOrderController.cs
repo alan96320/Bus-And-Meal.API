@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusMeal.API.Controllers.Resources;
@@ -28,8 +29,8 @@ namespace BusMeal.API.Controllers
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-      // TODO : send the userId in getAll
-      var busOrders = await busOrderRepository.GetAll();
+      var userId = getUserId();
+      var busOrders = await busOrderRepository.GetAll(userId);
 
       var result = mapper.Map<IEnumerable<ViewBusOrderResource>>(busOrders);
 
@@ -39,8 +40,8 @@ namespace BusMeal.API.Controllers
     [HttpGet("{id}")]
     public async Task<IActionResult> GetActionResult(int id)
     {
-      // TODO : send the userId in getOne
-      var busOrder = await busOrderRepository.GetOne(id);
+      var userId = getUserId();
+      var busOrder = await busOrderRepository.GetOne(id, userId);
 
       if (busOrder == null)
         return NotFound();
@@ -53,8 +54,8 @@ namespace BusMeal.API.Controllers
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedBusOrder([FromQuery]BusOrderParams busOrderParams)
     {
-      // TODO : send the userId in getPaged     
-      var busOrders = await busOrderRepository.GetPagedBusOrder(busOrderParams);
+      var userId = getUserId();
+      var busOrders = await busOrderRepository.GetPagedBusOrder(busOrderParams, userId);
 
       var result = mapper.Map<IEnumerable<ViewBusOrderResource>>(busOrders);
 
@@ -128,6 +129,18 @@ namespace BusMeal.API.Controllers
       }
 
       return Ok($"{id}");
+    }
+
+    // FIXME : make me to be reuseable
+    private int getUserId()
+    {
+      var idClaim = User.Claims.FirstOrDefault(c => c.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
+      if (idClaim != null)
+      {
+        var id = int.Parse(idClaim.Value);
+        return id;
+      }
+      return -1;
     }
 
   }

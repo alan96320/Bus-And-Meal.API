@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusMeal.API.Controllers.Resources;
@@ -129,6 +130,17 @@ namespace BusMeal.API.Controllers
       return Ok($"{id}");
     }
 
+    // FIXME : make me to be reuseable
+    private int getUserId()
+    {
+      var idClaim = User.Claims.FirstOrDefault(c => c.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
+      if (idClaim != null)
+      {
+        var id = int.Parse(idClaim.Value);
+        return id;
+      }
+      return -1;
+    }
 
   }
 }

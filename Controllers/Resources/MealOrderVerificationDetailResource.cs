@@ -5,6 +5,7 @@ namespace BusMeal.API.Controllers.Resources
     public int MealTypeId { get; set; }
     public int SumOrderQty { get; set; }
     public int AdjusmentQty { get; set; }
+    public int? VendorId { get; set; }
     public int SwipeQty { get; set; }
     public int LogBookQty { get; set; }
   }
@@ -14,7 +15,7 @@ namespace BusMeal.API.Controllers.Resources
     public int Id { get; set; }
     public int MealOrderVerificationId { get; set; }
     public int MealTypeId { get; set; }
-    public ViewMealTypeResource MealType {get;set;}
+    public ViewMealTypeResource MealType { get; set; }
     public int SumOrderQty { get; set; }
     public int AdjusmentQty { get; set; }
     public int SwipeQty { get; set; }

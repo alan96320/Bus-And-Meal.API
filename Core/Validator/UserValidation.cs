@@ -24,6 +24,7 @@ namespace BusMeal.API.Core.Validator
           .MaximumLength(25).WithMessage("User last name length max is 25 character");
     }
 
+    // TODO : Check for better technics
     private bool IsIdDuplicate(string resource)
     {
       if (!string.IsNullOrEmpty(resource))

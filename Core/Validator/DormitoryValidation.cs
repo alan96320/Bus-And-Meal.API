@@ -24,6 +24,7 @@ namespace BusMeal.API.Core.Validator
           .Length(2, 50).WithMessage("Dormitory name length must be between 2 to 50 character");
     }
 
+    // TODO : Check for better technics
     private bool IsCodeDuplicate(string resource)
     {
       if (!string.IsNullOrEmpty(resource))

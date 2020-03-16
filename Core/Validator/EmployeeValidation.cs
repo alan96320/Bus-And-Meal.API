@@ -35,6 +35,8 @@ namespace BusMeal.API.Core.Validator
           .NotEmpty().WithMessage("Department id is required");
 
     }
+
+    // TODO : Check for better technics
     private bool IsHrCodeDuplicate(string resource)
     {
       if (!string.IsNullOrEmpty(resource))
@@ -43,7 +45,7 @@ namespace BusMeal.API.Core.Validator
       }
       return false;
     }
-
+    // TODO : Check for better technics
     private bool IsHIDDuplicate(string resource)
     {
       if (!string.IsNullOrEmpty(resource))

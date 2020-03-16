@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,9 @@ using BusMeal.API.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using BusMeal.API.Helpers.Params;
 using BusMeal.API.Helpers;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace BusMeal.API.Controllers
 {
@@ -18,19 +22,28 @@ namespace BusMeal.API.Controllers
     private readonly IMapper mapper;
     private readonly IMealOrderRepository mealOrderRepository;
     private readonly IUnitOfWork unitOfWork;
+    private IUserRepository userRepository;
+    private readonly IMealOrderVerificationRepository orderVerificationRepository;
 
-    public MealOrderController(IMapper mapper, IMealOrderRepository mealOrderRepository, IUnitOfWork unitOfWork)
+    public MealOrderController(IMapper mapper,
+    IMealOrderRepository mealOrderRepository,
+    IUserRepository userRepository,
+    IUnitOfWork unitOfWork,
+    IMealOrderVerificationRepository orderVerificationRepository
+    )
     {
       this.mapper = mapper;
       this.mealOrderRepository = mealOrderRepository;
       this.unitOfWork = unitOfWork;
+      this.userRepository = userRepository;
+      this.orderVerificationRepository = orderVerificationRepository;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-      // TODO : send userId to getAll
-      var mealOrders = await mealOrderRepository.GetAll();
+      var userId = getUserId();
+      var mealOrders = await mealOrderRepository.GetAll(userId);
 
       var result = mapper.Map<IEnumerable<ViewMealOrderResource>>(mealOrders);
 
@@ -40,8 +53,8 @@ namespace BusMeal.API.Controllers
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
-      // TODO : send userId to getOne
-      var mealOrder = await mealOrderRepository.GetOne(id);
+      var userId = getUserId();
+      var mealOrder = await mealOrderRepository.GetOne(id, userId);
 
       if (mealOrder == null)
         return NotFound();
@@ -54,8 +67,8 @@ namespace BusMeal.API.Controllers
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedMealOrderEntryHeader([FromQuery]MealOrderParams mealOrderParams)
     {
-      // TODO : send userId to getPaged
-      var mealOrders = await mealOrderRepository.GetPagedMealOrder(mealOrderParams);
+      var userId = getUserId();
+      var mealOrders = await mealOrderRepository.GetPagedMealOrder(mealOrderParams, userId);
 
       var result = mapper.Map<IEnumerable<ViewMealOrderResource>>(mealOrders);
 
@@ -67,7 +80,6 @@ namespace BusMeal.API.Controllers
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveMealOrderResource mealOrderResource)
     {
-      // TODO : cegah save jika sudah lewat waktu  lockedMeal
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
@@ -92,8 +104,6 @@ namespace BusMeal.API.Controllers
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveMealOrderResource mealOrderResource)
     {
-      // TODO : cegah save jika sudah lewat waktu  lockedMeal
-
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
@@ -120,9 +130,30 @@ namespace BusMeal.API.Controllers
     public async Task<IActionResult> Remove(int id)
     {
       var mealOrder = await mealOrderRepository.GetOne(id);
-
       if (mealOrder == null)
         return NotFound();
+
+      var userId = getUserId();
+      if (userId < 0)
+        return BadRequest("You are not authorize to delete the record");
+
+      var user = await userRepository.GetOne(userId);
+      if (user.AdminStatus != true)
+      {
+        if (mealOrder.UserId != userId)
+          return BadRequest("You are not authorize to delete the record");
+      }
+
+      if (mealOrder.MealOrderVerificationId != null)
+      {
+        var verificationId = mealOrder.MealOrderVerificationId;
+        var orderVerification = await orderVerificationRepository.GetOne(verificationId.Value);
+        if (orderVerification.IsClosed == true)
+          return BadRequest("The order is already closed");
+      }
+
+      if (mealOrder.IsReadyToCollect == true)
+        return BadRequest("Can not delete the order which is already confirm as ready to collect");
 
       mealOrderRepository.Remove(mealOrder);
 
@@ -132,6 +163,18 @@ namespace BusMeal.API.Controllers
       }
 
       return Ok($"{id}");
+    }
+
+    // FIXME : make me to be reuseable
+    private int getUserId()
+    {
+      var idClaim = User.Claims.FirstOrDefault(c => c.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
+      if (idClaim != null)
+      {
+        var id = int.Parse(idClaim.Value);
+        return id;
+      }
+      return -1;
     }
   }
 }

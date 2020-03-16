@@ -24,7 +24,8 @@ namespace BusMeal.API.Core.Validator
         .Length(2, 50).WithMessage("Name length must be between 1 to 50 character");
 
     }
-    // FIXME : duplicate check
+
+    // TODO : Check for better technics
     private bool IsCodeDuplicate(string resource)
     {
       if (!string.IsNullOrEmpty(resource))
