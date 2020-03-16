@@ -7,8 +7,8 @@ namespace BusMeal.API.Persistence.Repository
     public class HelperRepository : IHelperRepository
     {
         private readonly DataContext context;
-        private readonly IConfigurationRepository appConfiguration;
-            private readonly IBusOrderRepository busOrderRepository;
+    //    private readonly IConfigurationRepository appConfiguration;
+    //        private readonly IBusOrderRepository busOrderRepository;
 
         public HelperRepository(DataContext context)
         {

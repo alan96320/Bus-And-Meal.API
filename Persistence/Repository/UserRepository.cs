@@ -8,17 +8,29 @@ using BusMeal.API.Core.Models;
 using BusMeal.API.Helpers;
 using BusMeal.API.Helpers.Params;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
+using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace BusMeal.API.Persistence.Repository
 {
   public class UserRepository : IUserRepository
   {
     private readonly DataContext context;
-
-    public UserRepository(DataContext context)
+    private readonly IConfiguration configuration;
+    private bool shouldLoginAD = false;
+    
+    public UserRepository(DataContext context, IConfiguration configuration)
     {
       this.context = context;
+      this.configuration = configuration;
+
+      bool shouldLoginAD = configuration.GetValue<bool>("LoginAD");  
     }
+
+
     public async Task<User> GetOne(int id)
     {
       return await context.User
@@ -30,15 +42,42 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<User> Login(string username, string password)
     {
-      var user = await context.User.FirstOrDefaultAsync(u => u.Username == username);
+      User user = null;
+      if (shouldLoginAD)   // if shouldLoginAD = true on appsetting
+      {
+        try {
+          string domainName = configuration.GetSection("Domain:DomainName").Value;
+          var de = new DirectoryEntry("LDAP://" + domainName, username, password);
+          var ds = new DirectorySearcher(de);
+          SearchResult search = ds.FindOne();
 
-      if (user == null)
-        return null;
+          if (search != null)   // user found and verifed on AD
+          {
+              user = await context.User.FirstOrDefaultAsync(u => u.Username == username);
+              if (user == null)   // but user not found on database
+                {
+                  // create new user
+                }
+          }
+        } catch {
+          user = null;
+        }
 
-      if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-        return null;
+
+      } 
+      else 
+      {
+
+      user = await context.User.FirstOrDefaultAsync(u => u.Username == username);
+
+      if (user != null)
+        if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+          user = null; // set user to null if password not verify.
+      }
 
       return user;
+      
+
     }
 
     private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
