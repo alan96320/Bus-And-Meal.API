@@ -11,7 +11,7 @@ namespace BusMeal.API.Controllers
   public class ReportController : Controller
   {
     private readonly IMapper mapper;
-    public IMealtypeRepository mealtypeRepository { get; }
+    public IMealtypeRepository mealtypeRepository;
     private readonly IEmployeeRepository employeeRepository;
     private IDormitoryBlockRepository dormitoryBlockRepository;
     private readonly IMealVendorRepository mealVendorRepository;
@@ -19,6 +19,7 @@ namespace BusMeal.API.Controllers
     private readonly ICounterRepository counterRepository;
     private IUserRepository userRepository;
     private readonly IMealOrderRepository mealOrderRepository;
+    private IBusOrderRepository busOrderRepository;
     private readonly IDepartmentRepository departmentRepository;
     public ReportController(
     IMapper mapper,
@@ -30,7 +31,8 @@ namespace BusMeal.API.Controllers
     IBusTimeRepository busTimeRepository,
     ICounterRepository counterRepository,
     IUserRepository userRepository,
-    IMealOrderRepository mealOrderRepository
+    IMealOrderRepository mealOrderRepository,
+    IBusOrderRepository busOrderRepository
     )
     {
       this.departmentRepository = departmenRepository;
@@ -43,6 +45,7 @@ namespace BusMeal.API.Controllers
       this.counterRepository = counterRepository;
       this.userRepository = userRepository;
       this.mealOrderRepository = mealOrderRepository;
+      this.busOrderRepository = busOrderRepository;
     }
 
     [HttpGet("department")]
@@ -126,7 +129,7 @@ namespace BusMeal.API.Controllers
     }
 
     [HttpGet("mealorder")]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetMealOrderReport()
     {
 
       var mealOrders = await mealOrderRepository.GetAll();
@@ -143,6 +146,42 @@ namespace BusMeal.API.Controllers
         departmentResult,
         mealTypeResult
       });
+    }
+
+    [HttpGet("busorder")]
+    public async Task<IActionResult> GetBusOrderReport()
+    {
+
+      var busOrder = await busOrderRepository.GetAll();
+      var departments = await departmentRepository.GetAll();
+      var bustime = await busTimeRepository.GetAll();
+      var dormitoryblock = await dormitoryBlockRepository.GetAll();
+
+      var busOrderResult = mapper.Map<IEnumerable<ViewBusOrderResource>>(busOrder);
+      var departmentResult = mapper.Map<IEnumerable<ViewDepartmentResource>>(departments);
+      var bustimeResult = mapper.Map<IEnumerable<ViewBusTimeResource>>(bustime);
+      var dormitoryblockResult = mapper.Map<IEnumerable<ViewDormitoryBlockResource>>(dormitoryblock);
+
+      object[] direction = new object[3];
+      direction[0] = new Direction { id = 1, name = "Office to Dormitory" };
+      direction[1] = new Direction { id = 2, name = "Dormitory to Office" };
+      direction[2] = new Direction { id = 3, name = "Night Bus" };
+
+      return Ok(new
+      {
+        busOrderResult,
+        departmentResult,
+        bustimeResult,
+        direction,
+        dormitoryblockResult
+      }
+    );
+    }
+
+    public class Direction
+    {
+      public int id { get; set; }
+      public string name { get; set; }
     }
   }
 }

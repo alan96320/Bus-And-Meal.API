@@ -26,7 +26,7 @@ namespace BusMeal.API.Controllers
       this.unitOfWork = unitOfWork;
     }
 
-    [Authorize(Roles = "Meal Type.R")]
+    // [Authorize(Roles = "Meal Type.R")]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {

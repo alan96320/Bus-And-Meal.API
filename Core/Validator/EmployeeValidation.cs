@@ -15,8 +15,8 @@ namespace BusMeal.API.Core.Validator
 
       RuleFor(e => e.HrCoreNo)
           .NotEmpty().WithMessage("HR code number is required")
-          .Length(8, 25).WithMessage("HR code length must be between 8 to 25 character")
-          .Must(e => !IsHrCodeDuplicate(e)).WithMessage("HR code must be unique");
+          .Length(8, 25).WithMessage("HR code length must be between 8 to 25 character");
+      // .Must(e => !IsHrCodeDuplicate(e)).WithMessage("HR code must be unique");
 
       RuleFor(e => e.Firstname)
           .NotEmpty().WithMessage("First name is required")
@@ -28,8 +28,8 @@ namespace BusMeal.API.Core.Validator
 
       RuleFor(e => e.HIDNo)
                 .NotEmpty().WithMessage("HID number is required")
-                .Length(10, 25).WithMessage("HID number length must be between 10 to 25 character")
-                .Must(e => !IsHIDDuplicate(e)).WithMessage("HR code must be unique");
+                .Length(10, 25).WithMessage("HID number length must be between 10 to 25 character");
+      // .Must(e => !IsHIDDuplicate(e)).WithMessage("HR code must be unique");
 
       RuleFor(e => e.DepartmentId)
           .NotEmpty().WithMessage("Department id is required");
