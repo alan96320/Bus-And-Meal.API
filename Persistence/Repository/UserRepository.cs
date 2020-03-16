@@ -27,7 +27,7 @@ namespace BusMeal.API.Persistence.Repository
       this.context = context;
       this.configuration = configuration;
 
-      bool shouldLoginAD = configuration.GetValue<bool>("LoginAD");  
+      this.shouldLoginAD = configuration.GetValue<bool>("LoginAD");  
     }
 
 
@@ -43,10 +43,10 @@ namespace BusMeal.API.Persistence.Repository
     public async Task<User> Login(string username, string password)
     {
       User user = null;
-      if (shouldLoginAD)   // if shouldLoginAD = true on appsetting
+      if (shouldLoginAD)   // if shouldLoginAD = true on appSetting
       {
         try {
-          string domainName = configuration.GetSection("Domain:DomainName").Value;
+          string domainName = configuration.GetSection("Domain").Value;   // setting Domain : ALCON at appSetting
           var de = new DirectoryEntry("LDAP://" + domainName, username, password);
           var ds = new DirectorySearcher(de);
           SearchResult search = ds.FindOne();
@@ -56,7 +56,7 @@ namespace BusMeal.API.Persistence.Repository
               user = await context.User.FirstOrDefaultAsync(u => u.Username == username);
               if (user == null)   // but user not found on database
                 {
-                  // create new user
+                  // create new user & Check if there is no other user then make this user become admin
                 }
           }
         } catch {
