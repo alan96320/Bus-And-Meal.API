@@ -9,7 +9,7 @@ namespace BusMeal.API.Core.Models
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
-    [Column(TypeName = "varchar(2)")]
+    [Column(TypeName = "varchar(3)")]
     public string Code { get; set; }
 
     [Column(TypeName = "varchar(100)")]

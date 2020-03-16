@@ -29,7 +29,7 @@ namespace BusMeal.API.Controllers
 
 
     //Create new data Counter
-    [Authorize(Roles = "Counter.W, Administrator")]
+    // [Authorize(Roles = "Counter.W, Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] SaveCounterResource counterResource)
     {
@@ -49,7 +49,7 @@ namespace BusMeal.API.Controllers
     }
 
     //get data by ID for action after update
-    [Authorize(Roles = "Counter.R, Administrator")]
+    // [Authorize(Roles = "Counter.R, Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
@@ -64,7 +64,7 @@ namespace BusMeal.API.Controllers
     }
 
     //Delete data Counter
-    [Authorize(Roles = "Counter.W, Administrator")]
+    // [Authorize(Roles = "Counter.W, Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Removecounter(int id)
     {
@@ -84,7 +84,7 @@ namespace BusMeal.API.Controllers
     }
 
     //get Data For pagination
-    [Authorize(Roles = "Counter.R, Administrator")]
+    // [Authorize(Roles = "Counter.R, Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedcounter([FromQuery]CounterParams counterParams)
     {
@@ -97,7 +97,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Counter.W, Administrator")]
+    // [Authorize(Roles = "Counter.W, Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveCounterResource counterResource)
     {

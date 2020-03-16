@@ -37,7 +37,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Employee.R, Administrator")]
+    // [Authorize(Roles = "Employee.R, Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
@@ -51,7 +51,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Employee.R, Administrator")]
+    // [Authorize(Roles = "Employee.R, Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedEmployee([FromQuery]EmployeeParams employeeParams)
     {
@@ -64,7 +64,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Employee.W, Administrator")]
+    // [Authorize(Roles = "Employee.W, Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveEmployeeResource employeeResource)
     {
@@ -85,7 +85,7 @@ namespace BusMeal.API.Controllers
 
     }
 
-    [Authorize(Roles = "Employee.W, Administrator")]
+    // [Authorize(Roles = "Employee.W, Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveEmployeeResource employeeResource)
     {
@@ -111,7 +111,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Employee.W, Administrator")]
+    // [Authorize(Roles = "Employee.W, Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemoveEmployee(int id)
     {
