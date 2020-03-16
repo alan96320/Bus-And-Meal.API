@@ -50,6 +50,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    [Authorize(Roles = "Meal Order.R, Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
@@ -64,6 +65,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    [Authorize(Roles = "Meal Order.R, Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedMealOrderEntryHeader([FromQuery]MealOrderParams mealOrderParams)
     {
@@ -77,6 +79,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    [Authorize(Roles = "Meal Order.W, Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveMealOrderResource mealOrderResource)
     {
@@ -101,6 +104,7 @@ namespace BusMeal.API.Controllers
 
     }
 
+    [Authorize(Roles = "Meal Order.W, Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveMealOrderResource mealOrderResource)
     {
@@ -126,6 +130,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    [Authorize(Roles = "Meal Order.W, Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Remove(int id)
     {

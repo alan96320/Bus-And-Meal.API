@@ -37,7 +37,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Meal Type.R")]
+    [Authorize(Roles = "Meal Type.R, Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
@@ -51,7 +51,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Meal Type.R")]
+    [Authorize(Roles = "Meal Type.R, Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedmealType([FromQuery]MealTypeParams mealTypeParams)
     {
@@ -64,7 +64,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Meal Type.W")]
+    [Authorize(Roles = "Meal Type.W, Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveMealTypeResource mealTypeResource)
     {
@@ -85,7 +85,7 @@ namespace BusMeal.API.Controllers
 
     }
 
-    [Authorize(Roles = "Meal Type.W")]
+    [Authorize(Roles = "Meal Type.W, Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveMealTypeResource mealTypeResource)
     {
@@ -111,7 +111,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Meal Type.W")]
+    [Authorize(Roles = "Meal Type.W, Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemovemealType(int id)
     {

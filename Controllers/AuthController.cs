@@ -57,11 +57,16 @@ namespace BusMeal.API.Controllers
       var allUserModules = await userModuleRepository.GetAll();
       var userModules = allUserModules.Where(u => u.UserId == userLogin.Id).ToList();
 
+      // Add user claim
       var claims = new List<Claim>();
       claims.Add(new Claim(ClaimTypes.Name, userLogin.Username));
       claims.Add(new Claim("Id", userLogin.Id.ToString()));
 
-      // Add user claim
+      if (userLogin.AdminStatus == true)
+      {
+        claims.Add(new Claim(ClaimTypes.Role, "Administrator"));
+      }
+
       foreach (UserModuleRight userModule in userModules)
       {
         var right = await moduleRightsRepository.GetOne(userModule.ModuleRightsId);
@@ -101,18 +106,6 @@ namespace BusMeal.API.Controllers
         token = tokenHandler.WriteToken(token),
         user
       });
-    }
-
-    // FIXME : make me to be reuseable
-    private int getUserId()
-    {
-      var idClaim = User.Claims.FirstOrDefault(c => c.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
-      if (idClaim != null)
-      {
-        var id = int.Parse(idClaim.Value);
-        return id;
-      }
-      return -1;
     }
   }
 }

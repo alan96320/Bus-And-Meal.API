@@ -8,6 +8,7 @@ using BusMeal.API.Core.IRepository;
 using BusMeal.API.Core.Models;
 using BusMeal.API.Helpers;
 using BusMeal.API.Helpers.Params;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusMeal.API.Controllers
@@ -36,6 +37,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    [Authorize(Roles = "Configuration.R, Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
@@ -49,6 +51,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    [Authorize(Roles = "Configuration.R, Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedConfiguration([FromQuery]ConfigurationParams configurationParams)
     {
@@ -61,6 +64,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    [Authorize(Roles = "Configuration.W, Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveConfigurationResource configurationResource)
     {
@@ -83,6 +87,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    [Authorize(Roles = "Configuration.W, Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveConfigurationResource configurationResource)
     {
@@ -108,6 +113,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    [Authorize(Roles = "Configuration.W, Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemoveConfiguration(int id)
     {
