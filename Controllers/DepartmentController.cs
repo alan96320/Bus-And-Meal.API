@@ -29,7 +29,7 @@ namespace BusMeal.API.Controllers
       this.mapper = mapper;
     }
 
-    [Authorize(Roles = "Department.W, Administrator")]
+    // [Authorize(Roles = "Department.W, Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] SaveDepartmentResource departmentResource)
     {
@@ -52,7 +52,7 @@ namespace BusMeal.API.Controllers
 
     }
 
-    [Authorize(Roles = "Department.W, Administrator")]
+    // [Authorize(Roles = "Department.W, Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] SaveDepartmentResource departmentResource)
     {
@@ -81,7 +81,7 @@ namespace BusMeal.API.Controllers
 
     }
 
-    [Authorize(Roles = "Department.R, Administrator")]
+    // [Authorize(Roles = "Department.R, Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
@@ -95,7 +95,7 @@ namespace BusMeal.API.Controllers
       return Ok(viewDepartmentResource);
     }
 
-    [Authorize(Roles = "Department.W, Administrator")]
+    // [Authorize(Roles = "Department.W, Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemoveDepartment(int id)
     {
@@ -113,7 +113,6 @@ namespace BusMeal.API.Controllers
       return Ok(id);
     }
 
-    // [Authorize(Roles = "Department.R")]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -124,7 +123,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Department.R, Administrator")]
+    // [Authorize(Roles = "Department.R, Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedDepartments([FromQuery] DepartmentParams departmentParams)
     {

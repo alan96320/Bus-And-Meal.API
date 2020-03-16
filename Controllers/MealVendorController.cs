@@ -38,7 +38,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Meal Vendor.R, Administrator")]
+    // [Authorize(Roles = "Meal Vendor.R, Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
@@ -52,7 +52,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Meal Vendor.R, Administrator")]
+    // [Authorize(Roles = "Meal Vendor.R, Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedMealVendor([FromQuery]MealVendorParams mealVendorParams)
     {
@@ -65,7 +65,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Meal Vendor.W, Administrator")]
+    // [Authorize(Roles = "Meal Vendor.W, Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveMealVendorResource mealVendorResource)
     {
@@ -88,7 +88,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Meal Vendor.W, Administrator")]
+    // [Authorize(Roles = "Meal Vendor.W, Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveMealVendorResource mealVendorResource)
     {
@@ -114,7 +114,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Meal Vendor.W, Administrator")]
+    // [Authorize(Roles = "Meal Vendor.W, Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemoveMealVendor(int id)
     {
