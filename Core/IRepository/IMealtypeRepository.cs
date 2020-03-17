@@ -12,6 +12,7 @@ namespace BusMeal.API.Core.IRepository
     Task<MealType> GetOne(int id);
     void Add(MealType mealType);
     void Remove(MealType mealType);
+    void Update(MealType mealType);    
     Task<IEnumerable<MealType>> GetAll();
     Task<PagedList<MealType>> GetPagedmealType(MealTypeParams mealTypeParams);
   }
