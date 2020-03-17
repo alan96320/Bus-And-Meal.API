@@ -175,6 +175,11 @@ namespace BusMeal.API.Controllers
       if (mealOrderVerification == null)
         return NotFound();
 
+      if (mealOrderVerification.IsClosed == true)
+      {
+        return BadRequest("Can't edit the record since it was closed");
+      }
+
       var OrderLists = mealOrderVerificationResource.OrderList;
 
       mealOrderVerification = mapper.Map(mealOrderVerificationResource, mealOrderVerification);
@@ -215,7 +220,7 @@ namespace BusMeal.API.Controllers
 
       if (mealOrderVerification.IsClosed == true)
       {
-        return BadRequest("The transaction was closed, and can't be delete!");
+        return BadRequest("Can't delete the record since it was closed");
       }
 
       mealOrderVerificationRepository.Remove(mealOrderVerification);
