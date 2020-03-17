@@ -64,6 +64,11 @@ namespace BusMeal.API.Persistence.Repository
         busOrders = busOrders.Where(b => b.OrderEntryDate.Date == busOrderParams.OrderEntryDate.Date);
       }
 
+      if (busOrderParams.isReadyToCollect == true)
+      {
+        busOrders = busOrders.Where(b => b.IsReadyToCollect == true);
+      }
+
       // FIXME : seharusnya bukan departmentId tetapi departementcode atau departmentName
 
       if (busOrderParams.DepartmentId > 0)

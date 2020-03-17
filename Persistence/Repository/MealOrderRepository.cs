@@ -61,6 +61,11 @@ namespace BusMeal.API.Persistence.Repository
         mealOrders = mealOrders.Where(m => m.OrderEntryDate.Date == mealOrderParams.OrderEntryDate.Date);
       }
 
+      if (mealOrderParams.isReadyToCollect == true)
+      {
+        mealOrders = mealOrders.Where(m => m.IsReadyToCollect == true);
+      }
+
       // FIXME : harusnya department Name, bukan Id untuk filter. kecuali di frontend pakai comboxbox
       if (mealOrderParams.DepartmentId > 0)
       {
