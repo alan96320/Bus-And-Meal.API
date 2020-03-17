@@ -26,19 +26,28 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<IEnumerable<MealOrderVerification>> GetAll()
     {
-      var mealOrderVerifications = await context.MealOrderVerification.Include(m => m.MealOrderVerificationDetails).ToListAsync();
+      var mealOrderVerifications = await context.MealOrderVerification
+        .Include(m => m.MealOrders.Where(mo => mo.IsReadyToCollect == true))
+        .Include(m => m.MealOrderVerificationDetails)
+        .ToListAsync();
 
       return mealOrderVerifications;
     }
 
     public async Task<MealOrderVerification> GetOne(int id)
     {
-      return await context.MealOrderVerification.Include(m => m.MealOrderVerificationDetails).FirstOrDefaultAsync(m => m.Id == id);
+      return await context.MealOrderVerification
+        .Include(m => m.MealOrders.Where(mo => mo.IsReadyToCollect == true))
+        .Include(m => m.MealOrderVerificationDetails)
+        .FirstOrDefaultAsync(m => m.Id == id);
     }
 
     public async Task<PagedList<MealOrderVerification>> GetPagedMealOrderVerification(MealOrderVerificationParams mealOrderVerificationParams)
     {
-      var mealOrderVerifications = context.MealOrderVerification.Include(m => m.MealOrderVerificationDetails).AsQueryable();
+      var mealOrderVerifications = context.MealOrderVerification
+      .Include(m => m.MealOrders.Where(mo => mo.IsReadyToCollect == true))
+      .Include(m => m.MealOrderVerificationDetails)
+      .AsQueryable();
 
       if (!string.IsNullOrEmpty(mealOrderVerificationParams.OrderNo))
       {
