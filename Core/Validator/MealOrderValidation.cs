@@ -36,6 +36,10 @@ namespace BusMeal.API.Core.Validator
     {
       if (!string.IsNullOrEmpty((resource.DepartmentId).ToString()))
       {
+        if (resource.isUpdate == true)
+        {
+          return false;
+        }
         return context.MealOrder.Any(mo => mo.DepartmentId == resource.DepartmentId && mo.OrderEntryDate.Date == resource.OrderEntryDate.Date);
       }
       return false;

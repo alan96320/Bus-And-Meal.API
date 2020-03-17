@@ -12,6 +12,7 @@ namespace BusMeal.API.Controllers.Resources
     public string HIDNo { get; set; }
 
     public int DepartmentId { get; set; }
+    public bool isUpdate { get; set; } = false;
   }
 
   public class ViewEmployeeResource
@@ -25,4 +26,4 @@ namespace BusMeal.API.Controllers.Resources
     public int DepartmentId { get; set; }
     public ViewDepartmentResource Department { get; set; }
   }
-} 
+}

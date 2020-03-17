@@ -14,9 +14,10 @@ namespace BusMeal.API.Controllers.Resources
 
     public int? BusOrderVerificationId { get; set; }
 
-    public bool isReadyToCollect {get;set;}
+    public bool isReadyToCollect { get; set; }
     public int UserId { get; set; }
-    
+    public bool isUpdate { get; set; } = false;
+
     public ICollection<SaveBusOrderDetailResource> BusOrderDetails { get; set; }
       = new Collection<SaveBusOrderDetailResource>();
   }
@@ -30,7 +31,7 @@ namespace BusMeal.API.Controllers.Resources
     public int? DormitoryBlockId { get; set; }
     public int? BusOrderVerificationId { get; set; }
 
-    public bool IsReadyToCollect {get;set;}
+    public bool IsReadyToCollect { get; set; }
     public int UserId { get; set; }
     public ICollection<ViewBusOrderDetailResource> BusOrderDetails { get; set; }
      = new Collection<ViewBusOrderDetailResource>();

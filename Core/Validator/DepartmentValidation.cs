@@ -17,20 +17,26 @@ namespace BusMeal.API.Core.Validator
       RuleFor(d => d.Code)
         .NotEmpty().WithMessage("Code is required")
         .Length(2, 25).WithMessage("Code length must be between 2 to 25 character");
-      // .Must(d => !IsCodeDuplicate(d)).WithMessage("Department Code must be unique");
 
       RuleFor(d => d.Name)
         .NotEmpty().WithMessage("Name is required")
         .Length(2, 50).WithMessage("Name length must be between 1 to 50 character");
 
+      RuleFor(d => d)
+          .Must(d => !IsCodeDuplicate(d)).WithName("Code").WithMessage("Department code must be unique");
+
     }
 
     // TODO : Check for better technics
-    private bool IsCodeDuplicate(string resource)
+    private bool IsCodeDuplicate(SaveDepartmentResource resource)
     {
-      if (!string.IsNullOrEmpty(resource))
+      if (!string.IsNullOrEmpty(resource.Code))
       {
-        return context.Department.Any(d => d.Code == resource);
+        if (resource.isUpdate == true)
+        {
+          return false;
+        }
+        return context.Department.Any(d => d.Code == resource.Code);
       }
       return false;
     }

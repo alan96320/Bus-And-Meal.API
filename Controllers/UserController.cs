@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using BusMeal.API.Core.IRepository;
 using BusMeal.API.Helpers.Params;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BusMeal.API.Controllers
 {
@@ -47,6 +48,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    // [Authorize(Roles = "User.R, Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
@@ -60,6 +62,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    // [Authorize(Roles = "User.R, Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedUser([FromQuery]UserParams userParams)
     {
@@ -72,6 +75,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    // [Authorize(Roles = "User.W, Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] AddUserResource userResource)
     {
@@ -112,6 +116,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    // [Authorize(Roles = "User.W, Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveUserResource userResource)
     {
@@ -137,6 +142,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    // [Authorize(Roles = "User.W, Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemoveUser(int id)
     {

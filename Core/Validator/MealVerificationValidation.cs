@@ -17,7 +17,7 @@ namespace BusMeal.API.Core.Validator
           .NotEmpty().WithMessage("Date is required");
 
       RuleFor(mv => mv)
-          .Must(mv => !IsDateDuplicate(mv)).WithMessage("Date can't be duplicated");
+          .Must(mv => !IsDateDuplicate(mv)).WithName("Date").WithMessage("Date must be unique");
     }
 
     // TODO : Check for better technics
@@ -25,6 +25,10 @@ namespace BusMeal.API.Core.Validator
     {
       if (!string.IsNullOrEmpty((resource.OrderDate).ToString()))
       {
+        if (resource.isUpdate == true)
+        {
+          return false;
+        }
         return context.MealOrderVerification.Any(mv => mv.OrderDate.Date == resource.OrderDate.Date);
       }
       return false;

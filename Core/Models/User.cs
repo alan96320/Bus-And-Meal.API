@@ -32,6 +32,7 @@ namespace BusMeal.API.Core.Models
     [Column(TypeName = "varchar(100)")]
     public string GddbId { get; set; }
     public bool AdminStatus { get; set; } = false;
+    public bool isActive { get; set; }
     public int LockTransStatus { get; set; }
     public ICollection<UserModuleRight> UserModuleRights { get; set; } = new Collection<UserModuleRight>();
     public ICollection<UserDepartment> UserDepartments { get; set; } = new Collection<UserDepartment>();

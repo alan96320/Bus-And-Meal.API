@@ -10,6 +10,7 @@ namespace BusMeal.API.Controllers.Resources
     public int? MealVendorId { get; set; }   // dari FE harusnya null dan di refresh di dlm BE
 
     public int OrderQty { get; set; }
+    public bool isUpdate { get; set; } = false;
   }
 
   public class ViewMealOrderDetailResource
