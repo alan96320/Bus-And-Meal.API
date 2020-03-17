@@ -55,7 +55,11 @@ namespace BusMeal.API.Core.Validator
           return false;
         }
 
-        if (context.UserDepartment.Any(ud => ud.UserId == resource.UserId && ud.DepartmentId == resource.DepartmentId) != true)
+        if (context.UserDepartment.Any(ud => ud.UserId == resource.UserId && ud.DepartmentId == resource.DepartmentId) == true)
+        {
+          return false;
+        }
+        else
         {
           return true;
         }
