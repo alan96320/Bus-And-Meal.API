@@ -28,6 +28,7 @@ namespace BusMeal.API.Persistence.Repository
     {
       var mealOrderVerifications = await context.MealOrderVerification
         .Include(m => m.MealOrders)
+          .Where(m => m.MealOrders.Any(mo => mo.IsReadyToCollect == true))
         .Include(m => m.MealOrderVerificationDetails)
         .ToListAsync();
 

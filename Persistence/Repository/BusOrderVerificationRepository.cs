@@ -47,6 +47,7 @@ namespace BusMeal.API.Persistence.Repository
     {
       var busOrderVerifications = context.BusOrderVerification
         .Include(b => b.BusOrders)
+          .Where(m => m.BusOrders.Any(mo => mo.IsReadyToCollect == true))
         .Include(b => b.BusOrderVerificationDetails)
         .AsQueryable();
 
