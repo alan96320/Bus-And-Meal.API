@@ -32,7 +32,7 @@ namespace BusMeal.API.Persistence.Repository
 
     public void Update(Department department)
     {
-      context.Department.Add(department);
+      context.Department.Attach(department);
       this.context.Entry(department).State = EntityState.Modified;
     }
 
