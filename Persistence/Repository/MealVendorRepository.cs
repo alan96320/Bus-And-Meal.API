@@ -23,6 +23,13 @@ namespace BusMeal.API.Persistence.Repository
       context.MealVendor.Add(mealVendor);
     }
 
+    public void Update(MealVendor mealVendor)
+    {
+      context.MealVendor.Attach(mealVendor);
+      this.context.Entry(mealVendor).State = EntityState.Modified;
+    }        
+    
+
     public async Task<IEnumerable<MealVendor>> GetAll()
     {
       var mealvendors = await context.MealVendor.ToListAsync();
