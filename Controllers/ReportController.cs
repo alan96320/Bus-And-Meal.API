@@ -22,6 +22,8 @@ namespace BusMeal.API.Controllers
     private IUserRepository userRepository;
     private readonly IMealOrderRepository mealOrderRepository;
     private IBusOrderRepository busOrderRepository;
+    private readonly IMealOrderVerificationRepository mealOrderVerificationRepository;
+    private IBusOrderVerificationRepository busOrderVerificationRepository;
     private readonly IDepartmentRepository departmentRepository;
     public ReportController(
     IMapper mapper,
@@ -34,7 +36,9 @@ namespace BusMeal.API.Controllers
     ICounterRepository counterRepository,
     IUserRepository userRepository,
     IMealOrderRepository mealOrderRepository,
-    IBusOrderRepository busOrderRepository
+    IBusOrderRepository busOrderRepository,
+    IMealOrderVerificationRepository mealOrderVerificationRepository,
+    IBusOrderVerificationRepository busOrderVerificationRepository
     )
     {
       this.departmentRepository = departmenRepository;
@@ -48,6 +52,8 @@ namespace BusMeal.API.Controllers
       this.userRepository = userRepository;
       this.mealOrderRepository = mealOrderRepository;
       this.busOrderRepository = busOrderRepository;
+      this.mealOrderVerificationRepository = mealOrderVerificationRepository;
+      this.busOrderVerificationRepository = busOrderVerificationRepository;
     }
 
     // [Authorize(Roles = "Administrator")]
@@ -169,6 +175,24 @@ namespace BusMeal.API.Controllers
     }
 
     // [Authorize(Roles = "Administrator")]
+    [HttpGet("mealverification")]
+    public async Task<IActionResult> GetMealVerificationReport([FromQuery]MealOrderVerificationParams mealVerificationParams)
+    {
+
+      var mealVerification = await mealOrderVerificationRepository.GetPagedMealOrderVerification(mealVerificationParams);
+      var mealtypes = await mealtypeRepository.GetAll();
+
+      var mealOrderResult = mapper.Map<IEnumerable<ViewMealOrderVerificationResource>>(mealVerification);
+      var mealTypeResult = mapper.Map<IEnumerable<ViewMealTypeResource>>(mealtypes);
+
+      return Ok(new
+      {
+        mealOrderResult,
+        mealTypeResult
+      });
+    }
+
+    // [Authorize(Roles = "Administrator")]
     [HttpGet("busorder")]
     public async Task<IActionResult> GetBusOrderReport([FromQuery]BusOrderParams busOrderParams)
     {
@@ -192,6 +216,34 @@ namespace BusMeal.API.Controllers
       {
         busOrderResult,
         departmentResult,
+        bustimeResult,
+        direction,
+        dormitoryblockResult
+      }
+    );
+    }
+
+    // [Authorize(Roles = "Administrator")]
+    [HttpGet("busverification")]
+    public async Task<IActionResult> GetBusVerificationReport([FromQuery]BusOrderVerificationParams busVerificationParams)
+    {
+
+      var busVerification = await busOrderVerificationRepository.GetPagedBusOrderVerification(busVerificationParams);
+      var bustime = await busTimeRepository.GetAll();
+      var dormitoryblock = await dormitoryBlockRepository.GetAll();
+
+      var busVerificationResult = mapper.Map<IEnumerable<ViewBusOrderVerificationResource>>(busVerification);
+      var bustimeResult = mapper.Map<IEnumerable<ViewBusTimeResource>>(bustime);
+      var dormitoryblockResult = mapper.Map<IEnumerable<ViewDormitoryBlockResource>>(dormitoryblock);
+
+      object[] direction = new object[3];
+      direction[0] = new Direction { id = 1, name = "Office to Dormitory" };
+      direction[1] = new Direction { id = 2, name = "Dormitory to Office" };
+      direction[2] = new Direction { id = 3, name = "Night Bus" };
+
+      return Ok(new
+      {
+        busVerificationResult,
         bustimeResult,
         direction,
         dormitoryblockResult

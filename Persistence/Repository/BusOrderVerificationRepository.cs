@@ -27,7 +27,6 @@ namespace BusMeal.API.Persistence.Repository
     public async Task<IEnumerable<BusOrderVerification>> GetAll()
     {
       var busOrderVerification = await context.BusOrderVerification
-        .Include(b => b.BusOrders.Where(bo => bo.IsReadyToCollect == true))
         .Include(b => b.BusOrderVerificationDetails)
         .ToListAsync();
 
@@ -37,7 +36,6 @@ namespace BusMeal.API.Persistence.Repository
     public async Task<BusOrderVerification> GetOne(int id)
     {
       return await context.BusOrderVerification
-        .Include(b => b.BusOrders.Where(bo => bo.IsReadyToCollect == true))
         .Include(b => b.BusOrderVerificationDetails)
         .FirstOrDefaultAsync(b => b.Id == id);
     }
@@ -45,7 +43,6 @@ namespace BusMeal.API.Persistence.Repository
     public async Task<PagedList<BusOrderVerification>> GetPagedBusOrderVerification(BusOrderVerificationParams busOrderVerificationParams)
     {
       var busOrderVerifications = context.BusOrderVerification
-        .Include(b => b.BusOrders.Where(bo => bo.IsReadyToCollect == true))
         .Include(b => b.BusOrderVerificationDetails)
         .AsQueryable();
 
@@ -58,6 +55,11 @@ namespace BusMeal.API.Persistence.Repository
       if (DateTime.Compare(busOrderVerificationParams.OrderDate, new DateTime(01, 1, 1)) != 0)
       {
         busOrderVerifications = busOrderVerifications.Where(b => b.Orderdate.Date == busOrderVerificationParams.OrderDate.Date);
+      }
+
+      if (DateTime.Compare(busOrderVerificationParams.StartDate, new DateTime(01, 1, 1)) != 0 && DateTime.Compare(busOrderVerificationParams.EndDate, new DateTime(01, 1, 1)) != 0)
+      {
+        busOrderVerifications = busOrderVerifications.Where(m => m.Orderdate.Date >= busOrderVerificationParams.StartDate.Date && m.Orderdate.Date <= busOrderVerificationParams.EndDate.Date);
       }
 
       if (!string.IsNullOrEmpty(busOrderVerificationParams.OrderStatus))
