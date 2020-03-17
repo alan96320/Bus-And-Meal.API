@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BusMeal.API.Controllers.Resources;
 using BusMeal.API.Core.IRepository;
+using BusMeal.API.Helpers.Params;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -148,10 +149,10 @@ namespace BusMeal.API.Controllers
 
     // [Authorize(Roles = "Administrator")]
     [HttpGet("mealorder")]
-    public async Task<IActionResult> GetMealOrderReport()
+    public async Task<IActionResult> GetMealOrderReport([FromQuery]MealOrderParams mealOrderParams)
     {
 
-      var mealOrders = await mealOrderRepository.GetAll();
+      var mealOrders = await mealOrderRepository.GetPagedMealOrder(mealOrderParams);
       var departments = await departmentRepository.GetAll();
       var mealtypes = await mealtypeRepository.GetAll();
 
@@ -169,10 +170,10 @@ namespace BusMeal.API.Controllers
 
     // [Authorize(Roles = "Administrator")]
     [HttpGet("busorder")]
-    public async Task<IActionResult> GetBusOrderReport()
+    public async Task<IActionResult> GetBusOrderReport([FromQuery]BusOrderParams busOrderParams)
     {
 
-      var busOrder = await busOrderRepository.GetAll();
+      var busOrder = await busOrderRepository.GetPagedBusOrder(busOrderParams);
       var departments = await departmentRepository.GetAll();
       var bustime = await busTimeRepository.GetAll();
       var dormitoryblock = await dormitoryBlockRepository.GetAll();

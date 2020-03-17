@@ -53,7 +53,12 @@ namespace BusMeal.API.Persistence.Repository
 
       if (userId != null)
       {
-        mealOrders = mealOrders.Where(b => b.UserId == userId);
+        mealOrders = mealOrders.Where(m => m.UserId == userId);
+      }
+
+      if (!string.IsNullOrEmpty(mealOrderParams.StartDate.ToString()) && !string.IsNullOrEmpty(mealOrderParams.EndDate.ToString()))
+      {
+        mealOrders = mealOrders.Where(m => m.OrderEntryDate.Date >= mealOrderParams.StartDate.Date && m.OrderEntryDate.Date <= mealOrderParams.EndDate.Date);
       }
 
       if (DateTime.Compare(mealOrderParams.OrderEntryDate, new DateTime(01, 1, 1)) != 0)
