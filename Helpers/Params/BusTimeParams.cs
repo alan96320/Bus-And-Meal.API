@@ -6,6 +6,6 @@ namespace BusMeal.API.Helpers.Params
   {
     public string Code { get; set; }
     public string Time { get; set; }
-    public int DirectionEnum { get; set; }
+    public int? DirectionEnum { get; set; }
   }
 }

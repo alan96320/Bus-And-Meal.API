@@ -59,7 +59,7 @@ namespace BusMeal.API.Persistence.Repository
         busOrders = busOrders.Where(b => b.UserId == userId);
       }
 
-      if (!string.IsNullOrEmpty(busOrderParams.StartDate.ToString()) && !string.IsNullOrEmpty(busOrderParams.EndDate.ToString()))
+      if (DateTime.Compare(busOrderParams.StartDate, new DateTime(01, 1, 1)) != 0 && DateTime.Compare(busOrderParams.EndDate, new DateTime(01, 1, 1)) != 0)
       {
         busOrders = busOrders.Where(m => m.OrderEntryDate.Date >= busOrderParams.StartDate.Date && m.OrderEntryDate.Date <= busOrderParams.EndDate.Date);
       }
@@ -69,7 +69,7 @@ namespace BusMeal.API.Persistence.Repository
         busOrders = busOrders.Where(b => b.OrderEntryDate.Date == busOrderParams.OrderEntryDate.Date);
       }
 
-      // FIXME : seharusnya bukan departmentId tetapi departementcode atau departmentName
+      // FIXME: seharusnya bukan departmentId tetapi departementcode atau departmentName
 
       if (busOrderParams.DepartmentId > 0)
       {
