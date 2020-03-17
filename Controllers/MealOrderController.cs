@@ -116,6 +116,11 @@ namespace BusMeal.API.Controllers
       if (mealOrder == null)
         return NotFound();
 
+      if (mealOrder.IsReadyToCollect == true)
+      {
+        return BadRequest("Can't edit the record since it marked as ready to collect");
+      }
+
       mealOrder = mapper.Map(mealOrderResource, mealOrder);
 
       if (await unitOfWork.CompleteAsync() == false)
@@ -137,6 +142,11 @@ namespace BusMeal.API.Controllers
       var mealOrder = await mealOrderRepository.GetOne(id);
       if (mealOrder == null)
         return NotFound();
+
+      if (mealOrder.IsReadyToCollect == true)
+      {
+        return BadRequest("Can't delete the record since it marked as ready to collect");
+      }
 
       var userId = getUserId();
       if (userId < 0)

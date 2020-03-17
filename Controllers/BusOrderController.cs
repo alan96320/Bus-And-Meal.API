@@ -97,12 +97,22 @@ namespace BusMeal.API.Controllers
     {
       // TODO : cegah save jika sudah lewat waktu
       if (!ModelState.IsValid)
+      {
         return BadRequest(ModelState);
+      }
 
       var busOrder = await busOrderRepository.GetOne(id);
 
       if (busOrder == null)
+      {
         return NotFound();
+      }
+
+      if (busOrder.IsReadyToCollect == true)
+      {
+        return BadRequest("Can't edit the record since it marked as ready to collect");
+      }
+
 
       busOrder = mapper.Map(busOrderResource, busOrder);
 
@@ -125,7 +135,14 @@ namespace BusMeal.API.Controllers
       var busOrder = await busOrderRepository.GetOne(id);
 
       if (busOrder == null)
+      {
         return NotFound();
+      }
+
+      if (busOrder.IsReadyToCollect == true)
+      {
+        return BadRequest("Can't delete the record since it marked as ready to collect");
+      }
 
       busOrderRepository.Remove(busOrder);
 
