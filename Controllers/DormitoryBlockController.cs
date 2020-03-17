@@ -98,6 +98,8 @@ namespace BusMeal.API.Controllers
 
       dormitoryBlock = mapper.Map(dormitoryBlockResource, dormitoryBlock);
 
+      dormitoryBlockRepository.Update(dormitoryBlock);
+
       if (await unitOfWork.CompleteAsync() == false)
       {
         throw new Exception(message: $"Updating dormitoryBlock {id} failed on save");
