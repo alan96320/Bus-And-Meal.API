@@ -106,6 +106,10 @@ namespace BusMeal.API.Persistence.Repository
       {
         users = users.Where(u => u.LastName.Contains(userParams.LastName, StringComparison.OrdinalIgnoreCase));
       }
+      if (userParams.isActive == true)
+      {
+        users = users.Where(u => u.isActive == true);
+      }
 
       // sort
       if (userParams.isDescending)
