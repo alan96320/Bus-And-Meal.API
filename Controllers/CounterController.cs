@@ -111,6 +111,8 @@ namespace BusMeal.API.Controllers
 
       counter = mapper.Map(counterResource, counter);
 
+      counterRepository.Update(counter);      
+
       if (await unitOfWork.CompleteAsync() == false)
       {
         throw new Exception(message: $"Updating counter {id} failed on save");
