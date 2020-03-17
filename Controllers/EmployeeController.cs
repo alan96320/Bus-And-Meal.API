@@ -99,6 +99,8 @@ namespace BusMeal.API.Controllers
 
       employee = mapper.Map(employeeResource, employee);
 
+      employeeRepository.Update(employee);
+
       if (await unitOfWork.CompleteAsync() == false)
       {
         throw new Exception(message: $"Updating employee {id} failed on save");

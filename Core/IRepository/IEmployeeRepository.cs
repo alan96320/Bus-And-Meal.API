@@ -11,7 +11,7 @@ namespace BusMeal.API.Core.IRepository
     Task<Employee> GetOne(int id);
     void Add(Employee employee);
     void Remove(Employee employee);
-    //  void Update(Employee employee)
+    void Update(Employee employee);
     Task<IEnumerable<Employee>> GetAll();
     Task<PagedList<Employee>> GetPagedEmployees(EmployeeParams employeeParams);
   }
