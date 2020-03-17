@@ -30,7 +30,8 @@ namespace BusMeal.API.Helpers.Mapping
       CreateMap<MealOrder, ViewMealOrderResource>();
       CreateMap<MealOrderDetail, ViewMealOrderDetailResource>();
       CreateMap<MealOrderVerification, ViewMealOrderVerificationResource>()
-        .ForMember(m => m.mealVerificationDetails, opt => opt.MapFrom(m => m.MealOrderVerificationDetails));
+        .ForMember(m => m.mealVerificationDetails, opt => opt.MapFrom(m => m.MealOrderVerificationDetails))
+        .ForMember(m => m.mealOrders, opt => opt.MapFrom(m => m.MealOrders));
       CreateMap<MealOrderVerificationDetail, ViewMealOrderVerificationDetailResource>();
       CreateMap<BusOrder, ViewBusOrderResource>();
       CreateMap<BusOrderDetail, ViewBusOrderDetailResource>();
@@ -55,6 +56,7 @@ namespace BusMeal.API.Helpers.Mapping
       CreateMap<SaveMealOrderVerificationResource, MealOrderVerification>()
         .ReverseMap()
         .ForMember(ov => ov.OrderList, opt => opt.Ignore());
+
 
       CreateMap<SaveMealOrderVerificationDetailResource, MealOrderVerificationDetail>();
       CreateMap<SaveBusOrderResource, BusOrder>();

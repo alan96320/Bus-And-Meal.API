@@ -24,5 +24,6 @@ namespace BusMeal.API.Controllers.Resources
     public bool IsClosed { get; set; }
     public ICollection<ViewMealOrderVerificationDetailResource> mealVerificationDetails { get; set; }
       = new Collection<ViewMealOrderVerificationDetailResource>();
+    public ICollection<ViewMealOrderResource> mealOrders { get; set; } = new Collection<ViewMealOrderResource>();
   }
 }
