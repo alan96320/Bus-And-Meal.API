@@ -25,14 +25,14 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<IEnumerable<MealType>> GetAll()
     {
-      var mealType = await context.MealType.Include(m => m.MealVendor).ToListAsync();
+      var mealType = await context.MealType.ToListAsync();
 
       return mealType;
     }
 
     public async Task<MealType> GetOne(int id)
     {
-      return await context.MealType.Include(m => m.MealVendor).FirstOrDefaultAsync(m => m.Id == id);
+      return await context.MealType.FirstOrDefaultAsync(m => m.Id == id);
     }
 
     public void Remove(MealType mealType)
@@ -42,7 +42,7 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<PagedList<MealType>> GetPagedmealType(MealTypeParams mealTypeParams)
     {
-      var mealTypes = context.MealType.Include(m => m.MealVendor).AsQueryable();
+      var mealTypes = context.MealType.AsQueryable();
 
       // perlu user id untuk membatasi 
       if (!string.IsNullOrEmpty(mealTypeParams.Code))
@@ -57,10 +57,10 @@ namespace BusMeal.API.Persistence.Repository
         m.Name.Contains(mealTypeParams.Name, StringComparison.OrdinalIgnoreCase));
       }
 
-      if (!string.IsNullOrEmpty(mealTypeParams.vendorName))
-      {
-        mealTypes = mealTypes.Where(m => m.MealVendor.Name.Contains(mealTypeParams.vendorName, StringComparison.OrdinalIgnoreCase));
-      }
+      // if (!string.IsNullOrEmpty(mealTypeParams.vendorName))
+      // {
+      //   mealTypes = mealTypes.Where(m => m.MealVendor.Name.Contains(mealTypeParams.vendorName, StringComparison.OrdinalIgnoreCase));
+      // }
 
       //name,sort
       if (mealTypeParams.isDescending)
@@ -75,9 +75,9 @@ namespace BusMeal.API.Persistence.Repository
             case "name":
               mealTypes = mealTypes.OrderByDescending(m => m.Name);
               break;
-            case "vendorname":
-              mealTypes = mealTypes.OrderByDescending(m => m.MealVendor.Name);
-              break;
+            // case "vendorname":
+            //   mealTypes = mealTypes.OrderByDescending(m => m.MealVendor.Name);
+            //   break;
             default:
               mealTypes = mealTypes.OrderByDescending(m => m.Code);
               break;
@@ -101,9 +101,9 @@ namespace BusMeal.API.Persistence.Repository
             case "name":
               mealTypes = mealTypes.OrderBy(m => m.Name);
               break;
-            case "vendorname":
-              mealTypes = mealTypes.OrderBy(m => m.MealVendor.Name);
-              break;
+            // case "vendorname":
+            //   mealTypes = mealTypes.OrderBy(m => m.MealVendor.Name);
+            //   break;
             default:
               mealTypes = mealTypes.OrderBy(m => m.Code);
               break;
