@@ -27,8 +27,6 @@ namespace BusMeal.API.Persistence.Repository
     public async Task<IEnumerable<BusOrderVerification>> GetAll()
     {
       var busOrderVerification = await context.BusOrderVerification
-        .Include(b => b.BusOrders)
-          .Where(m => m.BusOrders.Any(mo => mo.IsReadyToCollect == true))
         .Include(b => b.BusOrderVerificationDetails)
         .ToListAsync();
 
@@ -38,7 +36,6 @@ namespace BusMeal.API.Persistence.Repository
     public async Task<BusOrderVerification> GetOne(int id)
     {
       return await context.BusOrderVerification
-        .Include(b => b.BusOrders.Where(bo => bo.IsReadyToCollect == true))
         .Include(b => b.BusOrderVerificationDetails)
         .FirstOrDefaultAsync(b => b.Id == id);
     }
@@ -46,8 +43,6 @@ namespace BusMeal.API.Persistence.Repository
     public async Task<PagedList<BusOrderVerification>> GetPagedBusOrderVerification(BusOrderVerificationParams busOrderVerificationParams)
     {
       var busOrderVerifications = context.BusOrderVerification
-        .Include(b => b.BusOrders)
-          .Where(m => m.BusOrders.Any(mo => mo.IsReadyToCollect == true))
         .Include(b => b.BusOrderVerificationDetails)
         .AsQueryable();
 
