@@ -16,6 +16,9 @@ namespace BusMeal.API.Core.Validator
       RuleFor(mv => mv.OrderDate)
           .NotEmpty().WithMessage("Date is required");
 
+      RuleFor(mv => mv.OrderNo)
+          .NotEmpty().WithMessage("Order number is required");
+
       RuleFor(mv => mv)
           .Must(mv => !IsDateDuplicate(mv)).WithName("Date").WithMessage("Date must be unique");
     }
