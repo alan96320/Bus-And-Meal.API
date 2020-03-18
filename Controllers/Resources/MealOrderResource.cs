@@ -21,7 +21,7 @@ namespace BusMeal.API.Controllers.Resources
     public int Id { get; set; }
     public DateTime OrderEntryDate { get; set; }
     public int? DepartmentId { get; set; }
-    public int? MealOrderVerificationId { get; set; }
+    public int MealOrderVerificationId { get; set; }
     public bool isReadyToCollect { get; set; }
     public int UserId { get; set; }
     public ICollection<ViewMealOrderDetailResource> MealOrderDetails { get; set; }

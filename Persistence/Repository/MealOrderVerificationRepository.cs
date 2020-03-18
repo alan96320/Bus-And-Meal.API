@@ -56,6 +56,11 @@ namespace BusMeal.API.Persistence.Repository
         mealOrderVerifications = mealOrderVerifications.Where(m => m.OrderDate.Date == mealOrderVerificationParams.OrderDate.Date);
       }
 
+      if (DateTime.Compare(mealOrderVerificationParams.StartDate, new DateTime(01, 1, 1)) != 0 && DateTime.Compare(mealOrderVerificationParams.EndDate, new DateTime(01, 1, 1)) != 0)
+      {
+        mealOrderVerifications = mealOrderVerifications.Where(m => m.OrderDate.Date >= mealOrderVerificationParams.StartDate.Date && m.OrderDate.Date <= mealOrderVerificationParams.EndDate.Date);
+      }
+
       // FIXME : OrderStatus = Closed, Open
       // if (mealOrderVerificationParams.OrderStatus)
       // {

@@ -57,6 +57,11 @@ namespace BusMeal.API.Persistence.Repository
         busOrderVerifications = busOrderVerifications.Where(b => b.Orderdate.Date == busOrderVerificationParams.OrderDate.Date);
       }
 
+      if (DateTime.Compare(busOrderVerificationParams.StartDate, new DateTime(01, 1, 1)) != 0 && DateTime.Compare(busOrderVerificationParams.EndDate, new DateTime(01, 1, 1)) != 0)
+      {
+        busOrderVerifications = busOrderVerifications.Where(m => m.Orderdate.Date >= busOrderVerificationParams.StartDate.Date && m.Orderdate.Date <= busOrderVerificationParams.EndDate.Date);
+      }
+
       if (!string.IsNullOrEmpty(busOrderVerificationParams.OrderStatus))
       {
         switch (busOrderVerificationParams.OrderStatus.ToLower())

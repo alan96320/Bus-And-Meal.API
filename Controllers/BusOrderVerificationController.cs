@@ -33,7 +33,7 @@ namespace BusMeal.API.Controllers
       this.busOrderRepository = busOrderRepository;
     }
 
-    [Authorize(Roles = "Administrator")]
+    // [Authorize(Roles = "Administrator")]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -44,7 +44,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Administrator")]
+    // [Authorize(Roles = "Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
@@ -58,7 +58,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Administrator")]
+    // [Authorize(Roles = "Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedBusOrderVerification([FromQuery]BusOrderVerificationParams busOrderVerificationParams)
     {
@@ -71,7 +71,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Administrator")]
+    // [Authorize(Roles = "Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveBusOrderVerificationResource busOrderVerificationResource)
     {
@@ -103,7 +103,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Administrator")]
+    // [Authorize(Roles = "Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveBusOrderVerificationResource busOrderVerificationResource)
     {
@@ -142,7 +142,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    [Authorize(Roles = "Administrator")]
+    // [Authorize(Roles = "Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Remove(int id)
     {

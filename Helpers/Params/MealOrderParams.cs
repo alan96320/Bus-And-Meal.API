@@ -9,5 +9,7 @@ namespace BusMeal.API.Helpers.Params
 
     public bool isReadyToCollect { get; set; }
 
+    public DateTime StartDate { get; set; } = new DateTime(01, 1, 1);
+    public DateTime EndDate { get; set; } = new DateTime(01, 1, 1);
   }
 }
