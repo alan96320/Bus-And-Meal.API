@@ -28,8 +28,13 @@ namespace BusMeal.API.Persistence.Repository
       var mealOrders = context.MealOrder.Include(m => m.MealOrderDetails).AsQueryable();
 
       if (userId != null)
-        mealOrders = mealOrders.Where(bo => bo.UserId == userId);
-
+      {
+        var user = context.User.FirstOrDefault(u => u.Id == userId);
+        if (user.AdminStatus != true)
+        {
+          mealOrders = mealOrders.Where(bo => bo.UserId == userId);
+        }
+      }
       return await mealOrders.ToListAsync();
     }
 
@@ -53,7 +58,11 @@ namespace BusMeal.API.Persistence.Repository
 
       if (userId != null)
       {
-        mealOrders = mealOrders.Where(m => m.UserId == userId);
+        var user = context.User.FirstOrDefault(u => u.Id == userId);
+        if (user.AdminStatus != true)
+        {
+          mealOrders = mealOrders.Where(bo => bo.UserId == userId);
+        }
       }
 
       if (DateTime.Compare(mealOrderParams.StartDate, new DateTime(01, 1, 1)) != 0 && DateTime.Compare(mealOrderParams.EndDate, new DateTime(01, 1, 1)) != 0)
