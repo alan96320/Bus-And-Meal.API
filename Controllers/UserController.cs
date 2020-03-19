@@ -38,6 +38,7 @@ namespace BusMeal.API.Controllers
       this.unitOfWork = unitOfWork;
     }
 
+    // [Authorize(Roles = "Administrator")]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {

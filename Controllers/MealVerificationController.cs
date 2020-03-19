@@ -103,21 +103,7 @@ namespace BusMeal.API.Controllers
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveMealOrderVerificationResource mealOrderVerificationResource)
     {
-      // var userId = getUserId();
-      // var user = await userRepository.GetOne(userId);
-      // if (user.AdminStatus != true)
-      // {
-      //   return BadRequest("This data only available for admin");
-      // }
-      // var vendorId = mealOrderVerificationResource.MealOrderVerificationDetails;
 
-      // foreach (SaveMealOrderVerificationDetailResource item in vendorId)
-      // {
-      //   if (!string.IsNullOrEmpty(item.VendorId.ToString()))
-      //   {
-      //     ModelState.AddModelError("Vendor id", "Vendor id is required");
-      //   }
-      // }
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
