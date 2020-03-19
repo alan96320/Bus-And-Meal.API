@@ -6,33 +6,32 @@ using FluentValidation;
 
 namespace BusMeal.API.Core.Validator
 {
-  public class MealOrderValidation : AbstractValidator<SaveMealOrderResource>
+  public class BusOrderValidation : AbstractValidator<SaveBusOrderResource>
   {
     private readonly DataContext context;
 
-    public MealOrderValidation(DataContext context)
+    public BusOrderValidation(DataContext context)
     {
       this.context = context;
 
-      RuleFor(mo => mo.OrderEntryDate)
+      RuleFor(bo => bo.OrderEntryDate)
           .NotEmpty().WithMessage("Date is required");
 
-      RuleFor(mo => mo.DepartmentId)
+      RuleFor(bo => bo.DepartmentId)
           .NotEmpty().WithMessage("Department id is required");
 
-      RuleFor(mo => mo)
-          .Must(mo => !IsDepartmentDateUnique(mo)).WithName("DepartmentId").WithMessage("One department can't order more than one times a day");
+      RuleFor(bo => bo)
+    .Must(bo => !IsDepartmentDateUnique(bo)).WithName("DepartmentId").WithMessage("One department can't order more than one times a day");
 
-      RuleFor(mo => mo)
-          .Must(mo => !IsDateAcceptable(mo)).WithName("OrderEntryDate").WithMessage("The date you are entered look like invalid or your order have been exceeded the lock time");
+      RuleFor(bo => bo)
+          .Must(bo => !IsDateAcceptable(bo)).WithName("OrderEntryDate").WithMessage("The date you are entered look like invalid or your order have been exceeded the lock time");
 
-      RuleFor(mo => mo)
-          .Must(mo => !IsDepartmentValid(mo)).WithName("DepartmentId").WithMessage("The department you are entered is not your authorization");
+      RuleFor(bo => bo)
+          .Must(bo => !IsDepartmentValid(bo)).WithName("DepartmentId").WithMessage("The department you are entered is not your authorization");
     }
 
-
     // TODO : Check for better technics
-    private bool IsDepartmentDateUnique(SaveMealOrderResource resource)
+    private bool IsDepartmentDateUnique(SaveBusOrderResource resource)
     {
       if (!string.IsNullOrEmpty((resource.DepartmentId).ToString()))
       {
@@ -40,12 +39,12 @@ namespace BusMeal.API.Core.Validator
         {
           return false;
         }
-        return context.MealOrder.Any(mo => mo.DepartmentId == resource.DepartmentId && mo.OrderEntryDate.Date == resource.OrderEntryDate.Date);
+        return context.BusOrder.Any(bo => bo.DepartmentId == resource.DepartmentId && bo.OrderEntryDate.Date == resource.OrderEntryDate.Date);
       }
       return false;
     }
 
-    private bool IsDepartmentValid(SaveMealOrderResource resource)
+    private bool IsDepartmentValid(SaveBusOrderResource resource)
     {
       if (!string.IsNullOrEmpty((resource.DepartmentId).ToString()))
       {
@@ -67,7 +66,7 @@ namespace BusMeal.API.Core.Validator
       return false;
     }
 
-    private bool IsDateAcceptable(SaveMealOrderResource resource)
+    private bool IsDateAcceptable(SaveBusOrderResource resource)
     {
       if (!string.IsNullOrEmpty((resource.OrderEntryDate).ToString()))
       {
@@ -83,7 +82,7 @@ namespace BusMeal.API.Core.Validator
         }
 
         var AppConfig = context.AppConfiguration.FirstOrDefault();
-        var timeLock = AppConfig.LockedMealOrder;
+        var timeLock = AppConfig.LockedBusOrder;
         if (DateTime.Now.TimeOfDay > TimeSpan.Parse(timeLock))
         {
           if (DateTime.Compare(resource.OrderEntryDate.Date, DateTime.Now.Date) > 0)

@@ -11,6 +11,7 @@ namespace BusMeal.API.Core.IRepository
         Task<Counter> GetOne(int id);
         void Add(Counter counter);
         void Remove(Counter counter);
+        void Update(Counter counter);
         Task<IEnumerable<Counter>> GetAll();
         Task<PagedList<Counter>> GetPagedCounter(CounterParams counterParams);
     }

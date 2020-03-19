@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BusMeal.API.Controllers.Resources;
 using BusMeal.API.Core.IRepository;
+using BusMeal.API.Helpers.Params;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,8 @@ namespace BusMeal.API.Controllers
     private IUserRepository userRepository;
     private readonly IMealOrderRepository mealOrderRepository;
     private IBusOrderRepository busOrderRepository;
+    private readonly IMealOrderVerificationRepository mealOrderVerificationRepository;
+    private IBusOrderVerificationRepository busOrderVerificationRepository;
     private readonly IDepartmentRepository departmentRepository;
     public ReportController(
     IMapper mapper,
@@ -33,7 +36,9 @@ namespace BusMeal.API.Controllers
     ICounterRepository counterRepository,
     IUserRepository userRepository,
     IMealOrderRepository mealOrderRepository,
-    IBusOrderRepository busOrderRepository
+    IBusOrderRepository busOrderRepository,
+    IMealOrderVerificationRepository mealOrderVerificationRepository,
+    IBusOrderVerificationRepository busOrderVerificationRepository
     )
     {
       this.departmentRepository = departmenRepository;
@@ -47,6 +52,8 @@ namespace BusMeal.API.Controllers
       this.userRepository = userRepository;
       this.mealOrderRepository = mealOrderRepository;
       this.busOrderRepository = busOrderRepository;
+      this.mealOrderVerificationRepository = mealOrderVerificationRepository;
+      this.busOrderVerificationRepository = busOrderVerificationRepository;
     }
 
     // [Authorize(Roles = "Administrator")]
@@ -148,10 +155,10 @@ namespace BusMeal.API.Controllers
 
     // [Authorize(Roles = "Administrator")]
     [HttpGet("mealorder")]
-    public async Task<IActionResult> GetMealOrderReport()
+    public async Task<IActionResult> GetMealOrderReport([FromQuery]MealOrderParams mealOrderParams)
     {
 
-      var mealOrders = await mealOrderRepository.GetAll();
+      var mealOrders = await mealOrderRepository.GetPagedMealOrder(mealOrderParams);
       var departments = await departmentRepository.GetAll();
       var mealtypes = await mealtypeRepository.GetAll();
 
@@ -168,11 +175,29 @@ namespace BusMeal.API.Controllers
     }
 
     // [Authorize(Roles = "Administrator")]
-    [HttpGet("busorder")]
-    public async Task<IActionResult> GetBusOrderReport()
+    [HttpGet("mealverification")]
+    public async Task<IActionResult> GetMealVerificationReport([FromQuery]MealOrderVerificationParams mealVerificationParams)
     {
 
-      var busOrder = await busOrderRepository.GetAll();
+      var mealVerification = await mealOrderVerificationRepository.GetPagedMealOrderVerification(mealVerificationParams);
+      var mealtypes = await mealtypeRepository.GetAll();
+
+      var mealOrderResult = mapper.Map<IEnumerable<ViewMealOrderVerificationResource>>(mealVerification);
+      var mealTypeResult = mapper.Map<IEnumerable<ViewMealTypeResource>>(mealtypes);
+
+      return Ok(new
+      {
+        mealOrderResult,
+        mealTypeResult
+      });
+    }
+
+    // [Authorize(Roles = "Administrator")]
+    [HttpGet("busorder")]
+    public async Task<IActionResult> GetBusOrderReport([FromQuery]BusOrderParams busOrderParams)
+    {
+
+      var busOrder = await busOrderRepository.GetPagedBusOrder(busOrderParams);
       var departments = await departmentRepository.GetAll();
       var bustime = await busTimeRepository.GetAll();
       var dormitoryblock = await dormitoryBlockRepository.GetAll();
@@ -191,6 +216,34 @@ namespace BusMeal.API.Controllers
       {
         busOrderResult,
         departmentResult,
+        bustimeResult,
+        direction,
+        dormitoryblockResult
+      }
+    );
+    }
+
+    // [Authorize(Roles = "Administrator")]
+    [HttpGet("busverification")]
+    public async Task<IActionResult> GetBusVerificationReport([FromQuery]BusOrderVerificationParams busVerificationParams)
+    {
+
+      var busVerification = await busOrderVerificationRepository.GetPagedBusOrderVerification(busVerificationParams);
+      var bustime = await busTimeRepository.GetAll();
+      var dormitoryblock = await dormitoryBlockRepository.GetAll();
+
+      var busVerificationResult = mapper.Map<IEnumerable<ViewBusOrderVerificationResource>>(busVerification);
+      var bustimeResult = mapper.Map<IEnumerable<ViewBusTimeResource>>(bustime);
+      var dormitoryblockResult = mapper.Map<IEnumerable<ViewDormitoryBlockResource>>(dormitoryblock);
+
+      object[] direction = new object[3];
+      direction[0] = new Direction { id = 1, name = "Office to Dormitory" };
+      direction[1] = new Direction { id = 2, name = "Dormitory to Office" };
+      direction[2] = new Direction { id = 3, name = "Night Bus" };
+
+      return Ok(new
+      {
+        busVerificationResult,
         bustimeResult,
         direction,
         dormitoryblockResult

@@ -23,6 +23,13 @@ namespace BusMeal.API.Persistence.Repository
       context.DormitoryBlock.Add(dormitoryBlock);
     }
 
+
+    public void Update(DormitoryBlock dormitoryBlock)
+    {
+      context.DormitoryBlock.Attach(dormitoryBlock);
+      this.context.Entry(dormitoryBlock).State = EntityState.Modified;
+    }    
+
     public async Task<IEnumerable<DormitoryBlock>> GetAll()
     {
       var dormitoryBlock = await context.DormitoryBlock.ToListAsync();

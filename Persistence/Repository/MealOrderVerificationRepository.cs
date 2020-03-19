@@ -26,19 +26,25 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<IEnumerable<MealOrderVerification>> GetAll()
     {
-      var mealOrderVerifications = await context.MealOrderVerification.Include(m => m.MealOrderVerificationDetails).ToListAsync();
+      var mealOrderVerifications = await context.MealOrderVerification
+        .Include(m => m.MealOrderVerificationDetails)
+        .ToListAsync();
 
       return mealOrderVerifications;
     }
 
     public async Task<MealOrderVerification> GetOne(int id)
     {
-      return await context.MealOrderVerification.Include(m => m.MealOrderVerificationDetails).FirstOrDefaultAsync(m => m.Id == id);
+      return await context.MealOrderVerification
+        .Include(m => m.MealOrderVerificationDetails)
+        .FirstOrDefaultAsync(m => m.Id == id);
     }
 
     public async Task<PagedList<MealOrderVerification>> GetPagedMealOrderVerification(MealOrderVerificationParams mealOrderVerificationParams)
     {
-      var mealOrderVerifications = context.MealOrderVerification.Include(m => m.MealOrderVerificationDetails).AsQueryable();
+      var mealOrderVerifications = context.MealOrderVerification
+      .Include(m => m.MealOrderVerificationDetails)
+      .AsQueryable();
 
       if (!string.IsNullOrEmpty(mealOrderVerificationParams.OrderNo))
       {
@@ -48,6 +54,11 @@ namespace BusMeal.API.Persistence.Repository
       if (DateTime.Compare(mealOrderVerificationParams.OrderDate, new DateTime(01, 1, 1)) != 0)
       {
         mealOrderVerifications = mealOrderVerifications.Where(m => m.OrderDate.Date == mealOrderVerificationParams.OrderDate.Date);
+      }
+
+      if (DateTime.Compare(mealOrderVerificationParams.StartDate, new DateTime(01, 1, 1)) != 0 && DateTime.Compare(mealOrderVerificationParams.EndDate, new DateTime(01, 1, 1)) != 0)
+      {
+        mealOrderVerifications = mealOrderVerifications.Where(m => m.OrderDate.Date >= mealOrderVerificationParams.StartDate.Date && m.OrderDate.Date <= mealOrderVerificationParams.EndDate.Date);
       }
 
       // FIXME : OrderStatus = Closed, Open

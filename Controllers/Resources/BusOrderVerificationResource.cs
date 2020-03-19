@@ -26,5 +26,7 @@ namespace BusMeal.API.Controllers.Resources
     public ICollection<ViewBusOrderVerificationDetailResource> BusOrderVerificationDetails { get; set; }
       = new Collection<ViewBusOrderVerificationDetailResource>();
 
+    public ICollection<ViewBusOrderResource> BusOrders { get; set; } = new Collection<ViewBusOrderResource>();
+
   }
 }

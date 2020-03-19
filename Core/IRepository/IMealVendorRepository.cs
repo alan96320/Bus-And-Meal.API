@@ -11,6 +11,7 @@ namespace BusMeal.API.Core.IRepository
     Task<MealVendor> GetOne(int id);
     void Add(MealVendor mealVendor);
     void Remove(MealVendor mealVendor);
+    void Update(MealVendor mealVendor);    
     Task<IEnumerable<MealVendor>> GetAll();
     Task<PagedList<MealVendor>> GetPagedMealVendor(MealVendorParams mealVendorParams);
   }

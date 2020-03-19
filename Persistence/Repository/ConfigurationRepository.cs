@@ -36,6 +36,15 @@ namespace BusMeal.API.Persistence.Repository
       context.AppConfiguration.Add(configuration);
     }
 
+    public void Update(AppConfiguration configuration)
+    {
+      context.AppConfiguration.Attach(configuration);
+      this.context.Entry(configuration).State = EntityState.Modified;
+    }        
+        
+
+    
+
     public void Remove(AppConfiguration configuration)
     {
       context.Remove(configuration);

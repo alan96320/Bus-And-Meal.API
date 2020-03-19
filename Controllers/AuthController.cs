@@ -13,101 +13,163 @@ using AutoMapper;
 using BusMeal.API.Core.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using System.DirectoryServices;
+
 
 namespace BusMeal.API.Controllers
 {
 
-  [Route("api/[controller]")]
+    [Route("api/[controller]")]
 
-  public class AuthController : Controller
-  {
-
-    private readonly IConfiguration config;
-    private readonly IUserRepository userRepository;
-    private readonly IMapper mapper;
-    private IUserModuleRightsRepository userModuleRepository;
-    private IModuleRightsRepository moduleRightsRepository;
-
-    public AuthController(
-      IConfiguration config,
-      IUserRepository userRepository,
-      IMapper mapper,
-      IUserModuleRightsRepository userModuleRepository,
-      IModuleRightsRepository moduleRightsRepository)
+    public class AuthController : Controller
     {
-      this.config = config;
-      this.userRepository = userRepository;
-      this.mapper = mapper;
-      this.userModuleRepository = userModuleRepository;
-      this.moduleRightsRepository = moduleRightsRepository;
-    }
 
-    [AllowAnonymous]
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody]LoginResource loginResource)
-    {
-      var username = loginResource.Username;
-      var password = loginResource.Password;
+        private readonly IConfiguration config;
+        private readonly IUserRepository userRepository;
+        private readonly IMapper mapper;
+        private IUserModuleRightsRepository userModuleRepository;
+        private IModuleRightsRepository moduleRightsRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-      var userLogin = await userRepository.Login(username, password);
+        private bool shouldLoginAD = false;
+        private string domainName = "";
+        private bool createNewuser = false;
 
-      if (userLogin == null)
-        return Unauthorized();
-
-      var allUserModules = await userModuleRepository.GetAll();
-      var userModules = allUserModules.Where(u => u.UserId == userLogin.Id).ToList();
-
-      // Add user claim
-      var claims = new List<Claim>();
-      claims.Add(new Claim(ClaimTypes.Name, userLogin.Username));
-      claims.Add(new Claim("Id", userLogin.Id.ToString()));
-
-      if (userLogin.AdminStatus == true)
-      {
-        claims.Add(new Claim(ClaimTypes.Role, "Administrator"));
-      }
-
-      foreach (UserModuleRight userModule in userModules)
-      {
-        var right = await moduleRightsRepository.GetOne(userModule.ModuleRightsId);
-        var claim = right.Description.ToString();
-
-        if (userModule.Read == true)
+        public AuthController(
+          IUserRepository userRepository,
+          IUnitOfWork unitOfWork,
+          IMapper mapper,
+          IUserModuleRightsRepository userModuleRepository,
+          IModuleRightsRepository moduleRightsRepository,
+          IConfiguration config)
         {
-          claims.Add(new Claim(ClaimTypes.Role, $"{claim}.R"));
+            this.userRepository = userRepository;
+            this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
+            this.userModuleRepository = userModuleRepository;
+            this.moduleRightsRepository = moduleRightsRepository;
+            this.config = config;
+
+
+            this.shouldLoginAD = config.GetValue<bool>("LoginAD");
+            this.domainName = config.GetSection("Domain").Value;
+
         }
 
-        if (userModule.Write == true)
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody]LoginResource loginResource)
         {
-          claims.Add(new Claim(ClaimTypes.Role, $"{claim}.W"));
+            var username = loginResource.Username;
+            var password = loginResource.Password;
+
+            var anyUser = await userRepository.GetAll();
+            var userLogin = await userRepository.GetOneByUserName(username);
+
+            if (shouldLoginAD)
+            {
+                try
+                {
+                    var de = new DirectoryEntry("LDAP://" + domainName, username, password);
+                    var ds = new DirectorySearcher(de);
+                    SearchResult search = ds.FindOne();
+
+                    if (search != null)
+                    {
+                        if (userLogin == null)
+                        {
+                            createNewuser = true;
+                        }
+                    }
+                    else
+                    {
+                        return Unauthorized();
+                    }
+                }
+                catch
+                {
+                    return BadRequest("AD Login Problem");
+                }
+
+                if (createNewuser)
+                {
+                    // new user here
+                    userLogin = new User()
+                    {
+                        Username = username,
+                        GddbId = username,
+                        AdminStatus = anyUser == null ? true : false
+                    };
+                    password = "";
+                    userRepository.Add(userLogin, password);
+                    if (await unitOfWork.CompleteAsync() == false)
+                    {
+                        throw new Exception(message: "Save new user Failed");
+                    }
+                }
+            }
+            else
+            {
+                userLogin = await userRepository.Login(username, password);
+            }
+
+            if (userLogin == null)
+                return Unauthorized();
+
+            var allUserModules = await userModuleRepository.GetAll();
+            var userModules = allUserModules.Where(u => u.UserId == userLogin.Id).ToList();
+
+            // Add user claim
+            var claims = new List<Claim>();
+            claims.Add(new Claim(ClaimTypes.Name, userLogin.Username));
+            claims.Add(new Claim("Id", userLogin.Id.ToString()));
+
+            if (userLogin.AdminStatus == true)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "Administrator"));
+            }
+
+            foreach (UserModuleRight userModule in userModules)
+            {
+                var right = await moduleRightsRepository.GetOne(userModule.ModuleRightsId);
+                var claim = right.Description.ToString();
+
+                if (userModule.Read == true)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, $"{claim}.R"));
+                }
+
+                if (userModule.Write == true)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, $"{claim}.W"));
+                }
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8
+                .GetBytes(this.config.GetSection("AppSettings:Token").Value));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = creds
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            var user = mapper.Map<ViewUserResource>(userLogin);
+
+            return Ok(new
+            {
+                token = tokenHandler.WriteToken(token),
+                user
+            });
         }
-      }
-
-      var key = new SymmetricSecurityKey(Encoding.UTF8
-          .GetBytes(this.config.GetSection("AppSettings:Token").Value));
-
-      var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-      var tokenDescriptor = new SecurityTokenDescriptor
-      {
-        Subject = new ClaimsIdentity(claims),
-        Expires = DateTime.Now.AddDays(1),
-        SigningCredentials = creds
-      };
-
-      var tokenHandler = new JwtSecurityTokenHandler();
-
-      var token = tokenHandler.CreateToken(tokenDescriptor);
-
-      var user = mapper.Map<ViewUserResource>(userLogin);
-
-      return Ok(new
-      {
-        token = tokenHandler.WriteToken(token),
-        user
-      });
     }
-  }
 }
 
 

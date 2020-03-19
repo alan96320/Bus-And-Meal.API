@@ -28,10 +28,14 @@ namespace BusMeal.API.Persistence.Repository
     {
       // verifikasi dgn userId atau Admin
       var busOrders = context.BusOrder.Include(b => b.BusOrderDetails).AsQueryable();
-
       if (userId != null)
-        busOrders = busOrders.Where(bo => bo.UserId == userId);
-
+      {
+        var user = context.User.FirstOrDefault(u => u.Id == userId);
+        if (user.AdminStatus != true)
+        {
+          busOrders = busOrders.Where(bo => bo.UserId == userId);
+        }
+      }
       return await busOrders.ToListAsync();
     }
 
@@ -56,12 +60,26 @@ namespace BusMeal.API.Persistence.Repository
 
       if (userId != null)
       {
-        busOrders = busOrders.Where(b => b.UserId == userId);
+        var user = context.User.FirstOrDefault(u => u.Id == userId);
+        if (user.AdminStatus != true)
+        {
+          busOrders = busOrders.Where(bo => bo.UserId == userId);
+        }
+      }
+
+      if (DateTime.Compare(busOrderParams.StartDate, new DateTime(01, 1, 1)) != 0 && DateTime.Compare(busOrderParams.EndDate, new DateTime(01, 1, 1)) != 0)
+      {
+        busOrders = busOrders.Where(m => m.OrderEntryDate.Date >= busOrderParams.StartDate.Date && m.OrderEntryDate.Date <= busOrderParams.EndDate.Date);
       }
 
       if (DateTime.Compare(busOrderParams.OrderEntryDate, new DateTime(01, 1, 1)) != 0)
       {
         busOrders = busOrders.Where(b => b.OrderEntryDate.Date == busOrderParams.OrderEntryDate.Date);
+      }
+
+      if (busOrderParams.isReadyToCollect == true)
+      {
+        busOrders = busOrders.Where(b => b.IsReadyToCollect == true);
       }
 
       // FIXME : seharusnya bukan departmentId tetapi departementcode atau departmentName

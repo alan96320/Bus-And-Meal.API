@@ -23,6 +23,13 @@ namespace BusMeal.API.Persistence.Repository
       context.BusTime.Add(busTime);
     }
 
+    public void Update(BusTime busTime)
+    {
+      context.BusTime.Attach(busTime);
+      this.context.Entry(busTime).State = EntityState.Modified;
+    }
+
+
     public async Task<IEnumerable<BusTime>> GetAll()
     {
       var busTime = await context.BusTime.ToListAsync();
