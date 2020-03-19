@@ -41,19 +41,17 @@ namespace BusMeal.API.Persistence.Repository
     public async Task<PagedList<Audit>> GetPagedAudit(AuditParams auditParams)
     {
       var audit = context.Audit.AsQueryable();
-      if (!string.IsNullOrEmpty(auditParams.TableName))
+
+      if (DateTime.Compare(auditParams.Date, new DateTime(01, 1, 1)) != 0)
       {
-        audit = audit.Where(a => a.TableName.Contains(auditParams.TableName, StringComparison.OrdinalIgnoreCase));
+        audit = audit.Where(a => a.DateTime.Date == auditParams.Date.Date);
       }
 
-      if (auditParams.RowId > 0)
+      if (auditParams.UserId > 0)
       {
-        audit = audit.Where(a => a.RowId == auditParams.RowId);
+        audit = audit.Where(a => a.UserId == auditParams.UserId);
       }
-      if (auditParams.CreatedBy > 0)
-      {
-        audit = audit.Where(a => a.CreatedBy == auditParams.CreatedBy);
-      }
+
 
       //name,sort
       if (auditParams.isDescending)
@@ -62,37 +60,22 @@ namespace BusMeal.API.Persistence.Repository
         {
           switch (auditParams.OrderBy.ToLower())
           {
-            case "trackeddate":
-              audit = audit.OrderByDescending(a => a.TrackedDate);
+
+            case "date":
+              audit = audit.OrderByDescending(a => a.DateTime);
               break;
-            case "tablename":
-              audit = audit.OrderByDescending(a => a.TableName);
-              break;
-            case "rowid":
-              audit = audit.OrderByDescending(a => a.RowId);
-              break;
-            case "createdby":
-              audit = audit.OrderByDescending(a => a.CreatedBy);
-              break;
-            case "createddate":
-              audit = audit.OrderByDescending(a => a.CreatedDate);
-              break;
-            case "updatedby":
-              audit = audit.OrderByDescending(a => a.UpdatedBy);
-              break;
-            case "updateddate":
-              audit = audit.OrderByDescending(a => a.UpdatedDate);
+            case "userid":
+              audit = audit.OrderByDescending(a => a.UserId);
               break;
             default:
-              audit = audit.OrderByDescending(a => a.TrackedDate);
+              audit = audit.OrderByDescending(a => a.DateTime);
               break;
           }
         }
         else
         {
-          audit = audit.OrderByDescending(a => a.TrackedDate);
+          audit = audit.OrderByDescending(a => a.DateTime);
         }
-
       }
       else
       {
@@ -100,35 +83,21 @@ namespace BusMeal.API.Persistence.Repository
         {
           switch (auditParams.OrderBy.ToLower())
           {
-            case "trackeddate":
-              audit = audit.OrderBy(a => a.TrackedDate);
+
+            case "date":
+              audit = audit.OrderBy(a => a.DateTime);
               break;
-            case "tablename":
-              audit = audit.OrderBy(a => a.TableName);
-              break;
-            case "rowid":
-              audit = audit.OrderBy(a => a.RowId);
-              break;
-            case "createdby":
-              audit = audit.OrderBy(a => a.CreatedBy);
-              break;
-            case "createddate":
-              audit = audit.OrderBy(a => a.CreatedDate);
-              break;
-            case "updatedby":
-              audit = audit.OrderBy(a => a.UpdatedBy);
-              break;
-            case "updateddate":
-              audit = audit.OrderBy(a => a.UpdatedDate);
+            case "userid":
+              audit = audit.OrderBy(a => a.UserId);
               break;
             default:
-              audit = audit.OrderBy(a => a.TrackedDate);
+              audit = audit.OrderBy(a => a.DateTime);
               break;
           }
         }
         else
         {
-          audit = audit.OrderBy(a => a.TrackedDate);
+          audit = audit.OrderBy(a => a.DateTime);
         }
       }
       return await PagedList<Audit>

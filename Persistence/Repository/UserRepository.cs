@@ -21,13 +21,13 @@ namespace BusMeal.API.Persistence.Repository
     private readonly DataContext context;
     private readonly IConfiguration configuration;
     private bool shouldLoginAD = false;
-    
+
     public UserRepository(DataContext context, IConfiguration configuration)
     {
       this.context = context;
       this.configuration = configuration;
 
-      this.shouldLoginAD = configuration.GetValue<bool>("LoginAD");  
+      this.shouldLoginAD = configuration.GetValue<bool>("LoginAD");
     }
 
 
@@ -42,42 +42,13 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<User> Login(string username, string password)
     {
-      User user = null;
-      if (shouldLoginAD)   // if shouldLoginAD = true on appSetting
-      {
-        try {
-          string domainName = configuration.GetSection("Domain").Value;   // setting Domain : ALCON at appSetting
-          var de = new DirectoryEntry("LDAP://" + domainName, username, password);
-          var ds = new DirectorySearcher(de);
-          SearchResult search = ds.FindOne();
-
-          if (search != null)   // user found and verifed on AD
-          {
-              user = await context.User.FirstOrDefaultAsync(u => u.Username == username);
-              if (user == null)   // but user not found on database
-                {
-                  // create new user & Check if there is no other user then make this user become admin
-                }
-          }
-        } catch {
-          user = null;
-        }
-
-
-      } 
-      else 
-      {
-
-      user = await context.User.FirstOrDefaultAsync(u => u.Username == username);
+      var user = await context.User.FirstOrDefaultAsync(u => u.Username == username);
 
       if (user != null)
         if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
           user = null; // set user to null if password not verify.
-      }
 
       return user;
-      
-
     }
 
     private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
