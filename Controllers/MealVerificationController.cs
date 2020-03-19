@@ -109,7 +109,15 @@ namespace BusMeal.API.Controllers
       // {
       //   return BadRequest("This data only available for admin");
       // }
+      // var vendorId = mealOrderVerificationResource.MealOrderVerificationDetails;
 
+      // foreach (SaveMealOrderVerificationDetailResource item in vendorId)
+      // {
+      //   if (!string.IsNullOrEmpty(item.VendorId.ToString()))
+      //   {
+      //     ModelState.AddModelError("Vendor id", "Vendor id is required");
+      //   }
+      // }
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
@@ -130,11 +138,15 @@ namespace BusMeal.API.Controllers
 
       var mealVerificationDetails = mealOrderVerification.MealOrderVerificationDetails;
 
-      // foreach (MealOrderVerificationDetail mealVerificationDetail in mealVerificationDetails)
-      // {
-      //   var mealTypeRecord = await mealtypeRepository.GetOne(mealVerificationDetail.MealTypeId);
-      //   mealVerificationDetail.VendorId = mealTypeRecord.MealVendorId;
-      // }
+      foreach (MealOrderVerificationDetail mealVerificationDetail in mealVerificationDetails)
+      {
+        if (mealVerificationDetail.VendorId <= 0)
+        {
+          return BadRequest("Vendor id is required");
+        }
+        // var mealTypeRecord = await mealtypeRepository.GetOne(mealVerificationDetail.MealTypeId);
+        // mealVerificationDetail.VendorId = mealTypeRecord.MealVendorId;
+      }
 
       mealOrderVerificationRepository.Add(mealOrderVerification);
 

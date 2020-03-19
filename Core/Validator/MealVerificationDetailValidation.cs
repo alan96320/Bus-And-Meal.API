@@ -8,7 +8,7 @@ namespace BusMeal.API.Core.Validator
     public MealVerificationDetailValidation()
     {
       RuleFor(mvd => mvd.VendorId)
-          .NotEmpty().WithMessage("Vendor id is required");
+          .NotEmpty().WithName("Vendor id").WithMessage("Vendor id is required");
     }
   }
 }
