@@ -11,7 +11,7 @@ namespace BusMeal.API.Core.IRepository
         Task<DormitoryBlock> GetOne(int id);
         void Add(DormitoryBlock dormitoryBlock);
         void Remove(DormitoryBlock dormitoryBlock);
-        //  void Update(Employee employee)
+        void Update(DormitoryBlock dormitoryBlock);
         Task<IEnumerable<DormitoryBlock>> GetAll();
         Task<PagedList<DormitoryBlock>> GetPagedDormitoryBlock(DormitoryBlockParams dormitoryBlockParams);
     }

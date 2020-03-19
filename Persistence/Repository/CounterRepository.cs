@@ -24,6 +24,12 @@ namespace BusMeal.API.Persistence.Repository
       context.Counter.Add(counter);
     }
 
+   public void Update(Counter counter)
+    {
+      context.Counter.Attach(counter);
+      this.context.Entry(counter).State = EntityState.Modified;
+    }        
+
     public async Task<IEnumerable<Counter>> GetAll()
     {
       var counter = await context.Counter.ToListAsync();

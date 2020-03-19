@@ -102,6 +102,8 @@ namespace BusMeal.API.Controllers
 
       mealvendor = mapper.Map(mealVendorResource, mealvendor);
 
+      mealVendorRepository.Update(mealvendor);
+
       if (await unitOfWork.CompleteAsync() == false)
       {
         throw new Exception(message: $"Updating meal vendor with id: {id} failed on save");

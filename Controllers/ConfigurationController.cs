@@ -101,6 +101,8 @@ namespace BusMeal.API.Controllers
 
       configuration = mapper.Map(configurationResource, configuration);
 
+      configurationRepository.Update(configuration);
+
       if (await unitOfWork.CompleteAsync() == false)
       {
         throw new Exception(message: $"Updating configuration with id: {id} failed on save");

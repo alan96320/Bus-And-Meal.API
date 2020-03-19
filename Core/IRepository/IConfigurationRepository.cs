@@ -11,6 +11,7 @@ namespace BusMeal.API.Core.IRepository
     Task<AppConfiguration> GetOne(int? id = null);
     void Add(AppConfiguration configuration);
     void Remove(AppConfiguration configuration);
+    void Update(AppConfiguration configuration);    
     Task<IEnumerable<AppConfiguration>> GetAll();
     Task<PagedList<AppConfiguration>> GetPagedConfiguration(ConfigurationParams configurationParams);
   }

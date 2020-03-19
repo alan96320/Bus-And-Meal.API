@@ -98,6 +98,8 @@ namespace BusMeal.API.Controllers
 
       mealType = mapper.Map(mealTypeResource, mealType);
 
+      mealtypeRepository.Update(mealType);
+
       if (await unitOfWork.CompleteAsync() == false)
       {
         throw new Exception(message: $"Updating mealType {id} failed on save");

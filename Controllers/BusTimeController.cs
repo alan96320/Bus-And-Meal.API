@@ -98,6 +98,8 @@ namespace BusMeal.API.Controllers
 
       busTime = mapper.Map(busTimeResource, busTime);
 
+      busTimeRepository.Update(busTime);
+
       if (await unitOfWork.CompleteAsync() == false)
       {
         throw new Exception(message: $"Updating bus time {id} failed on save");

@@ -11,7 +11,7 @@ namespace BusMeal.API.Core.IRepository
         Task<BusTime> GetOne(int id);
         void Add(BusTime BusTime);
         void Remove(BusTime BusTime);
-        //  void Update(BusTime BusTime)
+        void Update(BusTime BusTime);
         Task<IEnumerable<BusTime>> GetAll();
         Task<PagedList<BusTime>> GetPagedBusTimes(BusTimeParams busTimeParams);
     }

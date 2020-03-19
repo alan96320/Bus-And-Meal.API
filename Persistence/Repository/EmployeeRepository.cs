@@ -27,11 +27,13 @@ namespace BusMeal.API.Persistence.Repository
     {
       context.Employee.Add(employee);
     }
-    // public void Update(Department department)
-    // {
-    //   context.Departments.Add(department);
-    //   this.context.Entry(department).State = EntityState.Modified;
-    // }
+
+    public void Update(Employee employee)
+    {
+      context.Employee.Attach(employee);
+      this.context.Entry(employee).State = EntityState.Modified;
+    }
+
     public void Remove(Employee employee)
     {
       context.Remove(employee);
