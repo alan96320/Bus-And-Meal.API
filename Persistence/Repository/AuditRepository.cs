@@ -52,6 +52,11 @@ namespace BusMeal.API.Persistence.Repository
         audit = audit.Where(a => a.UserId == auditParams.UserId);
       }
 
+      if (!string.IsNullOrEmpty(auditParams.TableName))
+      {
+        audit = audit.Where(a => a.TableName == auditParams.TableName);
+      }
+
 
       //name,sort
       if (auditParams.isDescending)
@@ -63,6 +68,9 @@ namespace BusMeal.API.Persistence.Repository
 
             case "date":
               audit = audit.OrderByDescending(a => a.DateTime);
+              break;
+            case "tabelname":
+              audit = audit.OrderByDescending(a => a.TableName);
               break;
             case "userid":
               audit = audit.OrderByDescending(a => a.UserId);
@@ -86,6 +94,9 @@ namespace BusMeal.API.Persistence.Repository
 
             case "date":
               audit = audit.OrderBy(a => a.DateTime);
+              break;
+            case "tablename":
+              audit = audit.OrderBy(a => a.TableName);
               break;
             case "userid":
               audit = audit.OrderBy(a => a.UserId);
