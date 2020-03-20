@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using BusMeal.API.Helpers;
 
 namespace BusMeal.API.Persistence
 {
@@ -156,9 +157,7 @@ namespace BusMeal.API.Persistence
     {
       Entry = entry;
     }
-
     public EntityEntry Entry { get; }
-
     public string TableName { get; set; }
     public Dictionary<string, object> KeyValues { get; } = new Dictionary<string, object>();
     public Dictionary<string, object> OldValues { get; } = new Dictionary<string, object>();
@@ -169,8 +168,6 @@ namespace BusMeal.API.Persistence
 
     public Audit ToAudit()
     {
-      // var GetId = new GetID(null);
-      // var Id = GetId.getUserId();
       var audit = new Audit();
       audit.TableName = TableName;
       audit.DateTime = DateTime.Now;
@@ -180,55 +177,5 @@ namespace BusMeal.API.Persistence
       audit.UserId = 0;
       return audit;
     }
-
-    // private int getUserId()
-    // {
-    //   var id = 0;
-    //   if (context.User.Identity is ClaimsIdentity identity)
-    //   {
-    //     var idClaim = identity.FindFirst(c => c.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
-    //     id = int.Parse(idClaim.Value);
-    //     // id = int.Parse(identity.FindFirst(ClaimTypes.Name).Value);
-    //   }
-    //   return id;
-    // }
-
-    // // public int getUserId(HttpContext context)
-    // // {
-    // //   var id = 0;
-    // //   if (context.User.Identity is ClaimsIdentity identity)
-    // //   {
-    // //     id = int.Parse(identity.FindFirst(ClaimTypes.Name).Value);
-    // //   }
-
-    // //   // var idClaim = User.Claims.FirstOrDefault(c => c.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
-    // //   // if (idClaim != null)
-    // //   // {
-    // //   //   var id = int.Parse(idClaim.Value);
-    // //   //   return id;
-    // //   // }
-    // //   return id;
-    // // }
   }
-
-  // public class GetID
-  // {
-  //   private IHttpContextAccessor _httpContextAccessor;
-
-  //   public GetID(IHttpContextAccessor httpContextAccessor)
-  //   {
-  //     _httpContextAccessor = httpContextAccessor;
-  //   }
-  //   public int getUserId()
-  //   {
-  //     var id = 0;
-  //     if (_httpContextAccessor.HttpContext.User.Identity is ClaimsIdentity identity)
-  //     {
-  //       var idClaim = identity.FindFirst(c => c.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
-  //       id = int.Parse(idClaim.Value);
-  //       // id = int.Parse(identity.FindFirst(ClaimTypes.Name).Value);
-  //     }
-  //     return id;
-  //   }
-  // }
 }

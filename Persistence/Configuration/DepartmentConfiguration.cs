@@ -8,6 +8,11 @@ namespace BusMeal.API.Persistence.Configuration
   {
     public void Configure(EntityTypeBuilder<Department> builder)
     {
+      builder
+        .HasIndex(d => d.Code);
+
+      builder
+        .HasIndex(d => d.Name);
 
       builder
         .HasMany<Employee>(d => d.Employees)

@@ -60,7 +60,6 @@ namespace BusMeal.API
 
 
       services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
-      services.AddHttpContextAccessor();
 
       services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
       services.AddScoped<IDepartmentRepository, DepartmentRepository>();

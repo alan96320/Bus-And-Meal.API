@@ -4,16 +4,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusMeal.API.Persistence.Configuration
 {
-  public class MealVendorConfigurations : IEntityTypeConfiguration<MealVendor>
+  public class AuditConfiguration : IEntityTypeConfiguration<Audit>
   {
-
-    public void Configure(EntityTypeBuilder<MealVendor> builder)
+    public void Configure(EntityTypeBuilder<Audit> builder)
     {
       builder
-        .HasIndex(mv => mv.Code);
+          .HasIndex(a => a.TableName);
 
       builder
-        .HasIndex(mv => mv.Name);
+          .HasIndex(a => a.DateTime);
     }
   }
+
 }

@@ -9,6 +9,15 @@ namespace BusMeal.API.Persistence.Configuration
     public void Configure(EntityTypeBuilder<User> builder)
     {
       builder
+        .HasIndex(u => u.Username);
+
+      builder
+        .HasIndex(u => u.FirstName);
+
+      builder
+        .HasIndex(u => u.LastName);
+
+      builder
         .HasMany<UserDepartment>(u => u.UserDepartments)
         .WithOne(ud => ud.User)
         .HasForeignKey(ud => ud.UserId)
