@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusMeal.API.Controllers
 {
   [Route("api/[controller]")]
+  [Authorize(Roles = "Administrator")]
   public class ReportController : Controller
   {
     private readonly IMapper mapper;
@@ -56,7 +57,6 @@ namespace BusMeal.API.Controllers
       this.busOrderVerificationRepository = busOrderVerificationRepository;
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet("department")]
     public async Task<IActionResult> GetDepartmentReport()
     {
@@ -67,7 +67,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet("mealtype")]
     public async Task<IActionResult> GetMealTypeReport()
     {
@@ -78,7 +77,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet("employee")]
     public async Task<IActionResult> GetEmployeeReport()
     {
@@ -89,7 +87,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet("dormitoryblock")]
     public async Task<IActionResult> GetDormitoryBlockReport()
     {
@@ -100,7 +97,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet("mealvendor")]
     public async Task<IActionResult> GetMealVendorReport()
     {
@@ -111,7 +107,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet("bustime")]
     public async Task<IActionResult> GetBusTimeReport()
     {
@@ -131,7 +126,6 @@ namespace BusMeal.API.Controllers
       });
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet("counter")]
     public async Task<IActionResult> GetCounterReport()
     {
@@ -142,7 +136,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet("user")]
     public async Task<IActionResult> GetUserReport()
     {
@@ -153,7 +146,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet("mealorder")]
     public async Task<IActionResult> GetMealOrderReport([FromQuery]MealOrderParams mealOrderParams)
     {
@@ -174,7 +166,6 @@ namespace BusMeal.API.Controllers
       });
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet("mealverification")]
     public async Task<IActionResult> GetMealVerificationReport([FromQuery]MealOrderVerificationParams mealVerificationParams)
     {
@@ -192,7 +183,6 @@ namespace BusMeal.API.Controllers
       });
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet("busorder")]
     public async Task<IActionResult> GetBusOrderReport([FromQuery]BusOrderParams busOrderParams)
     {
@@ -223,7 +213,6 @@ namespace BusMeal.API.Controllers
     );
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet("busverification")]
     public async Task<IActionResult> GetBusVerificationReport([FromQuery]BusOrderVerificationParams busVerificationParams)
     {

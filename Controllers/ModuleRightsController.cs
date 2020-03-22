@@ -47,7 +47,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Module Right.R, Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetActionResult(int id)
     {
@@ -61,7 +60,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Module Right.R, Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedModuleRights([FromQuery]ModuleRightsParams moduleRightsParams)
     {
@@ -74,7 +72,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Module Right.W, Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveModuleRightsResource moduleResource)
     {
@@ -116,7 +113,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Module Right.W, Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveModuleRightsResource moduleResource)
     {
@@ -142,7 +138,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Module Right.W, Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemoveModule(int id)
     {
