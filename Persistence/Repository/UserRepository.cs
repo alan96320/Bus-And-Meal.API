@@ -26,7 +26,6 @@ namespace BusMeal.API.Persistence.Repository
 
     }
 
-
     public async Task<User> Login(string username, string password)
     {
       var user = await context.User.FirstOrDefaultAsync(u => u.Username == username);
