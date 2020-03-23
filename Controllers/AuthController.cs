@@ -95,7 +95,8 @@ namespace BusMeal.API.Controllers
           {
             Username = username,
             GddbId = username,
-            AdminStatus = anyUser == null ? true : false
+            AdminStatus = anyUser.Count() <= 0 ? true : false,
+            isActive = true
           };
           password = "";
           userRepository.Add(userLogin, password);
