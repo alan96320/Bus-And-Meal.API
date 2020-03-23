@@ -21,7 +21,7 @@ namespace BusMeal.API.Core.Validator
           .NotEmpty().WithMessage("Department id is required");
 
       RuleFor(bo => bo)
-    .Must(bo => !IsDepartmentDateUnique(bo)).WithName("DepartmentId").WithMessage("One department can't order more than one times a day");
+          .Must(bo => !IsOrderDuplicate(bo)).WithName("DepartmentId").WithMessage("Can't create order with same department and Dormitory Block in one time");
 
       RuleFor(bo => bo)
           .Must(bo => !IsDateAcceptable(bo)).WithName("OrderEntryDate").WithMessage("The date you are entered look like invalid or your order have been exceeded the lock time");
@@ -31,7 +31,7 @@ namespace BusMeal.API.Core.Validator
     }
 
     // TODO : Check for better technics
-    private bool IsDepartmentDateUnique(SaveBusOrderResource resource)
+    private bool IsOrderDuplicate(SaveBusOrderResource resource)
     {
       if (!string.IsNullOrEmpty((resource.DepartmentId).ToString()))
       {
@@ -39,7 +39,7 @@ namespace BusMeal.API.Core.Validator
         {
           return false;
         }
-        return context.BusOrder.Any(bo => bo.DepartmentId == resource.DepartmentId && bo.OrderEntryDate.Date == resource.OrderEntryDate.Date);
+        return context.BusOrder.Any(bo => bo.DepartmentId == resource.DepartmentId && bo.OrderEntryDate.Date == resource.OrderEntryDate.Date && bo.DormitoryBlockId == resource.DormitoryBlockId);
       }
       return false;
     }
