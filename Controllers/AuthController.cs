@@ -29,6 +29,9 @@ namespace BusMeal.API.Controllers
     private readonly IMapper mapper;
     private IUserModuleRightsRepository userModuleRepository;
     private IModuleRightsRepository moduleRightsRepository;
+
+    public IUserModuleRightsRepository userModuleRightsRepository;
+
     private readonly IUnitOfWork unitOfWork;
 
     private bool shouldLoginAD = false;
@@ -41,13 +44,15 @@ namespace BusMeal.API.Controllers
       IMapper mapper,
       IUserModuleRightsRepository userModuleRepository,
       IModuleRightsRepository moduleRightsRepository,
-      IConfiguration config)
+      IConfiguration config,
+      IUserModuleRightsRepository userModuleRightsRepository)
     {
       this.userRepository = userRepository;
       this.unitOfWork = unitOfWork;
       this.mapper = mapper;
       this.userModuleRepository = userModuleRepository;
       this.moduleRightsRepository = moduleRightsRepository;
+      this.userModuleRightsRepository = userModuleRightsRepository;
       this.config = config;
       this.shouldLoginAD = config.GetValue<bool>("LoginAD");
       this.domainName = config.GetSection("Domain").Value;
@@ -100,6 +105,24 @@ namespace BusMeal.API.Controllers
           };
           password = "";
           userRepository.Add(userLogin, password);
+
+          // Copy all right to module right
+          var rightLists = await moduleRightsRepository.GetAll();
+          foreach (ModuleRight list in rightLists)
+          {
+            var userModuleRights = new UserModuleRight
+            {
+              ModuleRightsId = list.Id,
+              UserId = userLogin.Id,
+              Read = false,
+              Write = false
+            };
+
+            var saveUserModule = mapper.Map<UserModuleRight>(userModuleRights);
+
+            userModuleRightsRepository.Add(saveUserModule);
+          }
+
           if (await unitOfWork.CompleteAsync() == false)
           {
             throw new Exception(message: "Save new user Failed");
