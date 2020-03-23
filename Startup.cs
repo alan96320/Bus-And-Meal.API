@@ -54,8 +54,41 @@ namespace BusMeal.API
       })
 
       .AddFluentValidation(
-        fv => fv.RegisterValidatorsFromAssemblyContaining<DepartmentValidation>()
+        fv => fv.RegisterValidatorsFromAssemblyContaining<BusOrderValidation>()
       )
+      // .AddFluentValidation(
+      //   fv => fv.RegisterValidatorsFromAssemblyContaining<BusTimeValidation>()
+      // )
+      // .AddFluentValidation(
+      //   fv => fv.RegisterValidatorsFromAssemblyContaining<BusVerificationValidation>()
+      // )
+      // .AddFluentValidation(
+      //   fv => fv.RegisterValidatorsFromAssemblyContaining<CounterValidation>()
+      // )
+      // .AddFluentValidation(
+      //   fv => fv.RegisterValidatorsFromAssemblyContaining<DepartmentValidation>()
+      // )
+      // .AddFluentValidation(
+      //   fv => fv.RegisterValidatorsFromAssemblyContaining<DormitoryValidation>()
+      // )
+      // .AddFluentValidation(
+      //   fv => fv.RegisterValidatorsFromAssemblyContaining<EmployeeValidation>()
+      // )
+      // .AddFluentValidation(
+      //   fv => fv.RegisterValidatorsFromAssemblyContaining<MealOrderValidation>()
+      // )
+      // .AddFluentValidation(
+      //   fv => fv.RegisterValidatorsFromAssemblyContaining<MealTypeValidation>()
+      // )
+      // .AddFluentValidation(
+      //   fv => fv.RegisterValidatorsFromAssemblyContaining<MealVerificationDetailValidation>()
+      // )
+      // .AddFluentValidation(
+      //   fv => fv.RegisterValidatorsFromAssemblyContaining<MealVerificationValidation>()
+      // )
+      // .AddFluentValidation(
+      //   fv => fv.RegisterValidatorsFromAssemblyContaining<UserValidation>()
+      // )
       .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
 

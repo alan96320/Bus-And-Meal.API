@@ -9,12 +9,11 @@ namespace BusMeal.API.Persistence.Configuration
 
     public void Configure(EntityTypeBuilder<MealVendor> builder)
     {
-      // builder
-      //     .HasMany<MealType>(mv => mv.MealTypes)      // mv = meal vendor
-      //     .WithOne(mt => mt.MealVendor)                           // mv = vendor
-      //     .HasForeignKey(mt => mt.MealVendorId)
-      //     .OnDelete(DeleteBehavior.Restrict);
-      // }
+      builder
+        .HasIndex(mv => mv.Code);
+
+      builder
+        .HasIndex(mv => mv.Name);
     }
   }
 }

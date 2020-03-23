@@ -9,6 +9,15 @@ namespace BusMeal.API.Persistence.Configuration
     public void Configure(EntityTypeBuilder<BusTime> builder)
     {
       builder
+        .HasIndex(bt => bt.Code);
+
+      builder
+        .HasIndex(bt => bt.Time);
+
+      builder
+        .HasIndex(bt => bt.DirectionEnum);
+
+      builder
         .HasMany<BusOrderDetail>(bt => bt.BusOrderDetails)  // bt = bus time
         .WithOne(bod => bod.BusTime)                        // bod = bus order detail
         .HasForeignKey(bod => bod.BusTimeId)

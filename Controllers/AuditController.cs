@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusMeal.API.Controllers
 {
   [Route("api/[controller]")]
+  [Authorize(Roles = "Administrator")]
   public class AuditController : Controller
   {
     private IMapper mapper;
@@ -27,7 +28,6 @@ namespace BusMeal.API.Controllers
       this.unitOfWork = unitOfWork;
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -38,7 +38,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
@@ -52,7 +51,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedAudit([FromQuery]AuditParams auditParams)
     {
@@ -65,7 +63,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveAuditResource auditResource)
     {
@@ -86,7 +83,6 @@ namespace BusMeal.API.Controllers
 
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveAuditResource auditResource)
     {
@@ -112,7 +108,6 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-    // [Authorize(Roles = "Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Removeaudit(int id)
     {

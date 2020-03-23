@@ -10,6 +10,12 @@ namespace BusMeal.API.Persistence.Configuration
 
     {
       builder
+        .HasIndex(bov => bov.Orderdate);
+
+      builder
+        .HasIndex(bov => bov.OrderNo);
+
+      builder
         .HasMany<BusOrderVerificationDetail>(bov => bov.BusOrderVerificationDetails)
         .WithOne(bovd => bovd.BusOrderVerification)
         .HasForeignKey(bovd => bovd.BusOrderVerificationId)

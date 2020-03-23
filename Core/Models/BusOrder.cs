@@ -20,9 +20,9 @@ namespace BusMeal.API.Core.Models
     public int? BusOrderVerificationId { get; set; }
 
 
-    public bool IsReadyToCollect {get;set;}
-    public User User {get;set;}
-    public int UserId {get;set;}
+    public bool IsReadyToCollect { get; set; }
+    public User User { get; set; }
+    public int UserId { get; set; }
 
     public ICollection<BusOrderDetail> BusOrderDetails { get; set; }
       = new Collection<BusOrderDetail>();

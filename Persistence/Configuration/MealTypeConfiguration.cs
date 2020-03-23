@@ -9,6 +9,12 @@ namespace BusMeal.API.Persistence.Configuration
     public void Configure(EntityTypeBuilder<MealType> builder)
     {
       builder
+        .HasIndex(mt => mt.Name);
+
+      builder
+        .HasIndex(mt => mt.Code);
+
+      builder
         .HasMany<MealOrderDetail>(mt => mt.MealOrderDetails)   // mt = meal type
         .WithOne(mod => mod.MealType)                         // mod = meal order detail
         .HasForeignKey(mod => mod.MealTypeId)
