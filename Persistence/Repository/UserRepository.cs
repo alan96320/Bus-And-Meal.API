@@ -27,7 +27,11 @@ namespace BusMeal.API.Persistence.Repository
 
     public async Task<User> GetOne(int id)
     {
-      var user = await context.User.FirstOrDefaultAsync(u => u.Id == id);
+      var user = await context.User
+                  .Include(u => u.UserDepartments)
+                  .Include(u => u.UserModuleRights)
+                    .ThenInclude(u => u.ModuleRights)
+                  .FirstOrDefaultAsync(u => u.Id == id);
       return user;
     }
 

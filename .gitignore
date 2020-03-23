@@ -6,6 +6,7 @@
 /appsettings.Development.json
 /launchSettings.json
 Migrations/
+testBuild/
 
 ### Angular ###
 ## Angular ##
