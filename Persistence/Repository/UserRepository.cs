@@ -23,7 +23,18 @@ namespace BusMeal.API.Persistence.Repository
     public UserRepository(DataContext context)
     {
       this.context = context;
+    }
 
+    public async Task<User> GetOne(int id)
+    {
+      var user = await context.User.FirstOrDefaultAsync(u => u.Id == id);
+      return user;
+    }
+
+    public async Task<User> GetOneByUserName(string username)
+    {
+      var user = await context.User.FirstOrDefaultAsync(u => u.Username == username);
+      return user;
     }
 
     public async Task<User> Login(string username, string password)
