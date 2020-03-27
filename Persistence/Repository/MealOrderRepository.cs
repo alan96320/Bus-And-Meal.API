@@ -43,7 +43,7 @@ namespace BusMeal.API.Persistence.Repository
       if (userId != null)
       {
         return await context.MealOrder.Include(b => b.MealOrderDetails)
-                                      .FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId);
+                                      .FirstOrDefaultAsync(b => b.Id == id);
       }
       else
       {
