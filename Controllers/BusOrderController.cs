@@ -108,6 +108,11 @@ namespace BusMeal.API.Controllers
         return NotFound();
       }
 
+      if (busOrder.UserId != busOrderResource.UserId)
+      {
+        busOrderResource.UserId = busOrder.UserId;
+      }
+
       if (busOrder.IsReadyToCollect == true)
       {
         return BadRequest("Can't edit the record since it marked as ready to collect");
