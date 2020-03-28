@@ -113,13 +113,20 @@ namespace BusMeal.API.Controllers
         busOrderResource.UserId = busOrder.UserId;
       }
 
-      if (busOrder.IsReadyToCollect == true)
+      if (busOrder.IsReadyToCollect == true && busOrderResource.isReadyToCollect == true)
       {
-        return BadRequest("Can't edit the record since it marked as ready to collect");
+        return BadRequest("Can't edit the record since it was ready to collect, please disable ready to collect then save and try again");
       }
 
+      if (busOrder.IsReadyToCollect == false)
+      {
+        busOrder = mapper.Map(busOrderResource, busOrder);
+      }
 
-      busOrder = mapper.Map(busOrderResource, busOrder);
+      if (busOrder.IsReadyToCollect == true && busOrderResource.isReadyToCollect == false)
+      {
+        busOrder.IsReadyToCollect = false;
+      }
 
       if (await unitOfWork.CompleteAsync() == false)
       {
