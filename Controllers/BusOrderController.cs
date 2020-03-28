@@ -20,11 +20,14 @@ namespace BusMeal.API.Controllers
     private readonly IBusOrderRepository busOrderRepository;
     private readonly IUnitOfWork unitOfWork;
 
-    public BusOrderController(IMapper mapper, IBusOrderRepository busOrderRepository, IUnitOfWork unitOfWork)
+    public IBusOrderVerificationRepository busOrderVerificationRepository;
+
+    public BusOrderController(IMapper mapper, IBusOrderRepository busOrderRepository, IUnitOfWork unitOfWork, IBusOrderVerificationRepository busOrderVerificationRepository)
     {
       this.mapper = mapper;
       this.busOrderRepository = busOrderRepository;
       this.unitOfWork = unitOfWork;
+      this.busOrderVerificationRepository = busOrderVerificationRepository;
     }
 
     [HttpGet]
@@ -125,6 +128,14 @@ namespace BusMeal.API.Controllers
 
       if (busOrder.IsReadyToCollect == true && busOrderResource.isReadyToCollect == false)
       {
+        if (busOrder.BusOrderVerificationId != null)
+        {
+          var busVerification = await busOrderVerificationRepository.GetOne(busOrder.BusOrderVerificationId.Value);
+          if (busVerification.IsClosed == true)
+          {
+            return BadRequest("Can't edit the record since it was close in verification");
+          }
+        }
         busOrder.IsReadyToCollect = false;
       }
 
