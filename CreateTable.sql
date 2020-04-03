@@ -1,7 +1,8 @@
 /****** Object:  Database [BusMeal]    Script Date: 3/26/2020 4:05:18 PM ******/
-CREATE DATABASE [BusMeal]
 
-GO
+/* unremark this statment if database has not created*/
+/* CREATE DATABASE [BusMeal]/* 
+/* GO */
 
 USE [BusMeal]
 Go
