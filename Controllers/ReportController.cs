@@ -115,8 +115,8 @@ namespace BusMeal.API.Controllers
       var BusTime = mapper.Map<IEnumerable<ViewBusTimeResource>>(busTimes);
 
       object[] direction = new object[3];
-      direction[0] = new Direction { id = 1, name = "Office to Dormitory" };
-      direction[1] = new Direction { id = 2, name = "Dormitory to Office" };
+      direction[0] = new Direction { id = 1, name = "Dormitory to Office" };
+      direction[1] = new Direction { id = 2, name = "Office to Dormitory" };
       direction[2] = new Direction { id = 3, name = "Night Bus" };
 
       return Ok(new
@@ -198,8 +198,8 @@ namespace BusMeal.API.Controllers
       var dormitoryblockResult = mapper.Map<IEnumerable<ViewDormitoryBlockResource>>(dormitoryblock);
 
       object[] direction = new object[3];
-      direction[0] = new Direction { id = 1, name = "Office to Dormitory" };
-      direction[1] = new Direction { id = 2, name = "Dormitory to Office" };
+      direction[0] = new Direction { id = 1, name = "Dormitory to Office" };
+      direction[1] = new Direction { id = 2, name = "Office to Dormitory" };
       direction[2] = new Direction { id = 3, name = "Night Bus" };
 
       return Ok(new
@@ -226,8 +226,8 @@ namespace BusMeal.API.Controllers
       var dormitoryblockResult = mapper.Map<IEnumerable<ViewDormitoryBlockResource>>(dormitoryblock);
 
       object[] direction = new object[3];
-      direction[0] = new Direction { id = 1, name = "Office to Dormitory" };
-      direction[1] = new Direction { id = 2, name = "Dormitory to Office" };
+      direction[0] = new Direction { id = 1, name = "Dormitory to Office" };
+      direction[1] = new Direction { id = 2, name = "Office to Dormitory" };
       direction[2] = new Direction { id = 3, name = "Night Bus" };
 
       return Ok(new
