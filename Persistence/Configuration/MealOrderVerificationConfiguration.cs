@@ -25,6 +25,7 @@ namespace BusMeal.API.Persistence.Configuration
         .WithOne(movd => movd.MealOrderVerification)        // movd = meal order verifcation detail
         .HasForeignKey(movd => movd.MealOrderVerificationId)
         .OnDelete(DeleteBehavior.Cascade);
+
     }
   }
 }
