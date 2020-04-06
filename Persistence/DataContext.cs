@@ -53,6 +53,7 @@ namespace BusMeal.API.Persistence
       modelBuilder.ApplyConfiguration(new MealOrderVerificationConfiguration());
       modelBuilder.ApplyConfiguration(new BusOrderConfiguration());
       modelBuilder.ApplyConfiguration(new BusOrderVerificationConfiguration());
+      modelBuilder.ApplyConfiguration(new MealVendorConfigurations());
     }
 
     public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))

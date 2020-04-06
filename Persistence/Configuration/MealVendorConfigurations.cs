@@ -14,6 +14,12 @@ namespace BusMeal.API.Persistence.Configuration
 
       builder
         .HasIndex(mv => mv.Name);
+
+      builder
+        .HasMany(mv => mv.MealOrderVerificationDetails)
+        .WithOne(mvd => mvd.MealVendor)
+        .HasForeignKey(mvd => mvd.VendorId)
+        .OnDelete(DeleteBehavior.Restrict);
     }
   }
 }
