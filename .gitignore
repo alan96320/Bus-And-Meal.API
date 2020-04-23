@@ -5,6 +5,7 @@
 appsettings.json
 appsettings.Development.json
 launchSettings.json
+Migrations/
 
 ### Angular ###
 ## Angular ##
@@ -437,4 +438,6 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/dotenv,csharp,angular,windows,dotnetcore,visualstudiocode
 Properties/launchSettings.json
+appsettings.json
+appsettings.json
 appsettings.json

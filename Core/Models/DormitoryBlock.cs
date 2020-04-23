@@ -3,13 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusMeal.API.Core.Models
 {
-  public class Department
+  public class DormitoryBlock
   {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public string Code { get; set; }
     public string Name { get; set; }
-
   }
 }

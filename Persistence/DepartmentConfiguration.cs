@@ -4,12 +4,19 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BusMeal.API.Persistence
 {
-    public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
+  public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
+  {
+    public void Configure(EntityTypeBuilder<Department> builder)
     {
-        public void Configure(EntityTypeBuilder<Department> modelBuilder)
-        {
-            modelBuilder.HasIndex(d => d.Code).IsUnique();
-            modelBuilder.HasIndex(d => d.Name).IsUnique();
-        }
+      builder.Property(d => d.Name)
+     .IsRequired()
+     .HasMaxLength(255)
+     .IsUnicode();
+
+      builder.Property(d => d.Code)
+      .IsRequired()
+      .HasMaxLength(50)
+      .IsUnicode();
     }
+  }
 }

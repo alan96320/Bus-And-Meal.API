@@ -67,45 +67,54 @@ namespace BusMeal.API.Persistence
       }
 
       //name,sort
-      if (!string.IsNullOrEmpty(departmentParams.OrderBy))
+      if (departmentParams.isDescending)
       {
-        var direction = string.IsNullOrEmpty(departmentParams.OrderDir) == true ? "asc" : departmentParams.OrderDir;
-        switch (departmentParams.OrderBy.ToLower())
+        if (!string.IsNullOrEmpty(departmentParams.OrderBy))
         {
-          case "code":
-            if ((string.IsNullOrEmpty(departmentParams.OrderDir) || (Char.ToLower(departmentParams.OrderDir[0]) == 'a')))
-            {
-              departments.OrderBy(d => d.Code);
-            }
-            else
-            {
-              departments.OrderByDescending(d => d.Code);
-            }
-
-            break;
-          case "name":
-            if ((string.IsNullOrEmpty(departmentParams.OrderDir) || (Char.ToLower(departmentParams.OrderDir[0]) == 'a')))
-            {
-              departments.OrderBy(d => d.Name);
-            }
-            else
-            {
-              departments.OrderByDescending(d => d.Name);
-            }
-            break;
-
-          default: //default sort
-            departments.OrderBy(d => d.Code);
-            break;
+          switch (departmentParams.OrderBy.ToLower())
+          {
+            case "code":
+              departments = departments.OrderByDescending(d => d.Code);
+              break;
+            case "name":
+              departments = departments.OrderByDescending(d => d.Name);
+              break;
+            default:
+              departments = departments.OrderByDescending(d => d.Code);
+              break;
+          }
+        }
+        else
+        {
+          departments = departments.OrderByDescending(d => d.Code);
         }
       }
-
+      else
+      {
+        if (!string.IsNullOrEmpty(departmentParams.OrderBy))
+        {
+          switch (departmentParams.OrderBy.ToLower())
+          {
+            case "code":
+              departments = departments.OrderBy(d => d.Code);
+              break;
+            case "name":
+              departments = departments.OrderBy(d => d.Name);
+              break;
+            default:
+              departments = departments.OrderBy(d => d.Code);
+              break;
+          }
+        }
+        else
+        {
+          departments = departments.OrderBy(d => d.Code);
+        }
+      }
 
       return await PagedList<Department>
         .CreateAsync(departments, departmentParams.PageNumber, departmentParams.PageSize);
     }
-
-
 
   }
 }
