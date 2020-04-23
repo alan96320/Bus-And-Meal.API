@@ -1,17 +1,21 @@
+using System.Linq;
+using System.Net;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusMeal.API.Controllers.Resources;
-using BusMeal.API.Core;
+using BusMeal.API.Core.IRepository;
 using BusMeal.API.Core.Models;
 using BusMeal.API.Helpers;
+using BusMeal.API.Helpers.Params;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BusMeal.API.Controllers
 {
   [Route("api/[controller]")]
-  [ApiController]
+
   public class DepartmentController : Controller
   {
     private readonly IMapper mapper;
@@ -25,9 +29,11 @@ namespace BusMeal.API.Controllers
       this.mapper = mapper;
     }
 
+    [Authorize(Roles = "Department.W, Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] SaveDepartmentResource departmentResource)
     {
+
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
@@ -46,6 +52,7 @@ namespace BusMeal.API.Controllers
 
     }
 
+    [Authorize(Roles = "Department.W, Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] SaveDepartmentResource departmentResource)
     {
@@ -60,6 +67,8 @@ namespace BusMeal.API.Controllers
 
       department = mapper.Map(departmentResource, department);
 
+      departmentRepository.Update(department);
+
       if (await unitOfWork.CompleteAsync() == false)
       {
         throw new Exception(message: $"Updating department {id} failed on save");
@@ -72,6 +81,7 @@ namespace BusMeal.API.Controllers
 
     }
 
+    [Authorize(Roles = "Department.R, Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
@@ -85,6 +95,7 @@ namespace BusMeal.API.Controllers
       return Ok(viewDepartmentResource);
     }
 
+    [Authorize(Roles = "Department.W, Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemoveDepartment(int id)
     {
@@ -96,7 +107,7 @@ namespace BusMeal.API.Controllers
       departmentRepository.Remove(department);
       if (await unitOfWork.CompleteAsync() == false)
       {
-        throw new Exception(message: $"Deleting department {id} failed");
+        throw new Exception(message: $"Deleting department failed");
       }
 
       return Ok(id);
@@ -112,7 +123,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
-
+    [Authorize(Roles = "Department.R, Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedDepartments([FromQuery] DepartmentParams departmentParams)
     {
@@ -135,6 +146,18 @@ namespace BusMeal.API.Controllers
 
 
       return Ok(result);
+    }
+
+    // FIXME : make me to be reuseable
+    private int getUserId()
+    {
+      var idClaim = User.Claims.FirstOrDefault(c => c.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
+      if (idClaim != null)
+      {
+        var id = int.Parse(idClaim.Value);
+        return id;
+      }
+      return -1;
     }
 
   }

@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusMeal.API.Controllers.Resources;
-using BusMeal.API.Core;
 using BusMeal.API.Core.Models;
 using BusMeal.API.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using BusMeal.API.Core.IRepository;
+using BusMeal.API.Helpers.Params;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BusMeal.API.Controllers
 {
   [Route("api/[controller]")]
-  [ApiController]
+
   public class UserDepartmentController : Controller
   {
     private readonly IMapper mapper;
@@ -63,6 +66,7 @@ namespace BusMeal.API.Controllers
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveUserDepartmentResource userDepartmentResource)
     {
+
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
@@ -118,10 +122,22 @@ namespace BusMeal.API.Controllers
 
       if (await unitOfWork.CompleteAsync() == false)
       {
-        throw new Exception(message: $"Deleting user department with id: {id} failed");
+        throw new Exception(message: $"Deleting user department failed");
       }
 
       return Ok($"{id}");
+    }
+
+    // FIXME : make me to be reuseable
+    private int getUserId()
+    {
+      var idClaim = User.Claims.FirstOrDefault(c => c.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
+      if (idClaim != null)
+      {
+        var id = int.Parse(idClaim.Value);
+        return id;
+      }
+      return -1;
     }
   }
 }

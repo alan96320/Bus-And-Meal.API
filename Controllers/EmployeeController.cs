@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusMeal.API.Controllers.Resources;
-using BusMeal.API.Core;
 using BusMeal.API.Core.Models;
 using BusMeal.API.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using BusMeal.API.Core.IRepository;
+using BusMeal.API.Helpers.Params;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BusMeal.API.Controllers
 {
   [Route("api/[controller]")]
-  [ApiController]
+
   public class EmployeeController : Controller
   {
     private readonly IMapper mapper;
@@ -34,6 +37,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    [Authorize(Roles = "Employee.R, Administrator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
@@ -47,6 +51,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    [Authorize(Roles = "Employee.R, Administrator")]
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedEmployee([FromQuery]EmployeeParams employeeParams)
     {
@@ -59,6 +64,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    [Authorize(Roles = "Employee.W, Administrator")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]SaveEmployeeResource employeeResource)
     {
@@ -79,6 +85,7 @@ namespace BusMeal.API.Controllers
 
     }
 
+    [Authorize(Roles = "Employee.W, Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody]SaveEmployeeResource employeeResource)
     {
@@ -92,6 +99,8 @@ namespace BusMeal.API.Controllers
 
       employee = mapper.Map(employeeResource, employee);
 
+      employeeRepository.Update(employee);
+
       if (await unitOfWork.CompleteAsync() == false)
       {
         throw new Exception(message: $"Updating employee {id} failed on save");
@@ -104,6 +113,7 @@ namespace BusMeal.API.Controllers
       return Ok(result);
     }
 
+    [Authorize(Roles = "Employee.W, Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemoveEmployee(int id)
     {
@@ -116,10 +126,22 @@ namespace BusMeal.API.Controllers
 
       if (await unitOfWork.CompleteAsync() == false)
       {
-        throw new Exception(message: $"Deleting employee {id} failed");
+        throw new Exception(message: $"Deleting employee failed");
       }
 
       return Ok($"{id}");
+    }
+
+    // FIXME : make me to be reuseable
+    private int getUserId()
+    {
+      var idClaim = User.Claims.FirstOrDefault(c => c.Type.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
+      if (idClaim != null)
+      {
+        var id = int.Parse(idClaim.Value);
+        return id;
+      }
+      return -1;
     }
 
   }

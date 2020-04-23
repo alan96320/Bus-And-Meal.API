@@ -1,5 +1,17 @@
 using BusMeal.API.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using BusMeal.API.Persistence.Configuration;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using BusMeal.API.Helpers;
 
 namespace BusMeal.API.Persistence
 {
@@ -7,40 +19,164 @@ namespace BusMeal.API.Persistence
   {
     public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-    public DbSet<Department> Departments { get; set; }
+    public DbSet<Department> Department { get; set; }
     public DbSet<Employee> Employee { get; set; }
-    public DbSet<Configuration> Configuration { get; set; }
+    public DbSet<AppConfiguration> AppConfiguration { get; set; }
     public DbSet<Counter> Counter { get; set; }
     public DbSet<Audit> Audit { get; set; }
-    public DbSet<ModuleRights> ModuleRights { get; set; }
+    public DbSet<ModuleRight> ModuleRight { get; set; }
     public DbSet<User> User { get; set; }
     public DbSet<UserDepartment> UserDepartment { get; set; }
-    public DbSet<UserModuleRights> UserModuleRights { get; set; }
+    public DbSet<UserModuleRight> UserModuleRight { get; set; }
     public DbSet<DormitoryBlock> DormitoryBlock { get; set; }
     public DbSet<BusTime> BusTime { get; set; }
-    public DbSet<MealOrderEntryHeader> MealOrderEntryHeader { get; set; }
-    public DbSet<MealOrderVerificationHeader> MealOrderVerificationHeader { get; set; }
+    public DbSet<MealOrder> MealOrder { get; set; }
+    public DbSet<MealOrderVerification> MealOrderVerification { get; set; }
     public DbSet<MealOrderDetail> MealOrderDetail { get; set; }
-    public DbSet<MealOrderVerificationHeaderTotal> MealOrderVerificationHeaderTotal { get; set; }
-    public DbSet<BusOrderVerificationHeader> BusOrderVerificationHeader { get; set; }
-    public DbSet<BusOrderEntryHeader> BusOrderEntryHeader { get; set; }
-    public DbSet<BusOrderEntryDetail> BusOrderEntryDetail { get; set; }
-    public DbSet<BusOrderVerificationHeaderTotal> BusOrderVerificationHeaderTotal { get; set; }
+    public DbSet<MealOrderVerificationDetail> MealOrderVerificationDetail { get; set; }
+    public DbSet<BusOrderVerification> BusOrderVerification { get; set; }
+    public DbSet<BusOrder> BusOrder { get; set; }
+    public DbSet<BusOrderDetail> BusOrderDetail { get; set; }
+    public DbSet<BusOrderVerificationDetail> BusOrderVerificationDetail { get; set; }
+    public DbSet<MealType> MealType { get; set; }
+    public DbSet<MealVendor> MealVendor { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
-      modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
-      modelBuilder.ApplyConfiguration(new CounterConfiguration());
-      modelBuilder.ApplyConfiguration(new AuditConfiguration());
       modelBuilder.ApplyConfiguration(new UserConfiguration());
       modelBuilder.ApplyConfiguration(new ModuleRightsConfiguration());
-      modelBuilder.ApplyConfiguration(new MealVendorConfiguration());
       modelBuilder.ApplyConfiguration(new MealTypeConfiguration());
       modelBuilder.ApplyConfiguration(new DormitoryBlockConfiguration());
       modelBuilder.ApplyConfiguration(new BusTimeConfiguration());
-      modelBuilder.ApplyConfiguration(new MealOrderVerificationHeaderConfiguration());
-      modelBuilder.ApplyConfiguration(new BusOrderVerificationHeaderConfiguration());
+      modelBuilder.ApplyConfiguration(new MealOrderConfiguration());
+      modelBuilder.ApplyConfiguration(new MealOrderVerificationConfiguration());
+      modelBuilder.ApplyConfiguration(new BusOrderConfiguration());
+      modelBuilder.ApplyConfiguration(new BusOrderVerificationConfiguration());
+      modelBuilder.ApplyConfiguration(new MealVendorConfigurations());
+    }
+
+    public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+    {
+      var auditEntries = OnBeforeSaveChanges();
+      var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+      await OnAfterSaveChanges(auditEntries);
+      return result;
+    }
+
+    private List<AuditEntry> OnBeforeSaveChanges()
+    {
+      ChangeTracker.DetectChanges();
+      var auditEntries = new List<AuditEntry>();
+      foreach (var entry in ChangeTracker.Entries())
+      {
+        if (entry.Entity is Audit || entry.State == EntityState.Detached || entry.State == EntityState.Unchanged)
+          continue;
+
+        var auditEntry = new AuditEntry(entry);
+        auditEntry.TableName = entry.Metadata.Relational().TableName;
+        auditEntries.Add(auditEntry);
+
+        foreach (var property in entry.Properties)
+        {
+          if (property.IsTemporary)
+          {
+            // value will be generated by the database, get the value after saving
+            auditEntry.TemporaryProperties.Add(property);
+            continue;
+          }
+
+          string propertyName = property.Metadata.Name;
+          if (property.Metadata.IsPrimaryKey())
+          {
+            auditEntry.KeyValues[propertyName] = property.CurrentValue;
+            continue;
+          }
+
+          switch (entry.State)
+          {
+            case EntityState.Added:
+              auditEntry.NewValues[propertyName] = property.CurrentValue;
+              break;
+
+            case EntityState.Deleted:
+              auditEntry.OldValues[propertyName] = property.OriginalValue;
+              break;
+
+            case EntityState.Modified:
+              if (property.IsModified)
+              {
+                auditEntry.OldValues[propertyName] = property.OriginalValue;
+                auditEntry.NewValues[propertyName] = property.CurrentValue;
+              }
+              break;
+          }
+        }
+      }
+
+      // Save audit entities that have all the modifications
+      foreach (var auditEntry in auditEntries.Where(_ => !_.HasTemporaryProperties))
+      {
+        Audit.Add(auditEntry.ToAudit());
+      }
+
+      // keep a list of entries where the value of some properties are unknown at this step
+      return auditEntries.Where(_ => _.HasTemporaryProperties).ToList();
+    }
+
+    private Task OnAfterSaveChanges(List<AuditEntry> auditEntries)
+    {
+      if (auditEntries == null || auditEntries.Count == 0)
+        return Task.CompletedTask;
+
+      foreach (var auditEntry in auditEntries)
+      {
+        // Get the final value of the temporary properties
+        foreach (var prop in auditEntry.TemporaryProperties)
+        {
+          if (prop.Metadata.IsPrimaryKey())
+          {
+            auditEntry.KeyValues[prop.Metadata.Name] = prop.CurrentValue;
+          }
+          else
+          {
+            auditEntry.NewValues[prop.Metadata.Name] = prop.CurrentValue;
+          }
+        }
+
+        // Save the Audit entry
+        Audit.Add(auditEntry.ToAudit());
+      }
+
+      return SaveChangesAsync();
+    }
+  }
+
+  public class AuditEntry
+  {
+    public AuditEntry(EntityEntry entry)
+    {
+      Entry = entry;
+    }
+    public EntityEntry Entry { get; }
+    public string TableName { get; set; }
+    public Dictionary<string, object> KeyValues { get; } = new Dictionary<string, object>();
+    public Dictionary<string, object> OldValues { get; } = new Dictionary<string, object>();
+    public Dictionary<string, object> NewValues { get; } = new Dictionary<string, object>();
+    public List<PropertyEntry> TemporaryProperties { get; } = new List<PropertyEntry>();
+
+    public bool HasTemporaryProperties => TemporaryProperties.Any();
+
+    public Audit ToAudit()
+    {
+      var audit = new Audit();
+      audit.TableName = TableName;
+      audit.DateTime = DateTime.Now;
+      audit.KeyValues = JsonConvert.SerializeObject(KeyValues);
+      audit.OldValues = OldValues.Count == 0 ? null : JsonConvert.SerializeObject(OldValues);
+      audit.NewValues = NewValues.Count == 0 ? null : JsonConvert.SerializeObject(NewValues);
+      audit.UserId = 0;
+      return audit;
     }
   }
 }
