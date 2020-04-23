@@ -65,10 +65,10 @@ namespace BusMeal.API.Controllers
         public async Task<IActionResult> Login([FromBody]LoginResource loginResource)
         {
 
-            if (EncryptionHelper.DecryptGetValidDate(licensekey) == false)
-            {
-                return BadRequest("Trial Version is Expired");
-            }
+            // if (EncryptionHelper.DecryptGetValidDate(licensekey) == false)
+            // {
+            //     return BadRequest("Trial Version is Expired");
+            // }
 
             var username = loginResource.Username;
             var password = loginResource.Password;
