@@ -1,17 +1,27 @@
 using BusMeal.API.Core.Models;
 using Microsoft.EntityFrameworkCore;
-namespace BusMeal.API.Persistance
+
+namespace BusMeal.API.Persistence
 {
-    public class DataContext : DbContext
-    {
+  public class DataContext : DbContext
+  {
+    public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+
+    public DbSet<Department> Departments { get; set; }
+    public DbSet<Employee> Employee { get; set; }
+    public DbSet<Configuration> Configuration { get; set; }
+    public DbSet<Counter> Counter { get; set; }
+    public DbSet<Audit> Audit { get; set; }
+
+     protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
 
 
-       public DataContext(DbContextOptions<DataContext> options) : base (options)
-       {
-           
-       }
+        }      
 
-       public DbSet<Department> Departments {get; set;}
-
-    }
+    
+  }
 }
